@@ -1,10 +1,10 @@
 body {
-  min-height: calc(100vh - 300px);
-  padding:0;
-  height: auto;
-  color: white;
-  margin: auto;
-  font-family:Arial;
-  background: rgb(16,16,16);
-  background: linear-gradient(0deg, rgba(16,16,16,1) 0%, rgba(48,48,48,1) 50%, rgba(16,16,16,1) 100%);
-}
+    min-height: calc(100vh - 300px);
+    padding:0;
+    height: auto;
+    color: white;
+    margin: auto;
+    font-family:Arial;
+    background: rgb(16,16,16);
+    background: linear-gradient(0deg, rgba(16,16,16,1) 0%, rgba(48,48,48,1) 50%, rgba(16,16,16,1) 100%);
+  }
