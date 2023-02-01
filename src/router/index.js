@@ -1,24 +1,45 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Fooldal from '../views/Fooldal.vue'
+import Profil from '../views/Profil.vue'
+import Ranglista from '../views/Ranglista.vue'
+import QuizBeallito from '../views/QuizBeallito'
 
+const routes = [
+  {
+    path: '/',
+    name: 'fooldal',
+    component: Fooldal
+  },
+  {
+    path: '/rolunk',
+    name: 'rolunk',
+    component: () => import('../views/Rolunk.vue')
+  },
+  {
+    path: '/profil',
+    name: 'profil',
+    component: Profil
+  },
+  {
+    path: '/ranglista',
+    name: 'ranglista',
+    component: Ranglista
+  },
+  {
+    path: '/quizbeallito',
+    name: 'quizbeallito',
+    component: QuizBeallito
+  },
+  {
+    path: '/jatekmenet',
+    name: 'jatekmenet',
+    component: () => import('../views/Jatekmenet.vue')
+  }
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    /*
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }*/
-  ]
+  routes
 })
 
 export default router

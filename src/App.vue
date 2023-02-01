@@ -2,7 +2,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import Nav from './components/Nav.vue'
 import Footer from './components/Footer.vue'
-import Fooldal from './components/fooldal/Fooldal.vue'
+import Fooldal from './views/Fooldal.vue'
 
 export default {
   data() {
@@ -18,16 +18,10 @@ export default {
 }
 </script>
 
-<template><!--
-<nav>
-  <RouterLink to="/">Home</RouterLink>
-  <RouterLink to="/about">About</RouterLink>
-</nav>-->
-
+<template>
 <Nav/>
-<Fooldal/>
+<RouterView/>
 <Footer/>
-<!--<RouterView/>-->
 </template>
 
 <style scoped>

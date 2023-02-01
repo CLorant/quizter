@@ -1,6 +1,6 @@
 <script>
 export default {
-    
+
 }
 </script>
 
@@ -13,13 +13,13 @@ export default {
     <span></span>
     <span></span>
   </button>
-  <a class="navbar-brand" href="index"><img src="../img/quizterlogo.png" alt="Logo" id="logo"></a>
+  <RouterLink to="/" class="navbar-brand" id="logo"></RouterLink>
   <div class="collapse navbar-collapse" id="elrejt">
     <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="index">Főoldal</a>
-      <a class="nav-item nav-link" href="rolunk">Rólunk</a>
-      <a class="nav-item nav-link" href="profil">Profil</a>
-      <a class="nav-item nav-link" href="ranglista">Ranglista</a>
+      <RouterLink to="/" class="nav-item nav-link active">Főoldal</RouterLink> <!--ACTIVE CLASST TEDD DINAMIKUSSÁ-->
+      <RouterLink to="/rolunk" class="nav-item nav-link">Rólunk</RouterLink>
+      <RouterLink to="/profil" class="nav-item nav-link">Profil</RouterLink>
+      <RouterLink to="/ranglista" class="nav-item nav-link">Ranglista</RouterLink>
     </div>
   </div>
   <div class="collapse navbar-collapse justify-content-end"  id="elrejt">
@@ -36,7 +36,9 @@ export default {
         <div id="szint-haladas"></div>
       </div>
     </div>
-    <a href="profil"><img alt="Felhasználó kép" id="felhasznalo-kep"></a>
+    <a href="profil">
+      <img alt="Felhasználó kép" id="felhasznalo-kep">
+    </a>
   </div>
 </nav>
 </template>
@@ -75,87 +77,71 @@ export default {
   -o-transition: .25s ease-in-out;
   transition: .25s ease-in-out;
 }
-
 #navbar-icon span:nth-child(1) {
   top: 0px;
 }
-
 #navbar-icon span:nth-child(2),#navbar-icon span:nth-child(3) {
   top: 12px;
 }
-
 #navbar-icon span:nth-child(4) {
   top: 24px;
 }
-
 #navbar-icon.open span:nth-child(1) {
   top: 15px;
   width: 0%;
   left: 50%;
 }
-
 #navbar-icon.open span:nth-child(2) {
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   -o-transform: rotate(45deg);
   transform: rotate(45deg);
 }
-
 #navbar-icon.open span:nth-child(3) {
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
   transform: rotate(-45deg);
 }
-
 #navbar-icon.open span:nth-child(4) {
   top: 18px;
   width: 0%;
   left: 50%;
 }
-
 .navbar{
   background-color: #0b0c0e;
 }
-
 .navbar-toggler:focus,
 .navbar-toggler:active,
 .navbar-toggler-icon:focus {
   outline: none;
   box-shadow: none;
 }
-
-#logo{
-  height: 30px;
+.navbar-brand{
+  height: 40px;
   content: url("../img/quizterlogo.png");
 }
-
 #kereses-form{
   padding-right: 50px;
 }
-
 #kereses-gomb{
   background-color: #c7940a;
   color: #ffffff;
 }
-
 #kereses-gomb:hover{
   opacity: 0.8;
 }
-
 #felhasznalo-tarolo{
   display: inline-block;
   text-align: center;
   padding-right: 10px;
   padding-left: 10px;
 }
-
 #felhasznalo-nev{
   font-size: 10pt;
   font-weight: bold;
   color: white;
 }
-
 #szint-tarolo{
   background-color: white;
   height: 16px;
@@ -163,20 +149,17 @@ export default {
   margin-left: auto;
   margin-right: auto;
 }
-
 #szint{
   position: absolute;
   font-size: 10pt;
   color: black;
   font-weight: bold;
 }
-
 #szint-haladas{
   background-color: rgb(255, 225, 0);
   height: 16px;
   width: 50%;
 }
-
 #felhasznalo-kep{
   float: left;
   height: 45px;
