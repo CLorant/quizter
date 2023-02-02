@@ -3,117 +3,111 @@ export default {
   data() {
     return {
       oldalak: [
-        { route: '/', text: 'Főoldal' },
-        { route: '/rolunk', text: 'Rólunk' },
-        { route: '/profil', text: 'Profil' },
-        { route: '/ranglista', text: 'Ranglista' },
-        { route: '/aszf', text: 'ÁSZF' },
-        { route: '/suti-tajekoztato', text: 'Süti tájékoztató' },
+        { route: "/", text: "Főoldal" },
+        { route: "/rolunk", text: "Rólunk" },
+        { route: "/profil/:felhasznalo", text: "Profil" },
+        { route: "/ranglista", text: "Ranglista" },
+        { route: "/aszf", text: "ÁSZF" },
+        { route: "/suti-tajekoztato", text: "Süti tájékoztató" },
       ],
       temak: [
-        { id: 'autok', text: 'Autók' },
-        { id: 'biologia', text: 'Biológia' },
-        { id: 'fizika', text: 'Fizika' },
-        { id: 'foldrajz', text: 'Földrajz' },
-        { id: 'irodalom', text: 'Irodalom' },
-        { id: 'kemia', text: 'Kémia' },
-        { id: 'sport', text: 'Sport' },
-        { id: 'szorakoztatas', text: 'Szórakoztatás' },
-        { id: 'technologia', text: 'Technológia' },
-        { id: 'tortenelem', text: 'Történelem' },
-        { id: 'zene', text: 'Zene' },
-        { id: 'vegyes', text: 'Vegyes' }
-      ]
-    }
+        { id: "autok", text: "Autók" },
+        { id: "biologia", text: "Biológia" },
+        { id: "fizika", text: "Fizika" },
+        { id: "foldrajz", text: "Földrajz" },
+        { id: "irodalom", text: "Irodalom" },
+        { id: "kemia", text: "Kémia" },
+        { id: "sport", text: "Sport" },
+        { id: "szorakoztatas", text: "Szórakoztatás" },
+        { id: "technologia", text: "Technológia" },
+        { id: "tortenelem", text: "Történelem" },
+        { id: "zene", text: "Zene" },
+        { id: "vegyes", text: "Vegyes" },
+      ],
+    };
   },
-  methods: {
-    hirlevel(){
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbxTZtkYZvlKYAyhLJMGvrHO3oVYyRlGM_kv7Tpdx1QdO9JRhd3teVJ34NYl-3rpD5dK/exec'
-      const form = document.forms['submit-to-google-sheet']
-      form.addEventListener('submit', e => {
-        e.preventDefault()
-        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-      })
-    }
-  }
-}
+  methods: {},
+};
 </script>
 
 <template>
-<footer>
-  <div class="sor fo">
-    <div class="oszlop rolunk-footer">
-      <div class="logo-tarolo">
-        <RouterLink to="/" class="logo"></RouterLink>
-      </div>
-      <p>
-        A Quizter egy magyar nyelvű kvízes weboldal, ahol 11
-        különböző témában érhetőek el kvízek. A fejlesztése 2022-ben
-        kezdődött.
-      </p>
-      <div class="kozossegi-tarolo">
-        <a
-          href="https://www.youtube.com"
-          target="_blank"
-          class="kozossegi-gomb youtube"
-        ></a>
-        <a
-          href="https://www.reddit.com/r/quizter"
-          target="_blank"
-          class="kozossegi-gomb reddit"
-        ></a>
-        <a
-          href="https://github.com/CLorant/quizter"
-          target="_blank"
-          class="kozossegi-gomb github"
-        ></a>
-      </div>
-    </div>
-    <div class="oszlop linkek-tarolo">
-      <h3>Oldalak</h3>
-      <ul>
-        <li>
-          <RouterLink to="/">Főoldal</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/rolunk">Rólunk</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/profil">Profil</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/ranglista">Ranglista</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/aszf">ÁSZF</RouterLink>
-        </li>
-        <li>
-          <RouterLink to="/suti-tajekoztato">Süti tájékoztató</RouterLink>
-        </li>
-      </ul>
-    </div>
-    <div class="oszlop linkek-tarolo">
-      <h3>Témák</h3>
-      <ul>
-        <li v-for="tema in temak" :key="tema.id">
-          <RouterLink to="/quizbeallito/">{{tema.text}}</RouterLink>
-        </li>
-      </ul>
-    </div>
-    <div class="oszlop linkek-tarolo">
-      <h3>Elérhetőség</h3>
-      <ul>
-        
-        <li>
+  <footer>
+    <div class="sor fo">
+      <div class="oszlop rolunk-footer">
+        <div class="logo-tarolo">
+          <RouterLink to="/" class="logo"></RouterLink>
+        </div>
+        <p>
+          A Quizter egy magyar nyelvű kvízes weboldal, amit 3 középiskolás diák
+          fejlesztett 2022-ben. 11 különböző témában és közel 2000 kérdéssel
+          érhetőek el kvízek. Emellett 12 különböző beállítással szabható
+          személyre a játékmenet.
+        </p>
+        <div class="kozossegi-tarolo">
           <a
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com"
+            href="https://www.youtube.com"
             target="_blank"
-            >Email</a
-          >
-        </li>
-      </ul>
-    </div>
-    <!--
+            class="kozossegi-gomb youtube"
+          ></a>
+          <a
+            href="https://www.reddit.com/r/quizter"
+            target="_blank"
+            class="kozossegi-gomb reddit"
+          ></a>
+          <a
+            href="https://github.com/CLorant/quizter"
+            target="_blank"
+            class="kozossegi-gomb github"
+          ></a>
+        </div>
+      </div>
+      <div class="oszlop linkek-tarolo">
+        <h3>Oldalak</h3>
+        <ul>
+          <li>
+            <RouterLink to="/">Főoldal</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/rolunk">Rólunk</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/profil">Profil</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/ranglista">Ranglista</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/aszf">ÁSZF</RouterLink>
+          </li>
+          <li>
+            <RouterLink to="/suti-tajekoztato">Süti tájékoztató</RouterLink>
+          </li>
+        </ul>
+      </div>
+      <div class="oszlop linkek-tarolo">
+        <h3>Témák</h3>
+        <ul>
+          <li v-for="tema in temak" :key="tema.id">
+            <RouterLink
+              :to="{ name: 'quizbeallito', params: { id: tema.id } }"
+              >{{ tema.text }}</RouterLink
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="oszlop linkek-tarolo">
+        <h3>Elérhetőség</h3>
+        <ul>
+          <li>
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com"
+              target="_blank"
+              >Email</a
+            >
+          </li>
+        </ul>
+      </div>
+      <!--
     <div class="oszlop feliratkozas-tarolo">
       <h3>Hírlevél</h3>
       <form name="submit-to-google-sheet">
@@ -128,11 +122,11 @@ export default {
       </form>
     </div>
   -->
-  </div>
-  <div class="sor copyright">
-    <p class="copyright-szoveg">Copyright &copy; 2023 Quizter</p>
-  </div>
-</footer>
+    </div>
+    <div class="sor copyright">
+      <p class="copyright-szoveg">Copyright &copy; 2023 Quizter</p>
+    </div>
+  </footer>
 </template>
 
 <style scoped>

@@ -2,8 +2,32 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Fooldal from '../views/Fooldal.vue'
 import Profil from '../views/Profil.vue'
 import Ranglista from '../views/Ranglista.vue'
-import QuizBeallito from '../views/QuizBeallito'
+import QuizBeallito from '../views/QuizBeallito.vue'
+/*
+const felhasznalo = {
+  template: '...',
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      (toParams, previousParams) => {
+        // react to route changes...
+      }
+    )
+  },
+}
 
+const tema = {
+  template: '...',
+  created() {
+    this.$watch(
+      () => this.$route.params,
+      (toParams, previousParams) => {
+        // react to route changes...
+      }
+    )
+  },
+}
+*/
 const routes = [
   {
     path: '/',
@@ -16,7 +40,7 @@ const routes = [
     component: () => import('../views/Rolunk.vue')
   },
   {
-    path: '/profil',
+    path: '/profil/:nev',
     name: 'profil',
     component: Profil
   },
@@ -26,7 +50,7 @@ const routes = [
     component: Ranglista
   },
   {
-    path: '/quizbeallito',
+    path: '/quizbeallito/:id',
     name: 'quizbeallito',
     component: QuizBeallito
   },

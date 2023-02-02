@@ -36,8 +36,8 @@ methods: {
     <h2>Teszteld a tudásod</h2>
   </div>
   <div id="temaValasztoGombok">
-    <RouterLink to="/quizbeallito">
-      <button type="button" v-for="tema in temak" :key="tema.id" :id="tema.id" class="temaGomb" @click="indit(tema.id)">{{tema.text}}</button>
+    <RouterLink v-for="tema in temak" :key="tema.id" :to="{name: 'quizbeallito', params: {id: tema.id}}" >
+      <button type="button" :id="tema.id" class="temaGomb" @click="indit(tema.id)">{{tema.text}}</button>
     </RouterLink>
   </div>
 </div>

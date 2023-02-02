@@ -1,8 +1,6 @@
 <script>
-import { RouterLink, RouterView } from 'vue-router'
 import Nav from './components/Nav.vue'
 import Footer from './components/Footer.vue'
-import Fooldal from './views/Fooldal.vue'
 
 export default {
   data() {
@@ -12,7 +10,6 @@ export default {
   },
   components: {
     Nav,
-    Fooldal,
     Footer
   }
 }
@@ -25,5 +22,7 @@ export default {
 </template>
 
 <style scoped>
-
+#tartalom{
+  min-height: calc(100vh - 300px);
+}
 </style>
