@@ -1,6 +1,10 @@
 <script>
 export default {
-
+  methods:{
+    active(){
+      
+    }
+  }
 }
 </script>
 
@@ -119,7 +123,7 @@ export default {
 }
 .navbar-brand{
   height: 40px;
-  content: url("../img/quizterlogo.png");
+  content: url("../img/ikon/quizterlogo.png");
 }
 #kereses-form{
   padding-right: 50px;
@@ -165,6 +169,6 @@ export default {
   height: 45px;
   width: 45px;
   border-radius: 50%;
-  content: url("../img/luke.png");
+  content: url("../img/felhasznalo/luke.png");
 }
 </style>

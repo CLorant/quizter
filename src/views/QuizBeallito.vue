@@ -1,6 +1,9 @@
 <script>
 export default {
-  
+  props: {
+    tema: String,
+    temaNev: String
+  },
   methods: {
 
   }
@@ -11,7 +14,7 @@ export default {
 <template>
 <div id="tartalom">
   <div id="temaDiv">
-    <img id="temaKep">
+    <img src="../img/tema/autok.png" id="temaKep">
     <div id="temaKepSzoveg"></div>
   </div>
   <p id="temaMagyarazat"></p>

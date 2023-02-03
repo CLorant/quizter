@@ -88,10 +88,9 @@ export default {
         <h3>Témák</h3>
         <ul>
           <li v-for="tema in temak" :key="tema.id">
-            <RouterLink
-              :to="{ name: 'quizbeallito', params: { id: tema.id } }"
-              >{{ tema.text }}</RouterLink
-            >
+            <RouterLink :to="{ name: 'quizbeallito', params: { id: tema.id } }">
+              {{ tema.text }}
+            </RouterLink>
           </li>
         </ul>
       </div>
@@ -201,10 +200,10 @@ footer h3 {
   height: 40px;
   width: 155px;
   background-size: cover;
-  background-image: url("../img/quizterlogo_white.png");
+  background-image: url("../img/ikon/quizterlogo_white.png");
 }
 .logo:hover {
-  background-image: url("../img/quizterlogo.png");
+  background-image: url("../img/ikon/quizterlogo.png");
 }
 .feliratkozas-doboz,
 .feliratkozas-gomb {
@@ -236,22 +235,22 @@ div.kozossegi-tarolo {
   background-size: cover;
 }
 .reddit {
-  background-image: url("../img/reddit_icon.png");
+  background-image: url("../img/ikon/reddit_icon.png");
 }
 .youtube {
-  background-image: url("../img/youtube_icon.png");
+  background-image: url("../img/ikon/youtube_icon.png");
 }
 .github {
-  background-image: url("../img/github_icon.png");
+  background-image: url("../img/ikon/github_icon.png");
 }
 .reddit:hover {
-  background-image: url("../img/reddit_icon_hover.png");
+  background-image: url("../img/ikon/reddit_icon_hover.png");
 }
 .youtube:hover {
-  background-image: url("../img/youtube_icon_hover.png");
+  background-image: url("../img/ikon/youtube_icon_hover.png");
 }
 .github:hover {
-  background-image: url("../img/github_icon_hover.png");
+  background-image: url("../img/ikon/github_icon_hover.png");
 }
 .copyright {
   padding: 0.3em 1em;

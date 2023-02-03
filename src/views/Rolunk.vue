@@ -3,11 +3,12 @@ export default {
   data() {
     return {
       fejlesztesek: [
-        { nev: "fejlesztes-trello", alt: "Trello tábla" },
-        { nev: "fejlesztes-fooldal", alt: "Főoldal tervezése" },
-        { nev: "fejlesztes-burger", alt: "Hamburger menü tervezése" },
-        { nev: "fejlesztes-jatekmenet", alt: "Játékmenet dizájn koncepció" },
-        { nev: "fejlesztes-felepites", alt: "A felépítés rajza" }
+        { path: "src/img/fejlesztes/trello.png", alt: "Trello tábla" },
+        { path: "src/img/fejlesztes/fooldal.png", alt: "Főoldal tervezése" },
+        { path: "src/img/fejlesztes/burger.png", alt: "Hamburger menü tervezése" },
+        { path: "src/img/fejlesztes/jatekmenet.png", alt: "Játékmenet dizájn koncepció" },
+        { path: "src/img/fejlesztes/felepites.png", alt: "A felépítés rajza" },
+        { path: "src/img/fejlesztes/ranglista.png", alt: "Ranglista koncepció" }
       ],
     };
   },
@@ -33,7 +34,7 @@ export default {
     <div class="rolunk-kep-tarolo">
       <div class="rolunk-oszlop">
         <img
-          src="../img/tamas.png"
+          src="../img/fejlesztes/tamas.png"
           alt="Kerényi Tamás képe"
           class="rolunk-kep"
         />
@@ -42,7 +43,7 @@ export default {
       </div>
       <div class="rolunk-oszlop">
         <img
-          src="../img/lori.png"
+          src="../img/fejlesztes/lori.png"
           alt="Czibik Lóránt Patrik képe"
           class="rolunk-kep"
         />
@@ -50,7 +51,7 @@ export default {
         <p>Frontend Fejlesztő<br />Dizájner</p>
       </div>
       <div class="rolunk-oszlop">
-        <img src="../img/gergo.png" alt="Nagy Gergő képe" class="rolunk-kep" />
+        <img src="../img/fejlesztes/gergo.png" alt="Nagy Gergő képe" class="rolunk-kep" />
         <h2>Nagy Gergő</h2>
         <p>Dizájner</p>
       </div>
@@ -58,44 +59,11 @@ export default {
     <div class="fejlesztes-galeria-tarolo">
       <h1>Galéria a fejlesztésről</h1>
       <div v-for="fejlesztes in fejlesztesek" :key="fejlesztes.nev" class="fejlesztes-galeria">
-        <a href="src/img/{{fejlesztes.nev}}.png" target="_blank">
-          <img src="src/img/fejlesztes-trello.png"
-          alt=""
+        <a :href="fejlesztes.path" target="_blank">
+          <img :src="fejlesztes.path"
+          :alt="fejlesztes.alt"
           class="fejlesztes-galeria-kep">
         </a>
-      </div>
-      <div class="fejlesztes-galeria">
-        <a href="src/img/fejlesztes-fooldal.png" target="_blank">
-          <img
-            src="src/img/fejlesztes-fooldal.png"
-            alt=""
-            class="fejlesztes-galeria-kep"
-          />
-        </a>
-      </div>
-      <div class="fejlesztes-galeria">
-        <a href="src/img/fejlesztes-burger.png" target="_blank"
-          ><img
-            src="src/img/fejlesztes-burger.png"
-            alt=""
-            class="fejlesztes-galeria-kep"
-        /></a>
-      </div>
-      <div class="fejlesztes-galeria">
-        <a href="src/img/fejlesztes-jatekmenet.png" target="_blank"
-          ><img
-            src="src/img/fejlesztes-jatekmenet.png"
-            alt=""
-            class="fejlesztes-galeria-kep"
-        /></a>
-      </div>
-      <div class="fejlesztes-galeria">
-        <a href="src/img/fejlesztes-felepites.png" target="_blank"
-          ><img
-            src="src/img/fejlesztes-felepites.png"
-            alt=""
-            class="fejlesztes-galeria-kep"
-        /></a>
       </div>
     </div>
     <div class="elerhetoseg-tarolo">

@@ -3,6 +3,9 @@ import Nav from './components/Nav.vue'
 import Footer from './components/Footer.vue'
 
 export default {
+  felhasznalo: "luke",
+  tema: "",
+  temaNev: "",
   data() {
     return {
       
