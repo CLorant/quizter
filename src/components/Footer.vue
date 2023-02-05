@@ -106,21 +106,6 @@ export default {
           </li>
         </ul>
       </div>
-      <!--
-    <div class="oszlop feliratkozas-tarolo">
-      <h3>Hírlevél</h3>
-      <form name="submit-to-google-sheet">
-        <input
-          type="email"
-          name="Email"
-          placeholder="Email"
-          class="feliratkozas-doboz"
-          required
-        />
-        <button type="submit" class="feliratkozas-gomb">Feliratkozás</button>
-      </form>
-    </div>
-  -->
     </div>
     <div class="sor copyright">
       <p class="copyright-szoveg">Copyright &copy; 2023 Quizter</p>
@@ -265,6 +250,12 @@ div.kozossegi-tarolo {
 @media screen and (max-width: 850px) {
   .sor.fo {
     grid-template-columns: 1fr;
+  }
+}
+@media screen and (max-width: 400px) {
+  div.kozossegi-tarolo{
+    padding-left: 0px;
+    padding-right: 0px;
   }
 }
 </style>

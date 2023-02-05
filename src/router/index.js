@@ -3,36 +3,12 @@ import Fooldal from '../views/Fooldal.vue'
 import Profil from '../views/Profil.vue'
 import Ranglista from '../views/Ranglista.vue'
 import QuizBeallito from '../views/QuizBeallito.vue'
-/*
-const felhasznalo = {
-  template: '...',
-  created() {
-    this.$watch(
-      () => this.$route.params,
-      (toParams, previousParams) => {
-        // react to route changes...
-      }
-    )
-  },
-}
 
-const tema = {
-  template: '...',
-  created() {
-    this.$watch(
-      () => this.$route.params,
-      (toParams, previousParams) => {
-        // react to route changes...
-      }
-    )
-  },
-}
-*/
 const routes = [
   {
     path: '/',
     name: 'fooldal',
-    component: Fooldal
+    component: Fooldal,
   },
   {
     path: '/rolunk',
@@ -52,12 +28,23 @@ const routes = [
   {
     path: '/quizbeallito/:id',
     name: 'quizbeallito',
-    component: QuizBeallito
+    component: QuizBeallito,
+    props: {
+      tema:"",
+      temaNev:""
+    }
   },
   {
     path: '/jatekmenet',
     name: 'jatekmenet',
-    component: () => import('../views/Jatekmenet.vue')
+    component: () => import('../views/Jatekmenet.vue'),
+    props: {
+      tema:"",
+      nehezseg: "",
+      ido: "",
+      kerdes_szam:"",
+      valasz_szam:""
+    }
   }
 ]
 

@@ -178,4 +178,27 @@ export default {
 .rolunk-email:hover {
   color: rgb(255, 225, 0);
 }
+
+@media screen and (max-width: 764px){
+  .rolunk-oszlop{
+    padding-bottom: 50px;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 430px){
+  h1{
+    font-size: 9vw;
+  }
+  h3{
+    font-size: 7vw;
+  }
+  .fejlesztes-galeria-kep{
+    height: auto;
+    width: 100%;
+  }
+  .rolunk-email{
+    word-break: break-all;
+  }
+}
 </style>

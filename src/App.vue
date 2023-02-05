@@ -26,6 +26,7 @@ export default {
 
 <style scoped>
 #tartalom{
+  color: white;
   min-height: calc(100vh - 300px);
 }
 </style>

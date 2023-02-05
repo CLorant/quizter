@@ -1,5 +1,11 @@
 <script>
+
 export default {
+  data() {
+    return {
+      
+    }
+  },
   props: {
     tema: String,
     temaNev: String
@@ -14,7 +20,7 @@ export default {
 <template>
 <div id="tartalom">
   <div id="temaDiv">
-    <img src="../img/tema/autok.png" id="temaKep">
+    <img id="temaKep">
     <div id="temaKepSzoveg"></div>
   </div>
   <p id="temaMagyarazat"></p>
