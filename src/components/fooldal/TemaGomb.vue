@@ -6,13 +6,9 @@
     },
     methods: {
       indit() {
-      this.$emit('tema', this.id);
-      this.$emit('temaNev', this.text)
-      //window.sessionStorage.setItem("temakor", tema);
-      
-      //window.sessionStorage.setItem("temaKepUtvonal", "../img/"+tema+".png");
-      //window.sessionStorage.setItem("temaNev", document.getElementById(tema).innerText);
-      //document.getElementById("quizbeallitoForm").submit();
+        sessionStorage.setItem("tema", this.tema);
+        sessionStorage.setItem("temaKep", "../../img/"+this.tema+".png");
+        sessionStorage.setItem("temaNev", document.getElementById(this.tema).innerText);
       }
     }
   }
@@ -21,7 +17,7 @@
 
 <template>
   <RouterLink :to="{name: 'quizbeallito', params: {id: tema}}" >
-    <button class='temaGomb' :id="tema">{{temaNev}}</button>
+    <button class='temaGomb' :id="tema" @click="indit(tema)">{{temaNev}}</button>
   </RouterLink>
 </template>
 

@@ -33,7 +33,7 @@ export default {
     <h2>Teszteld a tudásod</h2>
   </div>
   <div id="temaValasztoGombok">
-    <TemaGomb v-for="t in temak" :tema="t.tema" :temaNev="t.temaNev"/>
+    <TemaGomb v-for="t in temak" :key="t.tema" :tema="t.tema" :temaNev="t.temaNev"/>
   </div>
 </div>
 </template>

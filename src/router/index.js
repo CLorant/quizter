@@ -8,7 +8,7 @@ const routes = [
   {
     path: '/',
     name: 'fooldal',
-    component: Fooldal,
+    component: Fooldal
   },
   {
     path: '/rolunk',
@@ -24,6 +24,10 @@ const routes = [
     path: '/ranglista',
     name: 'ranglista',
     component: Ranglista
+  },
+  {
+    path: '/quizbeallito/',
+    component: Fooldal
   },
   {
     path: '/quizbeallito/:id',

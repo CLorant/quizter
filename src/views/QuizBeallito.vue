@@ -1,29 +1,44 @@
 <script>
-
 export default {
   data() {
     return {
       
     }
   },
-  props: {
-    tema: String,
-    temaNev: String
+  created() {
+    tema = sessionStorage.getItem("tema"),
+    temaNev = sessionStorage.getItem('temaNev'),
+    temaKep = sessionStorage.getItem('temaKep')
   },
   methods: {
-
+    temaKepSzoveg(temakor){
+      switch(temakor){
+        case "autok": return "Kérdések autókról, gyártókról, a legelső autótól a legutóbbiig."
+        case "biologia": return "Kérdések emberi és állati anatómiáról, biológiai egyenletekről, elméletekről, fontos személyekről."
+        case "fizika": return "Kérdések fizikai egyenletekről, elméletekről, fontos személyekről."
+        case "foldrajz": return " Kérdések országokról, városokról és azok politikájáról."
+        case "irodalom": return "Kérdések irodalmi művekről, fontos személyekről."
+        case "kemia": return "Kérdések kémiai egyenletekről, elméletekről, fontos személyekről."
+        case "sport": return "Kérdések különböző sportágakról, azok szabályairól, eseményekről, fontos személyekről."
+        case "szorakoztatas": return "Kérdések filmekről, sorozatokról, hírességekről."
+        case "technologia": return "Kérdések a modern technológiáról, nagyrészt informatikáról."
+        case "tortenelem": return "Kérdések történelmi eseményekről, fontos személyekről."
+        case "vegyes": return "Kérdések az összes témából, véletlenszerűen."
+        case "zene": return "Kérdések modern pop zenétől a klasszikus zenéig. Ebbe tartoznak a zenészek és együttesek is."
+        default: break;
+      }
+    }
   }
-  
 }
 </script>
 
 <template>
 <div id="tartalom">
   <div id="temaDiv">
-    <img id="temaKep">
-    <div id="temaKepSzoveg"></div>
+    <img :src="temaKepUtvonal" id="temaKep">
+    <div id="temaKepSzoveg">{{ temakor }}</div>
   </div>
-  <p id="temaMagyarazat"></p>
+  <p id="temaMagyarazat">{{temaKepSzoveg(temakor)}}</p>
   <div id="beallitoDiv">
     <div class="beallitas">
       <h1 class="beallitasNev">Kérdések nehézsége</h1>
