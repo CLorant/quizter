@@ -1,5 +1,5 @@
 <script>
-import TemaGomb from '../components/fooldal/TemaGomb.vue';
+import TemaGomb from '../components/fooldal/TemaGomb.vue'
 
 export default {
   components: {
@@ -29,7 +29,7 @@ export default {
 <template>
 <div id="tartalom">
   <div id="cim">
-    <img id="cim-logo" src="../img/ikon/quizterlogo.png">
+    <img id="cim-logo">
     <h2>Teszteld a tudásod</h2>
   </div>
   <div id="temaValasztoGombok">
@@ -50,6 +50,7 @@ export default {
   width: 90%;
   max-width: 600px;
   height: auto;
+  content: url("../img/ikon/quizterlogo.png");
 }
 #temaValasztoGombok{
   text-align: center;

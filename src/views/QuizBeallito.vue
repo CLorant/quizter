@@ -5,11 +5,6 @@ export default {
       
     }
   },
-  created() {
-    tema = sessionStorage.getItem("tema"),
-    temaNev = sessionStorage.getItem('temaNev'),
-    temaKep = sessionStorage.getItem('temaKep')
-  },
   methods: {
     temaKepSzoveg(temakor){
       switch(temakor){

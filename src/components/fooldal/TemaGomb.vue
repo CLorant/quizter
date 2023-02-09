@@ -1,18 +1,24 @@
 <script>
+  import { mapState } from 'pinia'
+  import { useFooldalStore } from '../../stores/stores.js'
+
   export default {
     props: {
       tema: String,
       temaNev: String
     },
+    
+    computed: {
+      ...mapState(useFooldalStore, ['tema', 'temaNev'])
+    },
     methods: {
-      indit() {
-        sessionStorage.setItem("tema", this.tema);
-        sessionStorage.setItem("temaKep", "../../img/"+this.tema+".png");
-        sessionStorage.setItem("temaNev", document.getElementById(this.tema).innerText);
+      indit(t, tN) {
+        this.tema = t;
+        this.temaNev = tN;
       }
-    }
+    },
+    
   }
-  
 </script>
 
 <template>

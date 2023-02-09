@@ -16,10 +16,18 @@ const routes = [
     component: () => import('../views/Rolunk.vue')
   },
   {
-    path: '/profil/:nev',
+    //path: '/profil/:id',
+    path: '/profil',
     name: 'profil',
     component: Profil
   },
+  /*
+  {
+    path: /profil,
+    name: bejelentkezettProfil,
+    component: Profil
+  },
+  */
   {
     path: '/ranglista',
     name: 'ranglista',
@@ -32,23 +40,12 @@ const routes = [
   {
     path: '/quizbeallito/:id',
     name: 'quizbeallito',
-    component: QuizBeallito,
-    props: {
-      tema:"",
-      temaNev:""
-    }
+    component: QuizBeallito
   },
   {
     path: '/jatekmenet',
     name: 'jatekmenet',
-    component: () => import('../views/Jatekmenet.vue'),
-    props: {
-      tema:"",
-      nehezseg: "",
-      ido: "",
-      kerdes_szam:"",
-      valasz_szam:""
-    }
+    component: () => import('../views/Jatekmenet.vue')
   }
 ]
 
