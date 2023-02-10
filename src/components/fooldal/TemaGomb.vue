@@ -1,29 +1,34 @@
 <script>
-  import { mapState } from 'pinia'
   import { useFooldalStore } from '../../stores/stores.js'
 
   export default {
     props: {
-      tema: String,
-      temaNev: String
+      id: String,
+      szoveg: String,
+      magyarazat: String
     },
     
-    computed: {
-      ...mapState(useFooldalStore, ['tema', 'temaNev'])
-    },
     methods: {
-      indit(t, tN) {
-        this.tema = t;
-        this.temaNev = tN;
-      }
-    },
-    
+      kepAllito(id) {
+        return "background-image: url(../src/img/tema/"+id+".png)"
+      },
+
+      indit(id, szoveg, magyarazat) {
+        const store = useFooldalStore();
+        store.$patch((state) => {
+          state.tema = id,
+          state.temaNev = szoveg,
+          state.temaMagyarazat = magyarazat
+        })
+        localStorage.setItem('store', JSON.stringify(store))
+      },
+    }
   }
 </script>
 
 <template>
-  <RouterLink :to="{name: 'quizbeallito', params: {id: tema}}" >
-    <button class='temaGomb' :id="tema" @click="indit(tema)">{{temaNev}}</button>
+  <RouterLink to="/quizbeallito" >
+    <button class='temaGomb' :id="id" @click="indit(id, szoveg, magyarazat)" :style="kepAllito(id)">{{ szoveg }}</button>
   </RouterLink>
 </template>
 
@@ -40,45 +45,6 @@
     margin: 25px;
     background-size:cover;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
-  .temaGomb:hover{
-    opacity: 0.8;
-  }
-  #autok{
-    background-image: url('../../img/tema/autok.png');
-  }
-  #biologia{
-    background-image: url('../../img/tema/biologia.png');
-  }
-  #fizika{
-    background-image: url('../../img/tema/fizika.png');
-  }
-  #foldrajz{
-    background-image: url('../../img/tema/foldrajz.png');
-  }
-  #irodalom{
-    background-image: url('../../img/tema/irodalom.png');
-  }
-  #kemia{
-    background-image: url('../../img/tema/kemia.png');
-  }
-  #sport{
-    background-image: url('../../img/tema/sport.png');
-  }
-  #szorakoztatas{
-    background-image: url('../../img/tema/szorakoztatas.png');
-  }
-  #technologia{
-    background-image: url('../../img/tema/technologia.png');
-  }
-  #tortenelem{
-    background-image: url('../../img/tema/tortenelem.png');
-  }
-  #zene{
-    background-image: url('../../img/tema/zene.png');
-  }
-  #vegyes{
-    background-image: url('../../img/tema/vegyes.png');
   }
   @media screen and (max-width: 820px){
     .temaGomb{

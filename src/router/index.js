@@ -34,14 +34,16 @@ const routes = [
     component: Ranglista
   },
   {
-    path: '/quizbeallito/',
-    component: Fooldal
+    path: '/quizbeallito',
+    component: QuizBeallito
   },
+  /*
   {
     path: '/quizbeallito/:id',
     name: 'quizbeallito',
     component: QuizBeallito
   },
+  */
   {
     path: '/jatekmenet',
     name: 'jatekmenet',
@@ -51,7 +53,10 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior() {
+    scrollTo(0, 0);
+  },
 })
 
 export default router

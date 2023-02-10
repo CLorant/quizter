@@ -8,18 +8,18 @@ export default {
   data() {
     return {
       temak: [
-        { tema: 'autok', temaNev: 'Autók' },
-        { tema: 'biologia', temaNev: 'Biológia' },
-        { tema: 'fizika', temaNev: 'Fizika' },
-        { tema: 'foldrajz', temaNev: 'Földrajz' },
-        { tema: 'irodalom', temaNev: 'Irodalom' },
-        { tema: 'kemia', temaNev: 'Kémia' },
-        { tema: 'sport', temaNev: 'Sport' },
-        { tema: 'szorakoztatas', temaNev: 'Szórakoztatás' },
-        { tema: 'technologia', temaNev: 'Technológia' },
-        { tema: 'tortenelem', temaNev: 'Történelem' },
-        { tema: 'zene', temaNev: 'Zene' },
-        { tema: 'vegyes', temaNev: 'Vegyes' }
+        { id: 'autok', szoveg: 'Autók', magyarazat: 'Kérdések autókról, gyártókról, a legelső autótól a legutóbbiig.' },
+        { id: 'biologia', szoveg: 'Biológia', magyarazat: 'Kérdések emberi és állati anatómiáról, biológiai egyenletekről, elméletekről, fontos személyekről.' },
+        { id: 'fizika', szoveg: 'Fizika', magyarazat: 'Kérdések fizikai egyenletekről, elméletekről, fontos személyekről.' },
+        { id: 'foldrajz', szoveg: 'Földrajz', magyarazat: 'Kérdések országokról, városokról és azok politikájáról.' },
+        { id: 'irodalom', szoveg: 'Irodalom', magyarazat: 'Kérdések irodalmi művekről, fontos személyekről.' },
+        { id: 'kemia', szoveg: 'Kémia', magyarazat: 'Kérdések kémiai egyenletekről, elméletekről, fontos személyekről.' },
+        { id: 'sport', szoveg: 'Sport', magyarazat: 'Kérdések különböző sportágakról, azok szabályairól, eseményekről, fontos személyekről.' },
+        { id: 'szorakoztatas', szoveg: 'Szórakoztatás', magyarazat: 'Kérdések filmekről, sorozatokról, hírességekről.' },
+        { id: 'technologia', szoveg: 'Technológia', magyarazat: 'Kérdések a modern technológiáról, nagyrészt informatikáról.' },
+        { id: 'tortenelem', szoveg: 'Történelem', magyarazat: 'Kérdések történelmi eseményekről, fontos személyekről.' },
+        { id: 'zene', szoveg: 'Zene', magyarazat: 'Kérdések modern pop zenétől a klasszikus zenéig. Ebbe tartoznak a zenészek és együttesek is.' },
+        { id: 'vegyes', szoveg: 'Vegyes', magyarazat: 'Kérdések az összes témából, véletlenszerűen.' }
       ]
     }
   }
@@ -33,7 +33,7 @@ export default {
     <h2>Teszteld a tudásod</h2>
   </div>
   <div id="temaValasztoGombok">
-    <TemaGomb v-for="t in temak" :key="t.tema" :tema="t.tema" :temaNev="t.temaNev"/>
+    <TemaGomb v-for="t in temak" :key="t.id" :id="t.id" :szoveg="t.szoveg" :magyarazat="t.magyarazat"/>
   </div>
 </div>
 </template>

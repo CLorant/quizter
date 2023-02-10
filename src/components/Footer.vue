@@ -1,32 +1,35 @@
 <script>
+import { useFooldalStore } from '../stores/stores.js'
+
 export default {
   data() {
     return {
-      oldalak: [
-        { route: "/", text: "Főoldal" },
-        { route: "/rolunk", text: "Rólunk" },
-        { route: "/profil/:felhasznalo", text: "Profil" },
-        { route: "/ranglista", text: "Ranglista" },
-        { route: "/aszf", text: "ÁSZF" },
-        { route: "/suti-tajekoztato", text: "Süti tájékoztató" },
-      ],
       temak: [
-        { id: "autok", text: "Autók" },
-        { id: "biologia", text: "Biológia" },
-        { id: "fizika", text: "Fizika" },
-        { id: "foldrajz", text: "Földrajz" },
-        { id: "irodalom", text: "Irodalom" },
-        { id: "kemia", text: "Kémia" },
-        { id: "sport", text: "Sport" },
-        { id: "szorakoztatas", text: "Szórakoztatás" },
-        { id: "technologia", text: "Technológia" },
-        { id: "tortenelem", text: "Történelem" },
-        { id: "zene", text: "Zene" },
-        { id: "vegyes", text: "Vegyes" },
+        { id: 'autok', szoveg: 'Autók', magyarazat: 'Kérdések autókról, gyártókról, a legelső autótól a legutóbbiig.' },
+        { id: 'biologia', szoveg: 'Biológia', magyarazat: 'Kérdések emberi és állati anatómiáról, biológiai egyenletekről, elméletekről, fontos személyekről.' },
+        { id: 'fizika', szoveg: 'Fizika', magyarazat: 'Kérdések fizikai egyenletekről, elméletekről, fontos személyekről.' },
+        { id: 'foldrajz', szoveg: 'Földrajz', magyarazat: 'Kérdések országokról, városokról és azok politikájáról.' },
+        { id: 'irodalom', szoveg: 'Irodalom', magyarazat: 'Kérdések irodalmi művekről, fontos személyekről.' },
+        { id: 'kemia', szoveg: 'Kémia', magyarazat: 'Kérdések kémiai egyenletekről, elméletekről, fontos személyekről.' },
+        { id: 'sport', szoveg: 'Sport', magyarazat: 'Kérdések különböző sportágakról, azok szabályairól, eseményekről, fontos személyekről.' },
+        { id: 'szorakoztatas', szoveg: 'Szórakoztatás', magyarazat: 'Kérdések filmekről, sorozatokról, hírességekről.' },
+        { id: 'technologia', szoveg: 'Technológia', magyarazat: 'Kérdések a modern technológiáról, nagyrészt informatikáról.' },
+        { id: 'tortenelem', szoveg: 'Történelem', magyarazat: 'Kérdések történelmi eseményekről, fontos személyekről.' },
+        { id: 'zene', szoveg: 'Zene', magyarazat: 'Kérdések az összes témából, véletlenszerűen.' },
+        { id: 'vegyes', szoveg: 'Vegyes', magyarazat: 'Kérdések modern pop zenétől a klasszikus zenéig. Ebbe tartoznak a zenészek és együttesek is.' }
       ],
     };
   },
-  methods: {},
+  methods: {
+    indit(id, szoveg, magyarazat) {
+        const store = useFooldalStore();
+        store.$patch((state) => {
+          state.tema = id,
+          state.temaNev = szoveg,
+          state.temaMagyarazat = magyarazat
+        })
+    },
+  },
 };
 </script>
 
@@ -87,9 +90,9 @@ export default {
       <div class="oszlop linkek-tarolo">
         <h3>Témák</h3>
         <ul>
-          <li v-for="tema in temak" :key="tema.id">
-            <RouterLink :to="{ name: 'quizbeallito', params: { id: tema.id } }">
-              {{ tema.text }}
+          <li v-for="t in temak" :key="t.id">
+            <RouterLink @click="indit(t.id, t.szoveg, t.magyarazat)" to="/quizbeallito">
+              {{ t.szoveg }}
             </RouterLink>
           </li>
         </ul>

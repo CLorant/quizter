@@ -52,10 +52,12 @@ export const useRekordStore = defineStore('rekord', {
   }
 });
 
+//localstorageból állítsd vissza
 export const useFooldalStore = defineStore('fooldal', {
   state: () => ({
-    tema: String,
-    temaNev: String
+    tema: 'autok',
+    temaNev: 'Autók',
+    temaMagyarazat: 'Kérdések autókról, gyártókról, a legelső autótól a legutóbbiig.'
   }),
   getters: {
 

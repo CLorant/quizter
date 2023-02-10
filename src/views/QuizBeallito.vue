@@ -1,39 +1,34 @@
 <script>
+import { mapState } from 'pinia'
+import { useFooldalStore } from '../stores/stores.js'
+
+
+
 export default {
   data() {
     return {
       
     }
   },
+  computed: {
+    ...mapState(useFooldalStore, ['tema', 'temaNev', 'temaMagyarazat']),
+  },
   methods: {
-    temaKepSzoveg(temakor){
-      switch(temakor){
-        case "autok": return "Kérdések autókról, gyártókról, a legelső autótól a legutóbbiig."
-        case "biologia": return "Kérdések emberi és állati anatómiáról, biológiai egyenletekről, elméletekről, fontos személyekről."
-        case "fizika": return "Kérdések fizikai egyenletekről, elméletekről, fontos személyekről."
-        case "foldrajz": return " Kérdések országokról, városokról és azok politikájáról."
-        case "irodalom": return "Kérdések irodalmi művekről, fontos személyekről."
-        case "kemia": return "Kérdések kémiai egyenletekről, elméletekről, fontos személyekről."
-        case "sport": return "Kérdések különböző sportágakról, azok szabályairól, eseményekről, fontos személyekről."
-        case "szorakoztatas": return "Kérdések filmekről, sorozatokról, hírességekről."
-        case "technologia": return "Kérdések a modern technológiáról, nagyrészt informatikáról."
-        case "tortenelem": return "Kérdések történelmi eseményekről, fontos személyekről."
-        case "vegyes": return "Kérdések az összes témából, véletlenszerűen."
-        case "zene": return "Kérdések modern pop zenétől a klasszikus zenéig. Ebbe tartoznak a zenészek és együttesek is."
-        default: break;
-      }
+    kepAllito(id) {
+      return "../src/img/tema/"+id+".png"
     }
-  }
+  },
 }
 </script>
 
 <template>
 <div id="tartalom">
   <div id="temaDiv">
-    <img :src="temaKepUtvonal" id="temaKep">
-    <div id="temaKepSzoveg">{{ temakor }}</div>
+    <!-- require('@/assets/' + currentLocale + '/download.jpeg') -->
+    <img :src="kepAllito(tema)" id="temaKep">
+    <div id="temaKepSzoveg">{{ temaNev }}</div>
   </div>
-  <p id="temaMagyarazat">{{temaKepSzoveg(temakor)}}</p>
+  <p id="temaMagyarazat">{{ temaMagyarazat }}</p>
   <div id="beallitoDiv">
     <div class="beallitas">
       <h1 class="beallitasNev">Kérdések nehézsége</h1>
