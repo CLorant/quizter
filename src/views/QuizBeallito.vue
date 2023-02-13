@@ -1,21 +1,138 @@
 <script>
-import { mapState } from 'pinia'
-import { useFooldalStore } from '../stores/stores.js'
-
-
+import { mapWritableState } from 'pinia'
+import { useQuizBeallitoStore } from '../stores/stores.js'
 
 export default {
   data() {
     return {
-      
+      tema: localStorage.getItem("tema"),
+      temaNev: localStorage.getItem("temaNev"),
+      temaMagyarazat: localStorage.getItem("temaMagyarazat"),
+      beallitas: [
+        {}
+      ]
     }
   },
   computed: {
-    ...mapState(useFooldalStore, ['tema', 'temaNev', 'temaMagyarazat']),
+    ...mapWritableState(useQuizBeallitoStore, ['nehezseg', 'ido', 'kerdesSzam', 'valaszSzam']),
+  },
+  state() {
+
   },
   methods: {
     kepAllito(id) {
       return "../src/img/tema/"+id+".png"
+    },
+
+    indit() {
+      //apinak: tema, nehezseg, kerdesSzam, valaszSzam
+    },
+
+    nehezsegGomb(p){
+      szinezo(this.$refs.de, this.$refs.dm, this.$refs.dh, "konnyu", "kozepes", "nehez", this.nehezseg)
+    },
+
+    idoGomb(p){
+      let e = this.$refs.te
+      let m = this.$refs.tm
+      let h = this.$refs.th
+      e.style=""
+      m.style=""
+      h.style=""
+
+      if(p==="30"){
+        e.style.backgroundColor="green"
+      }
+      else if(p==="20"){
+        m.style.backgroundColor="rgb(210, 180, 0)"
+      }
+      else if(p==="10"){
+        h.style.backgroundColor="firebrick"
+      }
+      else{
+        alert("Hibás paraméter!")
+        return
+      }
+
+      useQuizBeallitoStore().$patch(
+        this.kerdesSzam=p
+      )
+    },
+
+    kerdesGomb(p){
+      let e = this.$refs.qe
+      let m = this.$refs.qm
+      let h = this.$refs.qh
+      e.style=""
+      m.style=""
+      h.style=""
+
+      if(p==="10"){
+        e.style.backgroundColor="green"
+      }
+      else if(p==="15"){
+        m.style.backgroundColor="rgb(210, 180, 0)"
+      }
+      else if(p==="20"){
+        h.style.backgroundColor="firebrick"
+      }
+      else{
+        alert("Hibás paraméter!")
+        return
+      }
+      useQuizBeallitoStore().$patch(
+        this.kerdesSzam=p
+      )
+    },
+
+    valaszGomb(p){
+      let e = this.$refs.ae
+      let m = this.$refs.am
+      let h = this.$refs.ah
+      e.style=""
+      m.style=""
+      h.style=""
+
+      if(p==="2"){
+        e.style.backgroundColor="green"
+      }
+      else if(p==="4"){
+        m.style.backgroundColor="rgb(210, 180, 0)"
+      }
+      else if(p==="6"){
+        h.style.backgroundColor="firebrick"
+      }
+      else{
+        alert("Hibás paraméter!")
+        return
+      }
+      useQuizBeallitoStore().$patch(
+        this.valaszSzam=p
+      )
+    },
+    
+    szinezo(r1, r2, r3, p1, p2, p3, state){
+      r1.style=""
+      r2.style=""
+      r3.style=""
+
+      if(p===p1){
+        r1.style.backgroundColor="green"
+      }
+      else if(p===p2){
+        r2.style.backgroundColor="rgb(210, 180, 0)"
+      }
+      else if(p===p3){
+        r3.style.backgroundColor="firebrick"
+      }
+      else{
+        alert("Hibás paraméter!")
+        return
+      }
+
+      useQuizBeallitoStore().$patch(
+        this.state=p
+      )
     }
   },
 }
@@ -24,7 +141,6 @@ export default {
 <template>
 <div id="tartalom">
   <div id="temaDiv">
-    <!-- require('@/assets/' + currentLocale + '/download.jpeg') -->
     <img :src="kepAllito(tema)" id="temaKep">
     <div id="temaKepSzoveg">{{ temaNev }}</div>
   </div>
@@ -32,32 +148,32 @@ export default {
   <div id="beallitoDiv">
     <div class="beallitas">
       <h1 class="beallitasNev">Kérdések nehézsége</h1>
-      <button class="beallitasGomb" id="nehezseg:konnyu" value="nehezseg:konnyu">Könnyű</button>
-      <button class="beallitasGomb" id="nehezseg:kozepes" value="nehezseg:kozepes">Közepes</button>
-      <button class="beallitasGomb" id="nehezseg:nehez" value="nehezseg:nehez">Nehéz</button>
+      <button class="beallitasGomb" ref="de" @click="nehezsegGomb('konnyu')">Könnyű</button>
+      <button class="beallitasGomb" ref="dm" @click="nehezsegGomb('kozepes')">Közepes</button>
+      <button class="beallitasGomb" ref="dh" @click="nehezsegGomb('nehez')">Nehéz</button>
     </div>
     <div class="beallitas">
       <h1 class="beallitasNev">Idő kérdésenként</h1>
-      <button class="beallitasGomb" id="ido:konnyu" value="ido:30">30 mp</button>
-      <button class="beallitasGomb" id="ido:kozepes" value="ido:20">20 mp</button>
-      <button class="beallitasGomb" id="ido:nehez" value="ido:10">10 mp</button>
+      <button class="beallitasGomb" ref="te" @click="idoGomb('30')">30 mp</button>
+      <button class="beallitasGomb" ref="tm" @click="idoGomb('20')">20 mp</button>
+      <button class="beallitasGomb" ref="th" @click="idoGomb('10')">10 mp</button>
     </div>
     <div class="beallitas">
       <h1 class="beallitasNev">Kérdések száma</h1>
-      <button class="beallitasGomb" id="kerdes:konnyu" value="kerdes:10">10</button>
-      <button class="beallitasGomb" id="kerdes:kozepes" value="kerdes:15">15</button>
-      <button class="beallitasGomb" id="kerdes:nehez" value="kerdes:20">20</button>
+      <button class="beallitasGomb" ref="qe" @click="kerdesGomb('10')">10</button>
+      <button class="beallitasGomb" ref="qm" @click="kerdesGomb('15')">15</button>
+      <button class="beallitasGomb" ref="qh" @click="kerdesGomb('20')">20</button>
     </div>
     <div class="beallitas">
       <h1 class="beallitasNev">Válaszok száma</h1>
-      <button class="beallitasGomb" id="valasz:konnyu" value="valasz:2">2</button>
-      <button class="beallitasGomb" id="valasz:kozepes" value="valasz:4">4</button>
-      <button class="beallitasGomb" id="valasz:nehez" value="valasz:6">6</button>
+      <button class="beallitasGomb" ref="ae" @click="valaszGomb('2')">2</button>
+      <button class="beallitasGomb" ref="am" @click="valaszGomb('4')">4</button>
+      <button class="beallitasGomb" ref="ah" @click="valaszGomb('6')">6</button>
     </div>
   </div>
   <div id="inditoGombDiv">
     <RouterLink to="/jatekmenet">
-      <button type="button" id="inditoGomb" @click="indit()">Indítás</button>
+      <button id="inditoGomb" @click="indit()">Indítás</button>
     </RouterLink>
   </div>
 </div>
@@ -79,7 +195,6 @@ export default {
   margin-left: auto;
   margin-right: auto;
   border-radius: 2vw;
-  max-width: 800px;
   width: 60%;
   height: auto;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -96,10 +211,10 @@ export default {
 
 #temaMagyarazat{
   padding-top: 15px;
-  font-size: 16pt;
   text-align: center;
-  padding-left: 20%;
-  padding-right: 20%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #beallitoDiv{
@@ -128,6 +243,15 @@ export default {
   }
 }
 
+@media screen and (min-width: 850px){
+  #temaKep{
+    width: 800px;
+  }
+  #temaKepSzoveg{
+    font-size: 74pt;
+  }
+}
+
 .beallitasNev{
   font-size: 28pt;
   padding-bottom: 50px;
@@ -143,6 +267,18 @@ export default {
   border-radius: 15px;
   margin: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.konnyu{
+  background-color: green;
+}
+
+.kozepes{
+  background-color: rgb(210, 180, 0);
+}
+
+.nehez{
+  background-color: firebrick;
 }
 
 #inditoGombDiv{

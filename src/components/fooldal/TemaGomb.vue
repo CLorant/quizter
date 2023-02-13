@@ -1,6 +1,4 @@
 <script>
-  import { useFooldalStore } from '../../stores/stores.js'
-
   export default {
     props: {
       id: String,
@@ -12,15 +10,10 @@
       kepAllito(id) {
         return "background-image: url(../src/img/tema/"+id+".png)"
       },
-
       indit(id, szoveg, magyarazat) {
-        const store = useFooldalStore();
-        store.$patch((state) => {
-          state.tema = id,
-          state.temaNev = szoveg,
-          state.temaMagyarazat = magyarazat
-        })
-        localStorage.setItem('store', JSON.stringify(store))
+        localStorage.setItem('tema', id)
+        localStorage.setItem('temaNev', szoveg)
+        localStorage.setItem('temaMagyarazat', magyarazat)
       },
     }
   }

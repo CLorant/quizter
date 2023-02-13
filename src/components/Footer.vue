@@ -1,6 +1,4 @@
 <script>
-import { useFooldalStore } from '../stores/stores.js'
-
 export default {
   data() {
     return {
@@ -15,20 +13,18 @@ export default {
         { id: 'szorakoztatas', szoveg: 'Szórakoztatás', magyarazat: 'Kérdések filmekről, sorozatokról, hírességekről.' },
         { id: 'technologia', szoveg: 'Technológia', magyarazat: 'Kérdések a modern technológiáról, nagyrészt informatikáról.' },
         { id: 'tortenelem', szoveg: 'Történelem', magyarazat: 'Kérdések történelmi eseményekről, fontos személyekről.' },
-        { id: 'zene', szoveg: 'Zene', magyarazat: 'Kérdések az összes témából, véletlenszerűen.' },
-        { id: 'vegyes', szoveg: 'Vegyes', magyarazat: 'Kérdések modern pop zenétől a klasszikus zenéig. Ebbe tartoznak a zenészek és együttesek is.' }
+        { id: 'zene', szoveg: 'Zene', magyarazat: 'Kérdések modern pop zenétől a klasszikus zenéig. Ebbe tartoznak a zenészek és együttesek is.' },
+        { id: 'vegyes', szoveg: 'Vegyes', magyarazat: 'Kérdések az összes témából, véletlenszerűen.' }
       ],
     };
   },
   methods: {
     indit(id, szoveg, magyarazat) {
-        const store = useFooldalStore();
-        store.$patch((state) => {
-          state.tema = id,
-          state.temaNev = szoveg,
-          state.temaMagyarazat = magyarazat
-        })
-    },
+      localStorage.setItem('tema', id)
+      localStorage.setItem('temaNev', szoveg)
+      localStorage.setItem('temaMagyarazat', magyarazat)
+      window.location.reload();
+    }
   },
 };
 </script>
