@@ -7,17 +7,11 @@ export default {
     return {
       tema: localStorage.getItem("tema"),
       temaNev: localStorage.getItem("temaNev"),
-      temaMagyarazat: localStorage.getItem("temaMagyarazat"),
-      beallitas: [
-        {}
-      ]
+      temaMagyarazat: localStorage.getItem("temaMagyarazat")
     }
   },
   computed: {
     ...mapWritableState(useQuizBeallitoStore, ['nehezseg', 'ido', 'kerdesSzam', 'valaszSzam']),
-  },
-  state() {
-
   },
   methods: {
     kepAllito(id) {
@@ -28,112 +22,52 @@ export default {
       //apinak: tema, nehezseg, kerdesSzam, valaszSzam
     },
 
-    nehezsegGomb(p){
-      szinezo(this.$refs.de, this.$refs.dm, this.$refs.dh, "konnyu", "kozepes", "nehez", this.nehezseg)
-    },
-
-    idoGomb(p){
-      let e = this.$refs.te
-      let m = this.$refs.tm
-      let h = this.$refs.th
-      e.style=""
-      m.style=""
-      h.style=""
-
-      if(p==="30"){
-        e.style.backgroundColor="green"
-      }
-      else if(p==="20"){
-        m.style.backgroundColor="rgb(210, 180, 0)"
-      }
-      else if(p==="10"){
-        h.style.backgroundColor="firebrick"
-      }
-      else{
-        alert("Hibás paraméter!")
-        return
-      }
-
+    nehezsegGomb(param){
+      this.gombSzinezo(this.$refs.de, this.$refs.dm, this.$refs.dh, param, "konnyu", "kozepes", "nehez")
       useQuizBeallitoStore().$patch(
-        this.kerdesSzam=p
+        this.nehezseg=param
       )
     },
 
-    kerdesGomb(p){
-      let e = this.$refs.qe
-      let m = this.$refs.qm
-      let h = this.$refs.qh
-      e.style=""
-      m.style=""
-      h.style=""
-
-      if(p==="10"){
-        e.style.backgroundColor="green"
-      }
-      else if(p==="15"){
-        m.style.backgroundColor="rgb(210, 180, 0)"
-      }
-      else if(p==="20"){
-        h.style.backgroundColor="firebrick"
-      }
-      else{
-        alert("Hibás paraméter!")
-        return
-      }
+    idoGomb(param){
+      this.gombSzinezo(this.$refs.te, this.$refs.tm, this.$refs.th, param, "30", "20", "10")
       useQuizBeallitoStore().$patch(
-        this.kerdesSzam=p
+        this.ido=param
       )
     },
 
-    valaszGomb(p){
-      let e = this.$refs.ae
-      let m = this.$refs.am
-      let h = this.$refs.ah
-      e.style=""
-      m.style=""
-      h.style=""
-
-      if(p==="2"){
-        e.style.backgroundColor="green"
-      }
-      else if(p==="4"){
-        m.style.backgroundColor="rgb(210, 180, 0)"
-      }
-      else if(p==="6"){
-        h.style.backgroundColor="firebrick"
-      }
-      else{
-        alert("Hibás paraméter!")
-        return
-      }
+    kerdesGomb(param){
+      this.gombSzinezo(this.$refs.qe, this.$refs.qm, this.$refs.qh, param, "10", "15", "20")
       useQuizBeallitoStore().$patch(
-        this.valaszSzam=p
+        this.kerdesSzam=param
       )
     },
-    
-    szinezo(r1, r2, r3, p1, p2, p3, state){
-      r1.style=""
-      r2.style=""
-      r3.style=""
 
-      if(p===p1){
-        r1.style.backgroundColor="green"
+    valaszGomb(param){
+      this.gombSzinezo(this.$refs.ae, this.$refs.am, this.$refs.ah, param, "2", "4", "6")
+      useQuizBeallitoStore().$patch(
+        this.valaszSzam=param
+      )
+    },
+
+    gombSzinezo(ref1, ref2, ref3, param, konnyu, kozepes, nehez){
+      ref1.style=""
+      ref2.style=""
+      ref3.style=""
+
+      if(param===konnyu){
+        ref1.style.backgroundColor="green"
       }
-      else if(p===p2){
-        r2.style.backgroundColor="rgb(210, 180, 0)"
+      else if(param===kozepes){
+        ref2.style.backgroundColor="rgb(210, 180, 0)"
       }
-      else if(p===p3){
-        r3.style.backgroundColor="firebrick"
+      else if(param===nehez){
+        ref3.style.backgroundColor="firebrick"
       }
       else{
-        alert("Hibás paraméter!")
-        return
+        alert("Hibás paraméter! Alapérték lesz használva.")
       }
-
-      useQuizBeallitoStore().$patch(
-        this.state=p
-      )
-    }
+    },
   },
 }
 </script>

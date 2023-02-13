@@ -52,7 +52,6 @@ export const useRekordStore = defineStore('rekord', {
   }
 });
 
-//localstorageból állítsd vissza
 export const useFooldalStore = defineStore('fooldal', {
   state: () => ({
     tema: 'autok',
@@ -69,10 +68,10 @@ export const useFooldalStore = defineStore('fooldal', {
 
 export const useQuizBeallitoStore = defineStore('quizBeallito', {
   state: () => ({
-    nehezseg: String,
-    ido: String,
-    kerdesekSzama: String,
-    valaszokSzama: String
+    nehezseg: "konnyu",
+    ido: "30",
+    kerdesSzam: "10",
+    valaszSzam: "2"
   }),
   getters: {
 

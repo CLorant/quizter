@@ -11,7 +11,7 @@ export default {
 <template>
 
 <nav class="navbar navbar-expand-lg fixed-top navbar-dark">
-  <button id="navbar-icon" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#elrejt" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+  <button id="navbar-toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#elrejt" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
     <span></span>
     <span></span>
     <span></span>
@@ -27,10 +27,13 @@ export default {
     </div>
   </div>
   <div class="collapse navbar-collapse justify-content-end"  id="elrejt">
-    <form class="form-inline my-2 my-lg-0" id="kereses-form">
+    <div class="col-auto">
       <input class="form-control mr-sm-2" id="kereses-szoveg" type="search" placeholder="Keresés" aria-label="Search">
-      <button class="btn btn-warning my-2 my-sm-0" id="kereses-gomb" type="submit">Keresés</button>
-    </form>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-warning my-2 my-sm-0" id="kereses-gomb" type="submit" style="margin-right:'100px';">Keresés</button>
+    </div>
+    
     <div id="felhasznalo-tarolo">
       <span id="felhasznalo-nev">LukeAFK</span>
       <div id="szint-tarolo">
@@ -48,11 +51,11 @@ export default {
 </template>
 
 <style scoped>
-#navbar-icon{
+.navbar-toggler{
   border: none;
   height: 27px;
   width: 40px;
-  margin-right: 20px;
+  margin-left: 10px;
   position: relative;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
@@ -65,7 +68,7 @@ export default {
   cursor: pointer;
 }
   
-#navbar-icon span{
+.navbar-toggler span{
   display: block;
   position: absolute;
   height: 3px;
@@ -81,33 +84,33 @@ export default {
   -o-transition: .25s ease-in-out;
   transition: .25s ease-in-out;
 }
-#navbar-icon span:nth-child(1) {
+.navbar-toggler span:nth-child(1) {
   top: 0px;
 }
-#navbar-icon span:nth-child(2),#navbar-icon span:nth-child(3) {
+.navbar-toggler span:nth-child(2),#navbar-toggler span:nth-child(3) {
   top: 12px;
 }
-#navbar-icon span:nth-child(4) {
+.navbar-toggler span:nth-child(4) {
   top: 24px;
 }
-#navbar-icon.open span:nth-child(1) {
+.navbar-toggler.open span:nth-child(1) {
   top: 15px;
   width: 0%;
   left: 50%;
 }
-#navbar-icon.open span:nth-child(2) {
+.navbar-toggler.open span:nth-child(2) {
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   -o-transform: rotate(45deg);
   transform: rotate(45deg);
 }
-#navbar-icon.open span:nth-child(3) {
+.navbar-toggler.open span:nth-child(3) {
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
   transform: rotate(-45deg);
 }
-#navbar-icon.open span:nth-child(4) {
+.navbar-toggler.open span:nth-child(4) {
   top: 18px;
   width: 0%;
   left: 50%;
@@ -122,6 +125,7 @@ export default {
   box-shadow: none;
 }
 .navbar-brand{
+  margin-left: 10px;
   height: 40px;
   content: url("../img/ikon/quizterlogo.png");
 }
@@ -138,8 +142,8 @@ export default {
 #felhasznalo-tarolo{
   display: inline-block;
   text-align: center;
-  padding-right: 10px;
-  padding-left: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 #felhasznalo-nev{
   font-size: 10pt;
@@ -165,10 +169,14 @@ export default {
   width: 50%;
 }
 #felhasznalo-kep{
+  margin-right: 10px;
   float: left;
   height: 45px;
   width: 45px;
   border-radius: 50%;
   content: url("../img/felhasznalo/luke.png");
+}
+.col-auto{
+  margin-right: 10px;
 }
 </style>
