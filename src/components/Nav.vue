@@ -1,8 +1,10 @@
 <script>
 export default {
   methods:{
-    active(){
-      
+    aktiv(path){
+      if(this.$router.currentRoute.value.path === path){
+        return "active"
+      }
     }
   }
 }
@@ -20,10 +22,10 @@ export default {
   <RouterLink to="/" class="navbar-brand" id="logo"></RouterLink>
   <div class="collapse navbar-collapse" id="elrejt">
     <div class="navbar-nav">
-      <RouterLink to="/" class="nav-item nav-link active">Főoldal</RouterLink> <!--ACTIVE CLASST TEDD DINAMIKUSSÁ-->
-      <RouterLink to="/rolunk" class="nav-item nav-link">Rólunk</RouterLink>
-      <RouterLink to="/profil" class="nav-item nav-link">Profil</RouterLink>
-      <RouterLink to="/ranglista" class="nav-item nav-link">Ranglista</RouterLink>
+      <RouterLink to="/" class="nav-item nav-link" :class="aktiv('/')">Főoldal</RouterLink>
+      <RouterLink to="/rolunk" class="nav-item nav-link" :class="aktiv('/rolunk')">Rólunk</RouterLink>
+      <RouterLink to="/profil" class="nav-item nav-link" :class="aktiv('/profil')">Profil</RouterLink>
+      <RouterLink to="/ranglista" class="nav-item nav-link" :class="aktiv('/ranglista')">Ranglista</RouterLink>
     </div>
   </div>
   <div class="collapse navbar-collapse justify-content-end"  id="elrejt">
@@ -31,7 +33,7 @@ export default {
       <input class="form-control mr-sm-2" id="kereses-szoveg" type="search" placeholder="Keresés" aria-label="Search">
     </div>
     <div class="col-auto">
-      <button class="btn btn-warning my-2 my-sm-0" id="kereses-gomb" type="submit" style="margin-right:'100px';">Keresés</button>
+      <button class="btn btn-warning my-2 my-sm-0" id="kereses-gomb" type="submit">Keresés</button>
     </div>
     
     <div id="felhasznalo-tarolo">
@@ -53,7 +55,7 @@ export default {
 <style scoped>
 .navbar-toggler{
   border: none;
-  height: 27px;
+  height: 26px;
   width: 40px;
   margin-left: 10px;
   position: relative;
@@ -88,10 +90,10 @@ export default {
   top: 0px;
 }
 .navbar-toggler span:nth-child(2),#navbar-toggler span:nth-child(3) {
-  top: 12px;
+  top: 13px;
 }
 .navbar-toggler span:nth-child(4) {
-  top: 24px;
+  top: 26px;
 }
 .navbar-toggler.open span:nth-child(1) {
   top: 15px;
