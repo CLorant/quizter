@@ -7,7 +7,7 @@ export default {
     return {
       tema: localStorage.getItem("tema"),
       temaNev: localStorage.getItem("temaNev"),
-      temaMagyarazat: localStorage.getItem("temaMagyarazat")
+      temaMagyarazat: localStorage.getItem("temaMagyarazat"),
     }
   },
   computed: {
@@ -154,36 +154,15 @@ export default {
 #beallitoDiv{
   width: 100%;
   height: 40%;
+  margin-top: 5%;
+  margin-bottom: 30px;
   text-align: center;
 }
 
 .beallitas{
   display: inline-block;
   text-align: center;
-  padding: 80px;
-}
-
-@media screen and (max-width: 850px){
-  #temaKep{
-      width: 95%;
-  }
-  #temaKepSzoveg{
-      font-size: 12vw;
-  }
-  .beallitas{
-      padding: 0px;
-      padding-top: 50px;
-      padding-bottom: 50px;
-  }
-}
-
-@media screen and (min-width: 850px){
-  #temaKep{
-    width: 800px;
-  }
-  #temaKepSzoveg{
-    font-size: 74pt;
-  }
+  padding: 40px;
 }
 
 .beallitasNev{
@@ -201,18 +180,6 @@ export default {
   border-radius: 15px;
   margin: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.konnyu{
-  background-color: green;
-}
-
-.kozepes{
-  background-color: rgb(210, 180, 0);
-}
-
-.nehez{
-  background-color: firebrick;
 }
 
 #inditoGombDiv{
@@ -234,5 +201,48 @@ export default {
 
 .beallitasGomb:hover, #inditoGomb:hover{
   opacity: 0.8;
+}
+
+@media screen and (max-width: 750px){
+  #temaKep{
+    width: 95%;
+  }
+  #temaKepSzoveg{
+    font-size: 12vw;
+  }
+  .beallitas{
+    padding: 0px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 50%;
+  }
+  .beallitasNev{
+    font-size: 4.5vw;
+    padding: 10px;
+  }
+  .beallitasGomb{
+    width: 26%;
+    height: 12vw;
+    margin: 2px;
+    font-size: 2.6vw;
+    border-radius: 2.5vw;
+  }
+  #inditoGombDiv{
+    padding-bottom: 0px;
+  }
+  #inditoGomb{
+    width: 45vw;
+    height: 15vw;
+    font-size: 5vw;
+  }
+}
+
+@media screen and (min-width: 750px){
+  #temaKep{
+    width: 750px;
+  }
+  #temaKepSzoveg{
+    font-size: 68pt;
+  }
 }
 </style>

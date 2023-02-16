@@ -1,53 +1,66 @@
 <script>
+let navIconClick=false
 export default {
   methods:{
     aktiv(path){
       if(this.$router.currentRoute.value.path === path){
         return "active"
       }
+    },
+    openCloseNavToggler(){
+      navIconClick=!navIconClick
+      navIconClick?document.querySelector('.navbar-toggler').id='open':document.querySelector('.navbar-toggler').id='closed'
     }
   }
 }
 </script>
 
 <template>
-
-<nav class="navbar navbar-expand-lg fixed-top navbar-dark">
-  <button id="navbar-toggler" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#elrejt" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-  <RouterLink to="/" class="navbar-brand" id="logo"></RouterLink>
-  <div class="collapse navbar-collapse" id="elrejt">
-    <div class="navbar-nav">
-      <RouterLink to="/" class="nav-item nav-link" :class="aktiv('/')">Főoldal</RouterLink>
-      <RouterLink to="/rolunk" class="nav-item nav-link" :class="aktiv('/rolunk')">Rólunk</RouterLink>
-      <RouterLink to="/profil" class="nav-item nav-link" :class="aktiv('/profil')">Profil</RouterLink>
-      <RouterLink to="/ranglista" class="nav-item nav-link" :class="aktiv('/ranglista')">Ranglista</RouterLink>
-    </div>
-  </div>
-  <div class="collapse navbar-collapse justify-content-end"  id="elrejt">
-    <div class="col-auto">
-      <input class="form-control mr-sm-2" id="kereses-szoveg" type="search" placeholder="Keresés" aria-label="Search">
-    </div>
-    <div class="col-auto">
-      <button class="btn btn-warning my-2 my-sm-0" id="kereses-gomb" type="submit">Keresés</button>
-    </div>
-    
-    <div id="felhasznalo-tarolo">
-      <span id="felhasznalo-nev">LukeAFK</span>
-      <div id="szint-tarolo">
-        <div class="d-flex justify-content-center">
-          <span id="szint">1.&nbsp;szint</span>
-        </div>
-        <div id="szint-haladas"></div>
-      </div>
-    </div>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container-fluid">
+    <button class="navbar-toggler collapsed"
+    id="closed"
+		type="button"
+		data-bs-toggle="collapse"
+		data-bs-target="#navbarNav"
+		aria-controls="navbarNav"
+		aria-expanded="false"
+		aria-label="Toggle navigation"
+    @click="openCloseNavToggler()">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <RouterLink to="/" class="navbar-brand" id="logo"></RouterLink>
+    <div class="justify-content-end">
     <a href="profil">
       <img alt="Felhasználó kép" id="felhasznalo-kep">
     </a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="navbar-nav">
+        <RouterLink to="/" class="nav-item nav-link" :class="aktiv('/')">Főoldal</RouterLink>
+        <RouterLink to="/rolunk" class="nav-item nav-link" :class="aktiv('/rolunk')">Rólunk</RouterLink>
+        <RouterLink to="/profil" class="nav-item nav-link" :class="aktiv('/profil')">Profil</RouterLink>
+        <RouterLink to="/ranglista" class="nav-item nav-link" :class="aktiv('/ranglista')">Ranglista</RouterLink>
+      </div>
+    </div>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <div class="input-group">
+        <input class="form-control" id="nav-kereses-szoveg" type="search" placeholder="Keresés" aria-label="Search">
+        <button class="btn btn-warning" id="nav-kereses-gomb" type="submit">Keresés</button>
+      </div>
+      <div id="felhasznalo-tarolo">
+        <span id="felhasznalo-nev">LukeAFK</span>
+        <div id="szint-tarolo">
+          <div class="d-flex justify-content-center">
+            <span id="szint">1.&nbsp;szint</span>
+          </div>
+          <div id="szint-haladas"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
 </template>
@@ -57,7 +70,6 @@ export default {
   border: none;
   height: 26px;
   width: 40px;
-  margin-left: 10px;
   position: relative;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
@@ -69,7 +81,6 @@ export default {
   transition: .5s ease-in-out;
   cursor: pointer;
 }
-  
 .navbar-toggler span{
   display: block;
   position: absolute;
@@ -86,37 +97,38 @@ export default {
   -o-transition: .25s ease-in-out;
   transition: .25s ease-in-out;
 }
-.navbar-toggler span:nth-child(1) {
+#closed span:nth-child(1) {
   top: 0px;
 }
-.navbar-toggler span:nth-child(2),#navbar-toggler span:nth-child(3) {
+#closed span:nth-child(2),#navbar-toggler span:nth-child(3) {
   top: 13px;
 }
-.navbar-toggler span:nth-child(4) {
+#closed span:nth-child(4) {
   top: 26px;
 }
-.navbar-toggler.open span:nth-child(1) {
+#open span:nth-child(1) {
   top: 15px;
   width: 0%;
   left: 50%;
 }
-.navbar-toggler.open span:nth-child(2) {
+#open span:nth-child(2) {
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   -o-transform: rotate(45deg);
   transform: rotate(45deg);
 }
-.navbar-toggler.open span:nth-child(3) {
+#open span:nth-child(3) {
   -webkit-transform: rotate(-45deg);
   -moz-transform: rotate(-45deg);
   -o-transform: rotate(-45deg);
   transform: rotate(-45deg);
 }
-.navbar-toggler.open span:nth-child(4) {
+#open span:nth-child(4) {
   top: 18px;
   width: 0%;
   left: 50%;
 }
+
 .navbar{
   background-color: #0b0c0e;
 }
@@ -127,24 +139,29 @@ export default {
   box-shadow: none;
 }
 .navbar-brand{
-  margin-left: 10px;
   height: 40px;
+  margin-right: 40px;
   content: url("../img/ikon/quizterlogo.png");
 }
-#kereses-form{
-  padding-right: 50px;
+#nav-kereses-szoveg{
+  max-width: 206px;
 }
-#kereses-gomb{
+#nav-kereses-gomb{
   background-color: #c7940a;
   color: #ffffff;
 }
-#kereses-gomb:hover{
+#nav-kereses-gomb:hover{
   opacity: 0.8;
+}
+.input-group{
+  display: flex;
+  justify-content: end;
+  margin-right: 50px;
 }
 #felhasznalo-tarolo{
   display: inline-block;
   text-align: center;
-  margin-right: 10px;
+  margin-right: 45px;
   margin-left: 10px;
 }
 #felhasznalo-nev{
@@ -171,14 +188,26 @@ export default {
   width: 50%;
 }
 #felhasznalo-kep{
-  margin-right: 10px;
-  float: left;
-  height: 45px;
-  width: 45px;
-  border-radius: 50%;
+  position:absolute;
+  right:12px;
+  top:10px;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
   content: url("../img/felhasznalo/luke.png");
 }
 .col-auto{
   margin-right: 10px;
+}
+@media screen and (max-width: 991px) {
+  .input-group{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    justify-content: center;
+  }
+  #felhasznalo-tarolo{
+    display: none;
+  }
 }
 </style>

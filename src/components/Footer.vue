@@ -23,7 +23,9 @@ export default {
       localStorage.setItem('tema', id)
       localStorage.setItem('temaNev', szoveg)
       localStorage.setItem('temaMagyarazat', magyarazat)
-      window.location.reload();
+      if(this.$router.currentRoute.value.path === '/quizbeallito'){
+        window.location.reload();
+      }
     }
   },
 };
@@ -83,11 +85,11 @@ export default {
           </li>
         </ul>
       </div>
-      <div class="oszlop linkek-tarolo">
+      <div class="oszlop linkek-tarolo temak">
         <h3>Témák</h3>
         <ul>
           <li v-for="t in temak" :key="t.id">
-            <RouterLink @click="indit(t.id, t.szoveg, t.magyarazat)" to="/quizbeallito">
+            <RouterLink to="/quizbeallito" @click="indit(t.id, t.szoveg, t.magyarazat)" >
               {{ t.szoveg }}
             </RouterLink>
           </li>

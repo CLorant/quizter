@@ -52,20 +52,6 @@ export const useRekordStore = defineStore('rekord', {
   }
 });
 
-export const useFooldalStore = defineStore('fooldal', {
-  state: () => ({
-    tema: 'autok',
-    temaNev: 'Autók',
-    temaMagyarazat: 'Kérdések autókról, gyártókról, a legelső autótól a legutóbbiig.'
-  }),
-  getters: {
-
-  },
-  actions: {
-
-  }
-});
-
 export const useQuizBeallitoStore = defineStore('quizBeallito', {
   state: () => ({
     nehezseg: "konnyu",
@@ -73,12 +59,6 @@ export const useQuizBeallitoStore = defineStore('quizBeallito', {
     kerdesSzam: "10",
     valaszSzam: "2"
   }),
-  getters: {
-
-  },
-  actions: {
-
-  }
 });
 
 export const useJatekmenetStore = defineStore('jatekmenet', {
