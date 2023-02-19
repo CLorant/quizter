@@ -55,15 +55,15 @@ export const useRekordStore = defineStore('rekord', {
 export const useQuizBeallitoStore = defineStore('quizBeallito', {
   state: () => ({
     nehezseg: "konnyu",
-    ido: "30",
-    kerdesSzam: "10",
-    valaszSzam: "2"
+    ido: 30,
+    kerdesSzam: 10,
+    valaszSzam: 2
   }),
 });
 
 export const useJatekmenetStore = defineStore('jatekmenet', {
   state: () => ({
-    korSzamlalo: Number,
+    korSzamlalo: 0,
     kerdes: String,
     kep: String,
     valasz1: String,
@@ -72,10 +72,16 @@ export const useJatekmenetStore = defineStore('jatekmenet', {
     valasz4: String,
     valasz5: String,
     valasz6: String,
-    timeLeft: Number
+    maradtIdo: 0,
+    valaszGombokAktiv: true,
+    folytatasGombAktiv: false,
+    pont: 0,
+    helyesValasz: 0,
+    helytelenValasz: 0,
+    atlagosValaszIdo: 0
   }),
   getters: {
-
+    kovetkezoKor: (state) => state.korSzamlalo++
   },
   actions: {
 
