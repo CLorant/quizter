@@ -54,38 +54,35 @@ export const useRekordStore = defineStore('rekord', {
 
 export const useQuizBeallitoStore = defineStore('quizBeallito', {
   state: () => ({
-    nehezseg: "konnyu",
-    ido: 30,
-    kerdesSzam: 10,
-    valaszSzam: 2
+    nehezseg: null,
+    ido: null,
+    kerdesSzam: null,
+    valaszSzam: null,
+    kitoltott: false
   }),
 });
 
 export const useJatekmenetStore = defineStore('jatekmenet', {
   state: () => ({
-    korSzamlalo: 0,
-    kerdes: String,
-    kep: String,
-    valasz1: String,
-    valasz2: String,
-    valasz3: String,
-    valasz4: String,
-    valasz5: String,
-    valasz6: String,
+    kor: 0,
+    kerdes: {szoveg: String, kep: String},
+    valaszok: {
+      valasz1: {szoveg: String, helyes: Boolean},
+      valasz2: {szoveg: String, helyes: Boolean},
+      valasz3: {szoveg: String, helyes: Boolean},
+      valasz4: {szoveg: String, helyes: Boolean},
+      valasz5: {szoveg: String, helyes: Boolean},
+      valasz6: {szoveg: String, helyes: Boolean}
+    },
     maradtIdo: 0,
-    valaszGombokAktiv: true,
-    folytatasGombAktiv: false,
+    valaszGombokKikapcsol: false,
+    folytatasGombKikapcsol: true,
+    leNyomottValaszGomb: false,
     pont: 0,
     helyesValasz: 0,
     helytelenValasz: 0,
     atlagosValaszIdo: 0
-  }),
-  getters: {
-    kovetkezoKor: (state) => state.korSzamlalo++
-  },
-  actions: {
-
-  }
+  })
 });
 
 export const useRanglistaStore = defineStore('ranglista', {

@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Fooldal from '../views/Fooldal.vue'
-import Profil from '../views/Profil.vue'
-import Ranglista from '../views/Ranglista.vue'
-import QuizBeallito from '../views/QuizBeallito.vue'
+import { useQuizBeallitoStore } from '../stores/stores'
 
 const routes = [
   {
@@ -15,39 +13,44 @@ const routes = [
     name: 'rolunk',
     component: () => import('../views/Rolunk.vue')
   },
+  /*
   {
-    //path: '/profil/:id',
-    path: '/profil',
+    path: '/profil/:id',
     name: 'profil',
     component: Profil
   },
-  /*
-  {
-    path: /profil,
-    name: bejelentkezettProfil,
-    component: Profil
-  },
   */
+  {
+    path: '/profil',
+    name: 'bejelentkezettProfil',
+    component: () => import('../views/Profil.vue')
+  },
+  
   {
     path: '/ranglista',
     name: 'ranglista',
-    component: Ranglista
+    component: () => import('../views/Ranglista.vue')
   },
   {
     path: '/quizbeallito',
-    component: QuizBeallito
-  },
-  /*
-  {
-    path: '/quizbeallito/:id',
     name: 'quizbeallito',
-    component: QuizBeallito
+    component: () => import('../views/QuizBeallito.vue'),
   },
-  */
   {
     path: '/jatekmenet',
     name: 'jatekmenet',
-    component: () => import('../views/Jatekmenet.vue')
+    component: () => import('../views/Jatekmenet.vue'),
+    beforeEnter(from, to){
+      const store = useQuizBeallitoStore();
+      if(store.kitoltott===false){
+        return to
+      }
+    }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'nem-talalt',
+    component: () => import('../views/NemTalalt.vue')
   }
 ]
 

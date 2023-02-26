@@ -10,8 +10,11 @@ export default {
       temaMagyarazat: localStorage.getItem("temaMagyarazat"),
     }
   },
+  mounted() {
+    useQuizBeallitoStore().$reset()
+  },
   computed: {
-    ...mapWritableState(useQuizBeallitoStore, ['nehezseg', 'ido', 'kerdesSzam', 'valaszSzam']),
+    ...mapWritableState(useQuizBeallitoStore, ['nehezseg', 'ido', 'kerdesSzam', 'valaszSzam', 'kitoltott']),
   },
   methods: {
     kepAllito(id) {
@@ -20,6 +23,13 @@ export default {
 
     indit() {
       //apinak: tema, nehezseg, kerdesSzam, valaszSzam
+      if(this.nehezseg!=null&&this.ido!=null&&this.kerdesSzam!=null&&this.valaszSzam!=null){
+        this.kitoltott=true
+        const beallitas=JSON.stringify({tema: this.tema, nehezseg:this.nehezseg, kerdesSzam:this.kerdesSzam, valaszSzam:this.valaszSzam})
+      }
+      else{
+        alert("Nem adott meg elegendő beállítást!")
+      }
     },
 
     nehezsegGomb(param){
@@ -50,7 +60,7 @@ export default {
       )
     },
 
-    gombSzinezo(ref1, ref2, ref3, param, konnyu, kozepes, nehez){
+    gombSzinezo(ref1, ref2, ref3, param, konnyu, kozepes){
       ref1.style=""
       ref2.style=""
       ref3.style=""
@@ -61,14 +71,11 @@ export default {
       else if(param===kozepes){
         ref2.style.backgroundColor="rgb(210, 180, 0)"
       }
-      else if(param===nehez){
+      else{
         ref3.style.backgroundColor="firebrick"
       }
-      else{
-        alert("Hibás paraméter! Alapérték lesz használva.")
-      }
     },
-  },
+  }
 }
 </script>
 
@@ -106,6 +113,7 @@ export default {
     </div>
   </div>
   <div id="inditoGombDiv">
+    <!--navigálás elutasítása ha null érték valamelyik beállítás-->
     <RouterLink to="/jatekmenet">
       <button id="inditoGomb" @click="indit()">Indítás</button>
     </RouterLink>
@@ -152,10 +160,14 @@ export default {
 }
 
 #beallitoDiv{
+  max-width: 2219px;
   width: 100%;
   height: 40%;
   margin-top: 5%;
   margin-bottom: 30px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
 }
 
@@ -231,8 +243,8 @@ export default {
     padding-bottom: 0px;
   }
   #inditoGomb{
-    width: 45vw;
-    height: 15vw;
+    width: 35vw;
+    height: 10vw;
     font-size: 5vw;
   }
 }
