@@ -44,9 +44,7 @@
       font-size: 6vw;
       width: 45%;
       background-position: center;
-      margin-left: 5px;
-      margin-right: 5px;
-      margin-bottom: 25px;
+      margin: 5px
     }
   }
 </style>

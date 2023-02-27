@@ -58,10 +58,6 @@ export default {
   padding-bottom: 100px;
 }
 @media screen and (max-width: 420px){
-  .temaGomb{
-    margin: 0px;
-    margin-bottom: 25px;
-  }
   #cim h2{
     font-size: 6vw;
   }

@@ -12,6 +12,7 @@
     },
     beforeRouteLeave() {
       clearInterval(this.interval);
+      useJatekmenetStore().$reset()
     },
     computed: {
       //olvasható quizbeállító adatok és írható játékmenet adatok
@@ -29,10 +30,6 @@
         'helytelenValasz',
         'atlagosValaszIdo'
       ])
-    },
-    created() {
-      //ha egy másik oldalra átmegy -> store reset, interval megállítása
-      useJatekmenetStore().$reset()
     },
     mounted() {
       //kezdő állapot
@@ -159,6 +156,7 @@
           store.$patch()
         }
         */
+        useJatekmenetStore().$reset()
       }
     }
   }
