@@ -54,10 +54,10 @@ export const useRekordStore = defineStore('rekord', {
 
 export const useQuizBeallitoStore = defineStore('quizBeallito', {
   state: () => ({
-    nehezseg: null,
-    ido: null,
-    kerdesSzam: null,
-    valaszSzam: null,
+    nehezseg: String,
+    ido: Number,
+    kerdesSzam: Number,
+    valaszSzam: Number,
     kitoltott: false
   }),
 });

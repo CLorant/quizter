@@ -3,15 +3,18 @@
   import { useQuizBeallitoStore, useJatekmenetStore, useRekordStore } from '../stores/stores.js'
   import kerdesvalaszokJSON from '../kerdesvalasz.json'
 
-  //kerdesvalaszok-ból vedd ki a helyes property-t és add hozzá dinamikusan
-
   export default {
     data() {
       return {
-        kerdesvalaszok: null
+        kerdesvalaszok: null,
+        interval: null
       }
     },
+    beforeRouteLeave() {
+      clearInterval(this.interval);
+    },
     computed: {
+      //olvasható quizbeállító adatok és írható játékmenet adatok
       ...mapState(useQuizBeallitoStore, ['nehezseg', 'ido', 'kerdesSzam', 'valaszSzam']),
       ...mapWritableState(useJatekmenetStore, [
         'kor',
@@ -27,10 +30,15 @@
         'atlagosValaszIdo'
       ])
     },
-    mounted() {
+    created() {
+      //ha egy másik oldalra átmegy -> store reset, interval megállítása
       useJatekmenetStore().$reset()
+    },
+    mounted() {
+      //kezdő állapot
       this.kerdesvalaszok = this.kerdesValaszKezelo()
       this.kerdes = this.kerdesvalaszok.kerdesvalasz1.kerdes
+      //Véletlenszerű sorrendű válaszokat ad vissza az objektumból
       this.valaszok = this.valaszKevero(this.kerdesvalaszok.kerdesvalasz1.valaszok)
       this.maradtIdo = this.ido
       this.valaszFigyelo()
@@ -49,7 +57,6 @@
         obj = kerdesvalaszokJSON //átmeneti
         for (let i = 0; i < Object.keys(obj).length; i++) {
           let kerdesvalasz = Object.values(obj)[i]
-          console.log(kerdesvalasz)
           for (let j = 0; j < this.valaszSzam; j++) {
             let igazE
             if(j===0){
@@ -66,7 +73,8 @@
         console.log(obj)
         return obj
       },
-
+      
+      //Fisher-Yates keverés
       valaszKevero(valaszokObj){
         valaszokObj = Object.values(valaszokObj);
         for (let i = valaszokObj.length - 1; i > 0; i--) {
@@ -75,12 +83,13 @@
         }
         return valaszokObj
       },
-
+      
       valaszVizsgalat(helyes){
         this.leNyomottValaszGomb = true
         this.valaszGombokKikapcsol = true
         this.folytatasGombKikapcsol = false
 
+        //pont számolás 'ido' nehezítés alapján
         if(helyes){
           this.helyesValasz++
           if(this.ido==10){
@@ -99,19 +108,19 @@
       },
       
       valaszFigyelo(){
-        const interval = setInterval(() => {
+        this.interval = setInterval(() => {
           this.maradtIdo--;
           this.atlagosValaszIdo++;
         }, 1000)
         this.$watch(() => this.maradtIdo, ujIdo => {
           if(ujIdo===0){
-            clearInterval(interval)
+            clearInterval(this.interval)
             this.valaszVizsgalat(false)
           }
         })
         this.$watch(() => this.valaszGombokKikapcsol, kikapcsol => {
           if(kikapcsol===true){
-            clearInterval(interval)
+            clearInterval(this.interval)
           }
         })
       },
@@ -128,7 +137,21 @@
         this.valaszFigyelo()
       },
 
-      async vege() {
+      vege() {
+        console.log(this.pont)
+        if(this.nehezseg=="kozepes"){
+          this.pont*=1.25
+        }
+        else if(this.nehezseg=="nehez"){
+          this.pont*=1.5
+        }
+        if(this.valaszSzam==4){
+          this.pont*=1.25
+        }
+        else if(this.valaszSzam==6){
+          this.pont*=1.5
+        }
+        console.log(this.pont)
         /*
         const store = useRekordStore()
         if(pontszam>store){
@@ -143,7 +166,7 @@
 
 <template>
   <div id="tartalom">
-    <div v-if="kor!=kerdesSzam">
+    <div v-if="kor<kerdesSzam">
       <p id="korSzamlalo">{{ kor + 1 }} / {{ kerdesSzam }}</p>
       <h3 id="kerdes">{{ kerdes.szoveg }}</h3>
       <img id="kep" :src="kerdes.kep"/>
@@ -151,7 +174,7 @@
         <div id="gombDiv">
           <button
             v-for="(value, key) in valaszok"
-            :id="key"
+            :key="key"
             class="valaszGomb"
             :disabled="valaszGombokKikapcsol"
             @click="valaszVizsgalat(value.helyes)"
@@ -173,7 +196,7 @@
         <button
           id=folytatasGomb
           :disabled="folytatasGombKikapcsol"
-          @click="kor!=kerdesSzam?folytat():vege()"
+          @click="kor<kerdesSzam ? (folytat()) : (vege())"
           :style="{
             backgroundColor: folytatasGombKikapcsol ? '#333333' : '#4C4C4C'
           }">
