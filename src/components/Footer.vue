@@ -1,7 +1,3 @@
-<script>
-
-</script>
-
 <template>
   <footer class="pt-4">
     <div class="mx-4">
@@ -26,17 +22,16 @@
           </RouterLink>
         </div>
         <div class="col-md-3 col-sm-12 text-center text-md-end">
-          <a href="#"><img src="../img/ikon/github_icon.png" alt="Github Ikon" class="kozossegi-gomb m-2"></a>
-          <a href="#"><img src="../img/ikon/reddit_icon.png" alt="Reddit Ikon" class="kozossegi-gomb m-2"></a>
-          <a href="#"><img src="../img/ikon/youtube_icon.png" alt="Youtube Ikon" class="kozossegi-gomb m-2"></a>
-          
+          <a href="https://github.com/CLorant/quizter"><img src="../img/ikon/github_icon.png" target="_blank" rel=”noreferrer” alt="Github Ikon" class="kozossegi-gomb m-2"></a>
+          <a href="https://www.reddit.com/r/quizter"><img src="../img/ikon/reddit_icon.png" target="_blank" rel=”noreferrer” alt="Reddit Ikon" class="kozossegi-gomb m-2"></a>
+          <a href="https://www.youtube.com/@quiztersite"><img src="../img/ikon/youtube_icon.png" target="_blank" rel=”noreferrer” alt="Youtube Ikon" class="kozossegi-gomb m-2"></a>
           <div class="mt-3">
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com" target="_blank" class="text-decoration-none text-light">quizterhelp@gmail.com</a>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com" target="_blank" rel=”noreferrer” class="text-decoration-none text-light">quizterhelp@gmail.com</a>
           </div>
         </div>
         <hr class="bg-secondary my-4 d-md-none">
         <div class="col-sm-12 text-center">
-          <p class="text-light">&copy; 2023 Quizter</p>
+          <p class="text-secondary">&copy; 2023 Quizter</p>
         </div>
       </div>
     </div>
