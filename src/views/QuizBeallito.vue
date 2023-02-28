@@ -10,7 +10,7 @@ export default {
       temaMagyarazat: localStorage.getItem("temaMagyarazat"),
     }
   },
-  beforeRouteLeave(){
+  setup(){
     useQuizBeallitoStore().$reset()
   },
   computed: {

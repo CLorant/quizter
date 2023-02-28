@@ -1,6 +1,13 @@
 <script>
+import Bejelentkezes from './nav/Bejelentkezes.vue'
+import Regisztracio from './nav/Regisztracio.vue'
+
 let navIconClick=false
 export default {
+  components: {
+    Bejelentkezes,
+    Regisztracio
+  },
   methods:{
     aktiv(path){
       if(this.$router.currentRoute.value.path === path){
@@ -34,9 +41,19 @@ export default {
     </button>
     <RouterLink to="/" class="navbar-brand" id="logo"></RouterLink>
     <div class="justify-content-end">
-    <a href="profil">
-      <img alt="Felhasználó kép" id="felhasznalo-kep">
-    </a>
+      <a v-if="true" href="profil">
+        <img src="../img/felhasznalo/luke.png" alt="Felhasználókép" class="jobb-nav" id="felhasznalo-kep">
+      </a>
+      <ul v-else class="navbar-nav ms-auto jobb-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Login
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <component :is="Bejelentkezes"></component>
+            </div>
+          </li>
+      </ul>
     </div>
     <div class="collapse navbar-collapse" id="navbarNav">
       <div class="navbar-nav">
@@ -49,9 +66,10 @@ export default {
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <div class="input-group">
         <input class="form-control" id="nav-kereses-szoveg" type="search" placeholder="Keresés" aria-label="Search">
-        <button class="btn btn-warning" id="nav-kereses-gomb" type="submit">Keresés</button>
+        <button class="btn text-light" id="nav-kereses-gomb" type="submit">Keresés</button>
       </div>
-      <div id="felhasznalo-tarolo">
+      
+      <div v-if="true" id="felhasznalo-tarolo">
         <span id="felhasznalo-nev">LukeAFK</span>
         <div id="szint-tarolo">
           <div class="d-flex justify-content-center">
@@ -148,7 +166,6 @@ export default {
 }
 #nav-kereses-gomb{
   background-color: #c7940a;
-  color: #ffffff;
 }
 #nav-kereses-gomb:hover{
   opacity: 0.8;
@@ -187,14 +204,15 @@ export default {
   height: 16px;
   width: 50%;
 }
-#felhasznalo-kep{
+.jobb-nav{
   position:absolute;
   right:12px;
   top:10px;
+}
+#felhasznalo-kep{
   height: 40px;
   width: 40px;
   border-radius: 20px;
-  content: url("../img/felhasznalo/luke.png");
 }
 .col-auto{
   margin-right: 10px;
