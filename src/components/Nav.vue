@@ -1,12 +1,24 @@
 <script>
-import Bejelentkezes from './nav/Bejelentkezes.vue'
-import Regisztracio from './nav/Regisztracio.vue'
-
+import { ref, onMounted } from 'vue';
 let navIconClick=false
 export default {
-  components: {
-    Bejelentkezes,
-    Regisztracio
+  data() {
+    return {
+      dropdown: null,
+      dropdownToggle: null
+    }
+    
+  },
+  setup() {
+    const dropdown = ref(null);
+    const dropdownToggle = ref(null);
+
+    onMounted(() => {
+      dropdownToggle.value.addEventListener('click', (event) => {
+        event.stopPropagation();
+        dropdown.value.classList.toggle('show');
+      });
+    });
   },
   methods:{
     aktiv(path){
@@ -40,21 +52,48 @@ export default {
       <span></span>
     </button>
     <RouterLink to="/" class="navbar-brand" id="logo"></RouterLink>
-    <div class="justify-content-end">
-      <a v-if="true" href="profil">
-        <img src="../img/felhasznalo/luke.png" alt="Felhasználókép" class="jobb-nav" id="felhasznalo-kep">
-      </a>
-      <ul v-else class="navbar-nav ms-auto jobb-nav">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Login
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <component :is="Bejelentkezes"></component>
+
+    <!-- Bejelentkezett -->
+    <div v-if="true">
+      <div class="jobb-nav collapse navbar-collapse" id="navbarNav" style="top:6px;">
+        <div id="felhasznalo-tarolo">
+          <span id="felhasznalo-nev">LukeAFK</span>
+          <div id="szint-tarolo">
+            <div class="d-flex justify-content-center">
+              <span id="szint">1.&nbsp;szint</span>
             </div>
-          </li>
+            <div id="szint-haladas"></div>
+          </div>
+        </div>
+      </div>
+      <div class="dropdown jobb-nav">
+        <div id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src="../img/felhasznalo/luke.png" alt="Felhasználókép" class="felhasznalo-kep">
+        </div>
+        <!-- Toggle show class, align dropdown to more right -->
+        <div class="dropdown-menu dropdown-menu-dark show" aria-labelledby="dropdownMenuButton">
+          <RouterLink to="/profil" class="dropdown-item">Profil</RouterLink>
+          <!-- kijelentkezés gomb -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Nem bejelentkezett -->
+    <!--
+      <RouterLink to="/bejelentkezes" class="nav-item nav-link" id="navbarNav" :class="aktiv('/bejelentkezes')">Bejelentkezés</RouterLink>
+      <RouterLink to="/regisztracio" class="nav-item nav-link" :class="aktiv('/regisztracio')">Regisztráció</RouterLink> 
+    -->
+    <div v-else class="justify-content-end">
+      <ul v class="navbar-nav ms-auto jobb-nav">
+        <li>
+          
+        </li>
+        <li>
+          
+        </li>
       </ul>
     </div>
+
     <div class="collapse navbar-collapse" id="navbarNav">
       <div class="navbar-nav">
         <RouterLink to="/" class="nav-item nav-link" :class="aktiv('/')">Főoldal</RouterLink>
@@ -63,20 +102,11 @@ export default {
         <RouterLink to="/ranglista" class="nav-item nav-link" :class="aktiv('/ranglista')">Ranglista</RouterLink>
       </div>
     </div>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    
+    <div class="collapse navbar-collapse kereso-tarolo" id="navbarNav" >
       <div class="input-group">
         <input class="form-control" id="nav-kereses-szoveg" type="search" placeholder="Keresés" aria-label="Search">
         <button class="btn text-light" id="nav-kereses-gomb" type="submit">Keresés</button>
-      </div>
-      
-      <div v-if="true" id="felhasznalo-tarolo">
-        <span id="felhasznalo-nev">LukeAFK</span>
-        <div id="szint-tarolo">
-          <div class="d-flex justify-content-center">
-            <span id="szint">1.&nbsp;szint</span>
-          </div>
-          <div id="szint-haladas"></div>
-        </div>
       </div>
     </div>
   </div>
@@ -170,6 +200,10 @@ export default {
 #nav-kereses-gomb:hover{
   opacity: 0.8;
 }
+.kereso-tarolo{
+  margin-left: 120px;
+  margin-right: 120px;
+}
 .input-group{
   display: flex;
   justify-content: end;
@@ -209,10 +243,11 @@ export default {
   right:12px;
   top:10px;
 }
-#felhasznalo-kep{
+.felhasznalo-kep{
   height: 40px;
   width: 40px;
   border-radius: 20px;
+  cursor: pointer;
 }
 .col-auto{
   margin-right: 10px;
@@ -226,6 +261,9 @@ export default {
   }
   #felhasznalo-tarolo{
     display: none;
+  }
+  .kereso-tarolo{
+    margin: 0;
   }
 }
 </style>
