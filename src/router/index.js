@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Fooldal from '../views/Fooldal.vue'
-import { useQuizBeallitoStore } from '../stores/stores'
+import { useQuizBeallitoStore } from '../stores/quizbeallito'
 
 const routes = [
   {
@@ -13,26 +13,18 @@ const routes = [
     name: 'rolunk',
     component: () => import('../views/Rolunk.vue')
   },
-  /*
   {
-    path: '/profil/:id',
+    path: '/profil/:userId',
     name: 'profil',
-    component: Profil
-  },
-  */
-  {
-    path: '/profil',
-    name: 'bejelentkezettProfil',
     component: () => import('../views/Profil.vue')
   },
-  
   {
     path: '/ranglista',
     name: 'ranglista',
     component: () => import('../views/Ranglista.vue')
   },
   {
-    path: '/quizbeallito',
+    path: '/quizbeallito/:temaId',
     name: 'quizbeallito',
     component: () => import('../views/QuizBeallito.vue'),
   },
@@ -46,6 +38,16 @@ const routes = [
         return to
       }
     }
+  },
+  {
+    path: '/bejelentkezes',
+    name: 'bejelentkezes',
+    component: () => import('../views/Bejelentkezes.vue')
+  },
+  {
+    path: '/regisztracio',
+    name: 'regisztracio',
+    component: () => import('../views/Regisztracio.vue')
   },
   {
     path: '/:pathMatch(.*)*',
