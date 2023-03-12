@@ -1,27 +1,15 @@
 <script>
   export default {
     props: {
-      id: String,
-      szoveg: String,
-      magyarazat: String
-    },
-    
-    methods: {
-      kepAllito(id) {
-        return "background-image: url(../src/img/tema/"+id+".png)"
-      },
-      indit(id, szoveg, magyarazat) {
-        localStorage.setItem('tema', id)
-        localStorage.setItem('temaNev', szoveg)
-        localStorage.setItem('temaMagyarazat', magyarazat)
-      },
+      tema: String,
+      temaNev: String
     }
   }
 </script>
 
 <template>
-  <RouterLink to="/quizbeallito" >
-    <button class='temaGomb' :id="id" @click="indit(id, szoveg, magyarazat)" :style="kepAllito(id)">{{ szoveg }}</button>
+  <RouterLink :to="{name: 'quizbeallito', params: {temaId: tema}}" >
+    <button class='temaGomb' :style="`background-image: url(/img/tema/${tema}.webp)`">{{ temaNev }}</button>
   </RouterLink>
 </template>
 
@@ -44,7 +32,7 @@
       font-size: 6vw;
       width: 45%;
       background-position: center;
-      margin: 5px
+      margin: 5px;
     }
   }
 </style>
