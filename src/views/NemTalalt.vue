@@ -1,33 +1,30 @@
 <template>
-  <div>
-    <div id="tartalom">
-      <img id="cim-logo"/>
-      <h2>A keresett oldal nem található!</h2>
-      <RouterLink to="/">
-        <button id="visszaGomb">
-          Vissza a főoldalra
-        </button>
-      </RouterLink>
-    </div>
+  <div id="tartalom">
+    <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" id="cim-logo"/>
+    <h2>A keresett oldal nem található</h2>
+    <RouterLink to="/">
+      <button id="visszaGomb">
+        Vissza a főoldalra
+      </button>
+    </RouterLink>
   </div>
 </template>
 
 <style scoped>
   #tartalom{
     color: white;
-    min-height: calc(100vh - 300px);
     text-align: center;
-    margin-top: 120px;
+    margin-top: 150px;
   }
   #cim-logo{
+    height: 90%;
     width: 90%;
     max-width: 600px;
-    height: auto;
     margin-bottom: 25px;
-    content: url("../img/ikon/quizterlogo.png");
   }
   #visszaGomb{
     margin-top: 80px;
+    margin-bottom: 80px;
     border: none;
     border-radius: 12px;
     background-color: #4C4C4C;
