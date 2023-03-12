@@ -1,29 +1,24 @@
 <script>
-import Nav from './components/Nav.vue'
-import Footer from './components/Footer.vue'
+  import Nav from './components/Nav.vue'
+  import Footer from './components/Footer.vue'
 
-export default {
-  data() {
-    return {
-      
+  export default {
+    components: {
+      Nav,
+      Footer
     }
-  },
-  components: {
-    Nav,
-    Footer
   }
-}
 </script>
 
 <template>
-<Nav/>
-<RouterView/>
-<Footer/>
+  <Nav/>
+  <RouterView/>
+  <Footer/>
 </template>
 
 <style scoped>
-#tartalom{
-  color: white;
-  min-height: calc(100vh - 300px);
-}
+  #tartalom{
+    color: white;
+    min-height: calc(100vh - 300px);
+  }
 </style>
