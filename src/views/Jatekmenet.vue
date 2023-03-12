@@ -1,6 +1,8 @@
 <script>
   import { mapState, mapWritableState } from 'pinia'
-  import { useQuizBeallitoStore, useJatekmenetStore, useRekordStore } from '../stores/stores.js'
+  import { useQuizBeallitoStore } from '../stores/quizbeallito'
+  import { useJatekmenetStore } from '../stores/jatekmenet'
+  import { useFelhasznaloStore } from '../stores/felhasznalo'
   import kerdesvalaszokJSON from '../kerdesvalasz.json'
 
   export default {
@@ -15,8 +17,9 @@
       useJatekmenetStore().$reset()
     },
     computed: {
-      //olvasható quizbeállító adatok és írható játékmenet adatok
+      // olvasható quizbeállító adatok, írható játékmenet és felhasználó adatok
       ...mapState(useQuizBeallitoStore, ['nehezseg', 'ido', 'kerdesSzam', 'valaszSzam']),
+      ...mapWritableState(useFelhasznaloStore, ['exp', 'jatszmaSzam', 'valaszIdo', 'rekord']),
       ...mapWritableState(useJatekmenetStore, [
         'kor',
         'kerdes',
@@ -44,12 +47,18 @@
       kerdesValaszKezelo(){
         let obj;
         /*
-        try {
-          obj = fetch('')
-        }
-        catch (error) {
-          alert(`Hiba keletkezett a játszma adatainak lekérdezésekor: (${error}). Visszanavigálás a főoldalra.`)
-        }
+        axios.get('/user?ID=12345')
+        .then(function (response) {
+          // handle success
+          console.log(response);
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .finally(function () {
+          // always executed
+        });
         */
         obj = kerdesvalaszokJSON //átmeneti
         for (let i = 0; i < Object.keys(obj).length; i++) {
@@ -134,28 +143,57 @@
         this.valaszFigyelo()
       },
 
-      vege() {
-        console.log(this.pont)
-        if(this.nehezseg=="kozepes"){
-          this.pont*=1.25
+      async vege() {
+        if(this.nehezseg == "kozepes"){
+          this.pont *= 1.25
         }
-        else if(this.nehezseg=="nehez"){
-          this.pont*=1.5
+        else if(this.nehezseg == "nehez"){
+          this.pont *= 1.5
         }
-        if(this.valaszSzam==4){
-          this.pont*=1.25
+        if(this.valaszSzam == 4){
+          this.pont *= 1.25
         }
-        else if(this.valaszSzam==6){
-          this.pont*=1.5
+        else if(this.valaszSzam == 6){
+          this.pont *= 1.5
         }
-        console.log(this.pont)
-        /*
-        const store = useRekordStore()
-        if(pontszam>store){
-          const res = await fetch()
-          store.$patch()
+        //exp, jatszmaSzam, valaszido mindig frissül
+        //rekord frissül ha személyes rekord
+
+        this.exp += Math.round(this.pont / 100)
+        this.jatszmaSzam++
+        // globális válaszidő összeadva a játszmabeli válaszidővel, elosztva a játszmaszámmal majd 2 decimális pontra fixálva 
+        this.valaszIdo = ((this.valaszIdo + this.atlagosValaszIdo) / this.jatszmaSzam).toFixed(2)
+
+        if(this.pont > this.rekord.pontszam) {
+          this.rekord.pontszam = this.pont
+          this.rekord.helyesHelytelen = this.helyesValasz + " / " + this.helytelenValasz
+          this.rekord.tema = localStorage.getItem('temaNev')
+          this.rekord.nehezseg = this.nehezseg
+          this.rekord.ido = this.ido
+          this.rekord.kerdesSzam = this.kerdesSzam
+          this.rekord.valaszSzam = this.valaszSzam
+
+          try {
+            const res = await axios.post('/api/', {
+              
+            });
+          }
+          catch (error) {
+            alert("Hiba az adatok felvitelekor: " + error)
+          }
         }
-        */
+        else {
+          try {
+            const res = await axios.post('/api/', {
+              
+            });
+          }
+          catch (error) {
+            alert("Hiba az adatok felvitelekor: " + error)
+          }
+        }
+        
+
         useJatekmenetStore().$reset()
       }
     }
@@ -279,7 +317,7 @@
     padding: 0 10px;
     line-height: 50px;
     width: 0;
-    background-color: rgb(255, 225, 0);
+    background-color: rgb(255, 200, 0);
     box-sizing: border-box;
     font-size: 24pt;
     box-shadow: 10px 0 8px -2px rgba(0, 0, 0, 0.1);
