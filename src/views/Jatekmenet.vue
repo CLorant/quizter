@@ -84,7 +84,7 @@
       valaszKevero(valaszokObj){
         valaszokObj = Object.values(valaszokObj);
         for (let i = valaszokObj.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
+          const j = Math.round(Math.random() * (i + 1));
           [valaszokObj[i], valaszokObj[j]] = [valaszokObj[j], valaszokObj[i]];
         }
         return valaszokObj
@@ -119,7 +119,7 @@
           this.atlagosValaszIdo++;
         }, 1000)
         this.$watch(() => this.maradtIdo, ujIdo => {
-          if(ujIdo===0){
+          if(ujIdo < 1){
             clearInterval(this.interval)
             this.valaszVizsgalat(false)
           }
@@ -182,17 +182,6 @@
             alert("Hiba az adatok felvitelekor: " + error)
           }
         }
-        else {
-          try {
-            const res = await axios.post('/api/', {
-              
-            });
-          }
-          catch (error) {
-            alert("Hiba az adatok felvitelekor: " + error)
-          }
-        }
-        
 
         useJatekmenetStore().$reset()
       }
@@ -218,7 +207,7 @@
               //ha a gomb megnyomott akkor a válasz helyessége szerint színezi, ha nem akkor az alapszínt használja
               backgroundColor: leNyomottValaszGomb ? (value.helyes ? 'green' : 'firebrick') : ('#4C4C4C')
             }"
-            >
+          >
             {{ value.szoveg }}
           </button>
         </div>

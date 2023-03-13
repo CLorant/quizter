@@ -1,20 +1,9 @@
 <script>
-/*
-  let buttonId;
-    $(".btn-toggle").on("click", function() {
-        $('.dropdown-menu').toggleClass('open');
-        buttonId=$(this).attr('id');
-    });
-    $(".dropdown-menu li").on("click", function() {
-        document.getElementById(buttonId).innerText = $(this).text();
-        console.log($("#"+buttonId).text());
-        $('.dropdown-menu').removeClass('open');
-    });
-  */
   export default {
     data() {
       return {
-        keresett: ""
+        keresett: "",
+        eredmeny: []
       }
     }
   }
@@ -142,8 +131,8 @@
                     <td>42069</td>
                   </tr>
                   <tr class="szemelyes-rekord-sor">
-                    <td>Helyes/Helytelen</td>
-                    <td>20/0</td>
+                    <td>Helyes / Helytelen</td>
+                    <td>20 / 0</td>
                   </tr>
                   <tr class="szemelyes-rekord-sor">
                     <td>Téma</td>

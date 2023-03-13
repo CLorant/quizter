@@ -35,6 +35,9 @@
       }
       
     },
+    beforeRouteLeave() {
+      useProfilStore().$reset()
+    },
     computed: {
       ...mapWritableState(useFelhasznaloStore, ['felhasznalo']),
       ...mapWritableState(useProfilStore, ['profil'])
@@ -110,7 +113,6 @@
           img.src = reader.result;
         };
         reader.readAsDataURL(file);
-        console.log(this.szerkesztettKep)
       },
 
       mentes() {
@@ -137,7 +139,6 @@
       torles() {
         // ProfilDelete
         useFelhasznaloStore().$reset()
-        this.felhasznalo.bejelentkezett = false
         this.$router.push("/")
       }
     } 
