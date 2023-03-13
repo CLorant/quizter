@@ -24,7 +24,7 @@
         temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes'],
       }
     },
-    
+
     beforeRouteEnter(to, from, next) {
       if (to.params.userId == "nem-meghatarozott-felhasznalo"){
         alert("Regisztrálj hogy hozzáférhess a saját profil oldaladhoz")
@@ -352,23 +352,6 @@
     font-size: 10pt;
     font-weight: bold;
     color: white;
-  }
-
-  #szint-tarolo{
-    background-color: white;
-    width: 200px;
-    height: 30px;
-    margin-bottom: 15px;
-  }
-  #szint{
-    position: absolute;
-    font-size: 18pt;
-    color: black;
-    font-weight: bold;
-  }
-  #szint-haladas{
-    background-color: rgb(255, 200, 0);
-    height: 30px;
   }
 
   #rekord-tarolo{
