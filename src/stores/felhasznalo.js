@@ -25,8 +25,7 @@ export const useFelhasznaloStore = defineStore('felhasznalo', {
         ido: String,
         kerdesSzam: Number,
         valaszSzam: Number
-      },
-      bejelentkezett: false
+      }
     }
   })
 });
