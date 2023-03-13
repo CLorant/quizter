@@ -306,26 +306,6 @@
     color: white;
   }
 
-  #szint-tarolo {
-    background-color: white;
-    height: 16px;
-    width: 100px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  #szint {
-    position: absolute;
-    font-size: 10pt;
-    color: black;
-    font-weight: bold;
-  }
-
-  #szint-haladas {
-    background-color: rgb(255, 200, 0);
-    height: 100%;
-  }
-
   .jobb-nav {
     position:absolute;
     right:12px;
