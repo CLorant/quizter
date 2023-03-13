@@ -1,5 +1,5 @@
 <script>
-  import TemaGomb from '../components/fooldal/TemaGomb.vue'
+  import TemaGomb from '../components/TemaGomb.vue'
 
   export default {
     components: {

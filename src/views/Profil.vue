@@ -1,10 +1,15 @@
 <script>
+  import Szint from '../components/Szint.vue' 
   import { mapWritableState } from 'pinia'
   import { useProfilStore } from '../stores/profil'
   import { useFelhasznaloStore } from '../stores/felhasznalo'
   import profilJSON from '../profil.json'
 
   export default {
+    components: {
+      Szint
+    },
+
     data() {
       return {
         bejelentkezettFelh: false,
@@ -19,28 +24,32 @@
         temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes'],
       }
     },
-    mounted() {
-      if (this.$route.params.userId == "nem-meghatarozott-felhasznalo"){
+    
+    beforeRouteEnter(to, from, next) {
+      if (to.params.userId == "nem-meghatarozott-felhasznalo"){
         alert("Regisztrálj hogy hozzáférhess a saját profil oldaladhoz")
-        this.$router.push("/regisztracio")
+        next("/regisztracio")
       }
+      else {
+        next()
+      }
+    },
+
+    beforeMount() {
       if (this.$route.params.userId == this.felhasznalo.username){
         this.bejelentkezettFelh = true
         this.profil = this.felhasznalo
       }
-      else {  
+      else {
         this.profil = profilJSON // átmeneti
         // getProfil
         // ha fetch nem sikerül akkor -> NemTalalt.vue
       }
-      
     },
-    beforeRouteLeave() {
-      useProfilStore().$reset()
-    },
+
     computed: {
-      ...mapWritableState(useFelhasznaloStore, ['felhasznalo']),
-      ...mapWritableState(useProfilStore, ['profil'])
+      ...mapWritableState(useProfilStore, ['profil']),
+      ...mapWritableState(useFelhasznaloStore, ['felhasznalo'])
     },
 
     methods: {
@@ -160,12 +169,7 @@
           <input v-if="bejelentkezettFelh && szerkesztes" id="szerkesztettNev" type="text" maxlength="20" v-model="szerkesztettNev" class="form-control text-light border-secondary w-100">
           <h2 v-else>{{ profil.name }}</h2>
           <h3>@{{ profil.username }}</h3>
-          <div id="szint-tarolo">
-            <div class="d-flex justify-content-center">
-              <span id="szint">1.&nbsp;szint</span>
-            </div>
-          <div id="szint-haladas" :style="{width: '50%'}"></div>
-        </div>
+          <Szint :exp="profil.exp" magassag="30px" szelesseg="200px" betumeret="18pt"/>
         <p>Csatlakozott: <span id="csatlakozas">{{ profil.csatlakozas }}</span></p>
         <button v-if="bejelentkezettFelh && !szerkesztes" id="szerkesztesGomb" class="btn btn-dark" @click="szerkesztesLenyomva" style="width: 200px;">
           Profil Módosítása

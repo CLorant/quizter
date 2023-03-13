@@ -1,5 +1,11 @@
 <script>
+  import Szint from '../components/Szint.vue';
+
   export default {
+    components: {
+      Szint
+    },
+
     data() {
       return {
         keresett: "",
@@ -116,12 +122,7 @@
                 </a>
                 <div id="felhasznalo-tarolo">
                   <span id="felhasznalo-nev">LukeAFK</span>
-                  <div id="szint-tarolo">
-                    <div class="d-flex justify-content-center">
-                      <span id="szint">1. szint</span>
-                    </div>
-                    <div id="szint-haladas"></div>
-                  </div>
+                  <Szint :exp="100" magassag="30px" szelesseg="200px" betumeret="18pt"/> <!-- exp-t írdd át -->
                 </div>
               </div>
               <table class="table table-hover table-borderless table-sm text-light">
@@ -272,26 +273,6 @@
     font-size: 22pt;
     font-weight: bold;
     color: white;
-  }
-
-  #szint-tarolo {
-    background-color: white;
-    height: 25px;
-    width: 100%; 
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  #szint {
-    position: absolute;
-    font-size: 16pt;
-    color: black;
-    font-weight: bold;
-  }
-
-  #szint-haladas {
-    background-color: rgb(255, 200, 0);
-    height: 100%;
   }
 
   @media screen and (max-width: 407px){
