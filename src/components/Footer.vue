@@ -16,16 +16,14 @@
           </RouterLink>
         </div>
         <div class="col-md-3 col-sm-12 text-center text-md-end">
-          <a href="https://github.com/CLorant/quizter"><img src="/img/ikon/github_icon.webp" target="_blank" rel=”noreferrer” alt="Github Ikon" class="kozossegi-gomb m-2"></a>
-          <a href="https://www.reddit.com/r/quizter"><img src="/img/ikon/reddit_icon.webp" target="_blank" rel=”noreferrer” alt="Reddit Ikon" class="kozossegi-gomb m-2"></a>
-          <a href="https://www.youtube.com/@quiztersite"><img src="/img/ikon/youtube_icon.webp" target="_blank" rel=”noreferrer” alt="Youtube Ikon" class="kozossegi-gomb m-2"></a>
+          <a href="https://github.com/CLorant/quizter" target="_blank" rel="noreferrer"><img src="/img/ikon/github_icon.webp" alt="Github Ikon" class="kozossegi-gomb m-2"></a>
           <div class="mt-3">
             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com" target="_blank" rel=”noreferrer” class="text-decoration-none text-light">quizterhelp@gmail.com</a>
           </div>
         </div>
-        <hr class="bg-secondary my-4 d-md-none">
+        <hr class="text-light my-4 d-md-none">
         <div class="col-sm-12 text-center">
-          <p class="text-secondary">&copy; 2023 Quizter</p>
+          <p id="copyright">&copy; 2023 Quizter</p>
         </div>
       </div>
     </div>
@@ -37,6 +35,7 @@
     background-color: #0b0c0e
   }
   #logo{
+    height: 39px;
     width: 150px;
   }
   .kozossegi-gomb {
@@ -45,5 +44,8 @@
   }
   .kozossegi-gomb:hover, #logo:hover, a:hover{
     opacity: 0.8;
+  }
+  #copyright{
+    color: rgb(160, 160, 160);
   }
 </style>
