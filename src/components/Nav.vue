@@ -26,12 +26,16 @@
         keresett: "",
         keres: false,
         eredmeny: [],
-        throttle: null
+        throttle: null,
+        szint: 0,
+        szuksegesXp: [100,200,300,500,750,1000,1500,2000,3500,5000,7500,10000,15000,20000,30000,50000,75000,100000,200000,300000,400000,500000,600000,700000,800000,900000,1000000,1100000,1200000]
       }
     },
+    
     mounted() {
       this.bejelentkezett = true // átmeneti
-      this.felhasznalo=felhasznaloJSON // átmeneti
+      this.felhasznalo = felhasznaloJSON // átmeneti
+      this.szint = this.szintKezelo()
     },
     computed: {
       ...mapWritableState(useFelhasznaloStore, ['felhasznalo'])
@@ -62,16 +66,20 @@
         }
       }
     },
+
     methods:{
       aktiv(name){
         if(this.$router.currentRoute.value.name === name){
           return "active"
         }
       },
+
       kijelentkezes(){
-        this.bejelentkezett=false
+        this.bejelentkezett = false
         useFelhasznaloStore().$reset()
+        this.$router.push("/")
       },
+
       kereses(keresettElem) {
         console.log(keresettElem) // átmeneti
         /*
@@ -86,9 +94,109 @@
           });
         */
       },
+
       lenyilasKezelo(){
         this.navIkonKattint = !this.navIkonKattint;
         this.keresett = ""
+      },
+
+      szintKezelo() {
+        let xp = this.felhasznalo.exp
+        console.log("asd")
+        switch (xp) {
+          case xp < this.szuksegesXp[0]:
+            return 1
+          
+          case xp < this.szuksegesXp[1]:
+            return 2
+          
+          case xp < this.szuksegesXp[2]:
+            return 3
+          
+          case xp < this.szuksegesXp[3]:
+            return 4
+          
+          case xp < this.szuksegesXp[4]:
+            return 5
+          
+          case xp < this.szuksegesXp[5]:
+            return 6
+          
+          case xp < this.szuksegesXp[6]:
+            return 7
+          
+          case xp < this.szuksegesXp[7]:
+            return 8
+          
+          case xp < this.szuksegesXp[8]:
+            return 9
+          
+          case xp < this.szuksegesXp[9]:
+            return 10
+          
+          case xp < this.szuksegesXp[10]:
+            return 11
+          
+          case xp < this.szuksegesXp[11]:
+            return 12
+          
+          case xp < this.szuksegesXp[12]:
+            return 13
+          
+          case xp < this.szuksegesXp[13]:
+            return 14
+          
+          case xp < this.szuksegesXp[14]:
+            return 15
+          
+          case xp < this.szuksegesXp[15]:
+            return 16
+          
+          case xp < this.szuksegesXp[16]:
+            return 17
+          
+          case xp < this.szuksegesXp[17]:
+            return 18
+          
+          case xp < this.szuksegesXp[18]:
+            return 19
+          
+          case xp < this.szuksegesXp[19]:
+            return 20
+          
+          case xp < this.szuksegesXp[20]:
+            return 21
+          
+          case xp < this.szuksegesXp[21]:
+            return 22
+          
+          case xp < this.szuksegesXp[22]:
+            return 23
+          
+          case xp < this.szuksegesXp[23]:
+            return 24
+          
+          case xp < this.szuksegesXp[24]:
+            return 25
+          
+          case xp < this.szuksegesXp[25]:
+            return 26
+          
+          case xp < this.szuksegesXp[26]:
+            return 27
+          
+          case xp < this.szuksegesXp[27]:
+            return 28
+          
+          case xp < this.szuksegesXp[28]:
+            return 29
+          
+          case xp > this.szuksegesXp[28]:
+            return 30
+          
+          default:
+            return 1
+        }
       }
     }
   }
@@ -97,7 +205,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container-fluid">
-      <!-- Hamburger menü -->
       <button class="navbar-toggler"
       :id="this.navIkonKattint ? 'open' : 'closed'"
       type="button"
@@ -121,9 +228,9 @@
             <span id="felhasznalo-nev">{{ felhasznalo.username }}</span>
             <div id="szint-tarolo">
               <div class="d-flex justify-content-center">
-                <span id="szint">1.&nbsp;szint</span>
+                <span id="szint">{{ szint }}.&nbsp;szint</span>
               </div>
-              <div id="szint-haladas" :style="{width:'50%'}"></div>
+              <div id="szint-haladas" :style="{width: Math.round(felhasznalo.exp / szuksegesXp[szint-1] * 100)}"></div>
             </div>
           </div>
         </div>
@@ -174,7 +281,7 @@
 
   <div class="fixed-top" id="kereses-eredmeny-tarolo">
     <div class="bg-dark rounded " :class="keres ? '' : 'd-none'" id="kereses-eredmeny">
-      <RouterLink v-for="felhasznalo in eredmeny" :to="{name: 'profil', params: {userId: felhasznalo}}" class="m-1 text-light text-decoration-none row">
+      <RouterLink v-for="felhasznalo in eredmeny" :to="{name: 'profil', params: {userId: felhasznalo}}" :key="felhasznalo" class="m-1 text-light text-decoration-none row">
         <div class="col-sm-3">
           <img :src="`/img/felhasznalo/${felhasznalo}.webp`" alt="képe" class="felhasznalo-kep">
         </div>
