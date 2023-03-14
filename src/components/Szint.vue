@@ -16,11 +16,8 @@
   },
 
   mounted() {
-    console.log(this.exp)
     this.szint = this.szintKezelo()
-    console.log(this.szint)
     this.szintHaladas = this.szintHaladasKezelo()
-    console.log(this.szintHaladas)
   },
 
   methods: {
@@ -66,8 +63,6 @@
 <style scoped>
   #szint-tarolo {
     background-color: white;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   #szint {
