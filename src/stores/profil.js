@@ -5,9 +5,9 @@ import { defineStore } from 'pinia'
 export const useProfilStore = defineStore('profil', {
   state: () => ({
     profil: {
-      username: String,
+      username: "nem-meghatarozott-felhasznalo",
       name: String,
-      kep: String,
+      kep: "/img/ikon/default-user.webp",
       exp: Number,
       csatlakozas: Date,
       bio: Text,

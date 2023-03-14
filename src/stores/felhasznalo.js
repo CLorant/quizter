@@ -6,8 +6,8 @@ export const useFelhasznaloStore = defineStore('felhasznalo', {
   state: () => ({
     felhasznalo: {
       username: "nem-meghatarozott-felhasznalo",
-      name: String,
-      kep: String,
+      name: "",
+      kep: "/img/ikon/default-user.webp",
       exp: Number,
       csatlakozas: Date,
       bio: Text,
