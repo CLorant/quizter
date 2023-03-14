@@ -7,21 +7,32 @@
         name: '',
         email: '',
         password: '',
+        repeatPassword: '',
+        nameEmpty: true,
+        passwordEmpty: true,
+        nameInvalidLength: true, 
+        passwordTooShort: true,
+        passwordNotRepeatPassword: true
       };
     },
     methods: {
       async register() {
         try {
-          const res = await axios.post('/api/register', {
-            name: this.name,
-            email: this.email,
-            password: this.password,
-          });
-          
+          if((this.nameEmpty + this.passwordEmpty  + this.nameInvalidLength  + this.passwordTooShort + this.passwordNotRepeatPassword) === false ) {
+              const res = await axios.post('/api/register', {
+              name: this.name,
+              email: this.email,
+              password: this.password,
+            });
+          }
+          else {
+            
+          }
         }
         catch (error) {
           
         }
+        
         this.$router.push("/")
       },
     },
@@ -37,23 +48,23 @@
 
       <div class="mb-4">
         <label for="name" class="form-label col">Felhasználónév</label>
-        <input type="name" class="form-control form-control-md text-light border-dark" id="username" v-model="name" required>
+        <input type="name" class="form-control form-control-md text-light border-dark" v-model="name" minlength="3" maxlength="12" required>
         <div class="invalid-feedback">
-          Kérem írja be a felhasználónevét.
+          Írja be a felhasználónevét.
         </div>
       </div>
 
       <div class="mb-4">
         <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control form-control-md text-light border-dark" id="email" v-model="email" required>
+        <input type="email" class="form-control form-control-md text-light border-dark" v-model="email" required>
         <div class="invalid-feedback">
-          Kérem írjon be egy megfelelő email címet.
+          Írjon be egy megfelelő email címet.
         </div>
       </div>
 
       <div class="mb-3">
         <label for="password" class="form-label">Jelszó</label>
-        <input type="password" class="form-control form-control-md text-light border-dark" id="password" v-model="password" required>
+        <input type="password" class="form-control form-control-md text-light border-dark" v-model="password" minlength="8" required>
         <div class="invalid-feedback">
           Kérem írja be a jelszavát.
         </div>
@@ -61,7 +72,7 @@
 
       <div class="mb-3">
         <label for="password" class="form-label">Jelszó újra</label>
-        <input type="password" class="form-control form-control-md text-light border-dark" required>
+        <input type="password" class="form-control form-control-md text-light border-dark" v-model="repeatPassword" minlength="8" required>
         <div class="invalid-feedback">
           Kérem újra írja be a jelszavát.
         </div>

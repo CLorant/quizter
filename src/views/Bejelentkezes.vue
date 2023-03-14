@@ -33,7 +33,7 @@
       
       <div class="mb-4">
         <label for="name" class="form-label col">Felhasználónév</label>
-        <input type="name" class="form-control form-control-md text-light border-dark" id="username" v-model="name" required>
+        <input type="name" class="form-control form-control-md text-light border-dark" id="username" v-model="name" minlength="3" maxlength="12" required>
         <div class="invalid-feedback">
           Kérem írja be a felhasználónevét.
         </div>
@@ -44,7 +44,7 @@
           <label for="password" class="form-label">Jelszó</label>
           <a href="#" class="link">Elfelejtett jelszó?</a>
         </div>
-        <input type="password" class="form-control form-control-md text-light border-dark" id="password" v-model="password" required>
+        <input type="password" class="form-control form-control-md text-light border-dark" id="password" v-model="password" minlength="8" required>
         <div class="invalid-feedback">
           Kérem írja be a jelszavát.
         </div>

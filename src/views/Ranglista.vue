@@ -120,10 +120,15 @@
                 <a href="profil">
                   <img id="seged-ranglista-felhasznalo-kep">
                 </a>
-                <div id="felhasznalo-tarolo">
-                  <span id="felhasznalo-nev">LukeAFK</span>
-                  <Szint :exp="100" magassag="30px" szelesseg="200px" betumeret="18pt"/> <!-- exp-t írdd át -->
+                <div>
+                  <div id="felhasznalo-tarolo">
+                    <span id="felhasznalo-nev">LukeAFK</span>
+                    <div style="display: flex; justify-content: center;">
+                      <Szint :exp="100" magassag="30px" szelesseg="200px" betumeret="18pt"/> <!-- exp-t írdd át -->
+                    </div>
+                  </div>
                 </div>
+                
               </div>
               <table class="table table-hover table-borderless table-sm text-light">
                 <thead>
@@ -218,9 +223,8 @@
     justify-content: center;
   }
 
-  .list-group-item.mine {
+  .list-group-item {
     background-color: rgb(16,16,16);
-    background-color: linear-gradient(0deg, rgba(16,16,16,1) 0%, rgba(48,48,48,1) 50%, rgba(16,16,16,1) 100%);
     color: white;
     position: sticky;
     top: 0;
@@ -232,9 +236,8 @@
     overflow-x: visible;
   }
 
-  .table-dark.mina{
+  .table-dark{
     background-color: rgb(16,16,16);
-    background-color: linear-gradient(0deg, rgba(16,16,16,1) 0%, rgba(48,48,48,1) 50%, rgba(16,16,16,1) 100%);
   }
 
   .container ul{
@@ -264,9 +267,6 @@
     width: 95%;
     padding-bottom: 25px;
     display: inline-block;
-    text-align: center;
-    margin-right: 55px;
-    margin-left: 10px;
   }
 
   #felhasznalo-nev {
@@ -276,8 +276,13 @@
   }
 
   @media screen and (max-width: 407px){
-    td, .szemelyes-rekord-sor td{
-      font-size: 12pt;
+    thead {
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    td, .szemelyes-rekord-sor td {
+      font-size: 5vw;
       line-height: 27px;
     }
   }
