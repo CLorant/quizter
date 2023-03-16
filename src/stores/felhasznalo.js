@@ -6,26 +6,31 @@ export const useFelhasznaloStore = defineStore('felhasznalo', {
   state: () => ({
     felhasznalo: {
       username: "nem-meghatarozott-felhasznalo",
-      name: "",
-      kep: "/img/ikon/default-user.webp",
-      exp: Number,
       csatlakozas: Date,
-      bio: Text,
-      jatszmaSzam: Number,
-      valaszIdo: Number,
-      tema1: String,
-      tema2: String,
-      tema3: String,
-      tiltott: Boolean,
+      jogosultsag: "user",
+      jellemzok: {
+        kep: "/img/ikon/default-user.webp",
+        name: "Quizter Felhasználó",
+        bio: "",
+        tema1: "autok",
+        tema2: "biologia",
+        tema3: "fizika"
+      },
+      statisztika: {
+        exp: 0,
+        jatszmaSzam: 0,
+        valaszIdo: 0,
+      },
       rekord: {
-        pontszam: Number,
-        helyesHelytelen: String,
-        tema: String,
-        nehezseg: String,
-        ido: String,
-        kerdesSzam: Number,
-        valaszSzam: Number
-      }
+        pontszam: 0,
+        helyesHelytelen: "0 / 0",
+        tema: "autok",
+        nehezseg: "konnyu",
+        ido: 0,
+        kerdesSzam: 0,
+        valaszSzam: 0
+      },
+      bejelentkezett: false
     }
   })
 });
