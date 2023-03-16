@@ -12,8 +12,6 @@
 
     data() {
       return {
-        bejelentkezett: null,
-        felhasznaloKattint: false,
         navIkonKattint: false,
         temak: [
           { id: 'autok', szoveg: 'Autók' },
@@ -31,24 +29,27 @@
         ],
         keresett: "",
         keres: false,
-        eredmeny: [],
+        keresesEredmeny: [],
         throttle: null
       }
-    },
-
-    beforeMount() {
-      this.bejelentkezett = true // átmeneti
-      this.felhasznalo = felhasznaloJSON // átmeneti
     },
 
     computed: {
       ...mapWritableState(useFelhasznaloStore, ['felhasznalo'])
     },
 
+    beforeMount() {
+      for (const prop in this.felhasznalo) { // átmeneti
+        if (felhasznaloJSON.hasOwnProperty(prop)) {
+          this.felhasznalo[prop] = felhasznaloJSON[prop];
+        }
+      }
+      this.felhasznalo.bejelentkezett = true // átmeneti
+    },
+
     // ha a route változik akkor visszaállítja a navbart
-    watch:{
+    watch: {
       $route() {
-        this.felhasznaloKattint = false
         this.navIkonKattint = false
         this.keresett = ""
         let nav = $(".navbar-collapse");
@@ -56,9 +57,10 @@
           nav.removeClass("show");
         }
       },
+
       keresett(ujKeresett) {
-        if(ujKeresett!==""){
-          this.keres=true
+        if(ujKeresett !== ""){
+          this.keres = true
           if(this.throttle) {
             clearTimeout(this.throttle)
           }
@@ -69,24 +71,23 @@
         else{
           this.keres=false
         }
-      }
+      },
     },
 
     methods:{
       aktiv(name){
-        if(this.$router.currentRoute.value.name === name){
+        if(this.$router.currentRoute.value.name === name) {
           return "active"
         }
       },
 
-      kijelentkezes(){
-        this.bejelentkezett = false
+      kijelentkezes() {
+        this.felhasznalo.bejelentkezett = false
         useFelhasznaloStore().$reset()
         this.$router.push("/")
       },
 
       kereses(keresettElem) {
-        console.log(keresettElem) // átmeneti
         /*
         axios
           .get("/search", {
@@ -95,14 +96,13 @@
             },
           })
           .then((res) => {
-            this.eredmeny = res.data;
+            this.keresesEredmeny = res.data;
           });
         */
       },
 
-      lenyilasKezelo(){
-        this.navIkonKattint = !this.navIkonKattint;
-        this.keresett = ""
+      keresoGomb() {
+        this.$router.push({name: 'profil', params: {userId: this.keresett}})
       }
     }
   }
@@ -115,50 +115,54 @@
       :id="this.navIkonKattint ? 'open' : 'closed'"
       type="button"
       data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
+      data-bs-target=".navbar-collapse"
+      aria-controls="navbar-collapse"
       aria-expanded="false"
       aria-label="Toggle navigation"
-      @click="lenyilasKezelo">
+      @click="keresett = ''; navIkonKattint = !navIkonKattint">
         <span></span>
         <span></span>
         <span></span>
         <span></span>
       </button>
-      <RouterLink to="/" class="navbar-brand">
-        <img src="" alt="Quizter Logó">
+      <RouterLink to="/">
+        <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" class="navbar-brand">
       </RouterLink>
-      <div v-if="bejelentkezett">
-        <div class="jobb-nav collapse navbar-collapse" id="navbarNav" style="top:6px;">
+      <div v-if="felhasznalo.bejelentkezett">
+        <div class="collapse navbar-collapse jobb-nav" style="top:6px;">
           <div id="felhasznalo-tarolo">
             <span id="felhasznalo-nev">{{ felhasznalo.username }}</span>
-            <Szint :exp="felhasznalo.exp" magassag="16px" szelesseg="100px" betumeret="10pt"/>
+            <Szint :exp="felhasznalo.statisztika.exp" magassag="16px" szelesseg="100px" betumeret="10pt"/>
           </div>
         </div>
-        <div class="dropdown dropdown-toggle text-light jobb-nav">
-          <img :src="felhasznalo.kep" alt="Felhasználókép" class="felhasznalo-kep" @click="felhasznaloKattint = !felhasznaloKattint">
-          <div class="dropdown-menu dropdown-menu-dark" :class="felhasznaloKattint ? 'show' : ''" style="right:0;">
+        <div class="dropdown jobb-nav">
+          <div class="dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img :src="felhasznalo.jellemzok.kep" alt="Felhasználókép" decoding="async" class="felhasznalo-kep">
+          </div>
+          <div class="dropdown-menu dropdown-menu-dark" id="felhasznaloDropdownMenu">
             <RouterLink :to="{name: 'profil', params: {userId: felhasznalo.username}}" class="dropdown-item">Profil</RouterLink>
             <button class="dropdown-item" @click="kijelentkezes()">Kijelentkezés</button>
           </div>
         </div>
       </div>
       <div v-else>
-        <div class="dropdown dropdown-toggle text-light jobb-nav">
-          <img src="/img/ikon/login.webp" alt="Felhasználókép" class="felhasznalo-kep" @click="felhasznaloKattint = !felhasznaloKattint">
-          <div class="dropdown-menu dropdown-menu-dark" :class="this.felhasznaloKattint ? 'show' : ''" style="right:0;">
+        <div class="dropdown jobb-nav" >
+          <div class="dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="/img/ikon/login.webp" alt="Felhasználókép" decoding="async" class="felhasznalo-kep">
+          </div>
+          <div class="dropdown-menu dropdown-menu-dark" id="felhasznaloDropdownMenu">
             <RouterLink to="/bejelentkezes" class="dropdown-item">Bejelentkezés</RouterLink>
             <RouterLink to="/regisztracio" class="dropdown-item">Regisztráció</RouterLink>
           </div>
         </div>
       </div>
-      <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="collapse navbar-collapse">
         <div class="navbar-nav">
           <RouterLink to="/" class="nav-item nav-link" :class="aktiv('fooldal')">Főoldal</RouterLink>
           <RouterLink :to="{name: 'profil', params: {userId: felhasznalo.username}}" class="nav-item nav-link" :class="aktiv('profil')">Profil</RouterLink>
           <RouterLink to="/ranglista" class="nav-item nav-link" :class="aktiv('ranglista')">Ranglista</RouterLink>
           <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" :class="aktiv('quizbeallito')" id="quizBeallitoDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link dropdown-toggle" :class="aktiv('quizbeallito')" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Témák
             </a>
             <div class="dropdown-menu dropdown-menu-dark">
@@ -167,10 +171,10 @@
           </div>
         </div>
       </div>
-      <div class="kereso-tarolo navbar-collapse collapse" id="navbarNav" >
+      <div class="kereso-tarolo navbar-collapse collapse">
         <div class="input-group">
           <input class="form-control" id="nav-kereses-szoveg" v-model="keresett" type="search" placeholder="Felhasználó" aria-label="Search">
-          <button class="btn btn-warning" id="nav-kereses-gomb" @click="$router.push(`profil/${keresett}`)">
+          <button class="btn btn-warning" id="nav-kereses-gomb" @click="keresoGomb" aria-label="Search Button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
               <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
             </svg>
@@ -182,12 +186,12 @@
 
   <div class="fixed-top" id="kereses-eredmeny-tarolo">
     <div class="bg-dark rounded " :class="keres ? '' : 'd-none'" id="kereses-eredmeny">
-      <RouterLink v-for="felh in eredmeny" :to="{name: 'profil', params: {userId: felh.username}}" :key="felh.username" class="m-1 text-light text-decoration-none row">
+      <RouterLink v-for="felh in keresesEredmeny" :to="{name: 'profil', params: {userId: felh.username}}" :key="felh.username" class="m-1 text-light text-decoration-none row">
         <div class="col-sm-3">
-          <img :src="felh.kep" alt="képe" class="felhasznalo-kep">
+          <img :src="felh.jellemzok.kep" :alt="`${felh.username} képe`" decoding="async" class="felhasznalo-kep">
         </div>
         <div class="col-sm-4">
-          <p id="keresett-felhasznalo">{{ felh }}</p> 
+          <p id="keresett-felhasznalo">{{ felh.username }}</p> 
         </div>
       </RouterLink>
     </div>
@@ -271,8 +275,8 @@
 
   .navbar-brand {
     height: 40px;
+    width: 116px;
     margin-right: 40px;
-    content: url("/img/ikon/quizterlogo.webp");
   }
 
   .navbar-brand:hover {
@@ -317,6 +321,11 @@
     width: 40px;
     border-radius: 20px;
     cursor: pointer;
+  }
+
+  #felhasznaloDropdownMenu{
+    left: auto;
+    right: 0;
   }
 
   .col-auto {
