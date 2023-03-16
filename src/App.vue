@@ -12,13 +12,15 @@
 
 <template>
   <Nav/>
-  <RouterView/>
+  <div id="tarolo">
+    <RouterView/>
+  </div>
   <Footer/>
 </template>
 
 <style scoped>
-  #tartalom{
+  #tarolo{
     color: white;
-    min-height: calc(100vh - 300px);
+    min-height: 100vh;
   }
 </style>
