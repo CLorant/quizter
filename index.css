@@ -1,6 +1,5 @@
 body {
-  min-height: calc(100vh - 361px);
-  padding:0;
+  padding: 0;
   height: auto;
   color: white;
   margin: auto;
