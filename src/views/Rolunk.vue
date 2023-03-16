@@ -1,20 +1,3 @@
-<script>
-  export default {
-    data() {
-      return {
-        fejlesztesek: [
-          { path: "/img/fejlesztes/trello.webp", alt: "Trello tábla" },
-          { path: "/img/fejlesztes/fooldal.webp", alt: "Főoldal tervezése" },
-          { path: "/img/fejlesztes/burger.webp", alt: "Hamburger menü tervezése" },
-          { path: "/img/fejlesztes/jatekmenet.webp", alt: "Játékmenet dizájn koncepció" },
-          { path: "/img/fejlesztes/felepites.webp", alt: "A felépítés rajza" },
-          { path: "/img/fejlesztes/ranglista.webp", alt: "Ranglista koncepció" }
-        ],
-      };
-    },
-  };
-</script>
-
 <template>
   <div id="tartalom">
     <div class="bemutatkozas-tarolo">
@@ -56,27 +39,60 @@
         <p>Dizájner</p>
       </div>
     </div>
-    <div class="fejlesztes-galeria-tarolo">
-      <h1>Galéria a fejlesztésről</h1>
-      <div v-for="fejlesztes in fejlesztesek" :key="fejlesztes.nev" class="fejlesztes-galeria">
-        <a :href="fejlesztes.path" target="_blank">
-          <img :src="fejlesztes.path"
-          :alt="fejlesztes.alt"
-          class="fejlesztes-galeria-kep">
-        </a>
+    <h2 class="text-center my-5">Galéria a fejlesztésről</h2>
+    <div class="w-75 d-block mx-auto">
+      <div id="slider" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#slider" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#slider" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#slider" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#slider" data-bs-slide-to="3" aria-label="Slide 4"></button>
+          <button type="button" data-bs-target="#slider" data-bs-slide-to="4" aria-label="Slide 5"></button>
+          <button type="button" data-bs-target="#slider" data-bs-slide-to="5" aria-label="Slide 6"></button>
+        </div>
+
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="/img/fejlesztes/trello.webp" alt="Trello tábla" decoding="async" class="w-100"> 
+          </div>
+          <div class="carousel-item">
+            <img src="/img/fejlesztes/fooldal.webp" alt="Főoldal tervezése" decoding="async" class="w-100">
+          </div>
+          <div class="carousel-item">
+            <img src="/img/fejlesztes/burger.webp" alt="Hamburger menü tervezése" decoding="async" class="w-100">
+          </div>
+          <div class="carousel-item">
+            <img src="/img/fejlesztes/jatekmenet.webp" alt="Játékmenet dizájn koncepció" decoding="async" class="w-100">
+          </div>
+          <div class="carousel-item">
+            <img src="/img/fejlesztes/felepites.webp" alt="A felépítés rajza" decoding="async" class="w-100">
+          </div>
+          <div class="carousel-item">
+            <img src="/img/fejlesztes/ranglista.webp" alt="Ranglista koncepció" decoding="async" class="w-100">
+          </div>
+        </div>  
+      
+        <button class="carousel-control-prev" type="button" data-bs-target="#slider" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#slider" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
       </div>
     </div>
-    <div class="elerhetoseg-tarolo">
-      <h1>Elérhetőségeink</h1>
-      <div class="email-tarolo"></div>
-      <h3>Email:</h3>
+    
+    <h2 class="text-center my-5">Elérhetőség</h2>
+    <div class="text-center mb-5">
       <a
-        class="rolunk-email"
-        href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com"
-        target="_blank"
-        >quizterhelp@gmail.com</a
-      >
+      class="rolunk-email"
+      href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com"
+      target="_blank">
+        quizterhelp@gmail.com
+      </a>
     </div>
+    
   </div>
 </template>
 
@@ -137,37 +153,6 @@
 
   .rolunk-szoveg {
     padding-top: 30px;
-  }
-
-  .fejlesztes-galeria-tarolo {
-    overflow: hidden;
-    width: 100%;
-    height: auto;
-    padding-top: 50px;
-    padding-bottom: 100px;
-  }
-
-  .fejlesztes-galeria-tarolo h1 {
-    padding-bottom: 50px;
-  }
-
-  .fejlesztes-galeria {
-    padding: 20px;
-    float: left;
-  }
-
-  .fejlesztes-galeria-kep {
-    height: 200px;
-    width: auto;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
-
-  .elerhetoseg-tarolo {
-    padding-top: 50px;
-  }
-
-  .email-tarolo {
-    padding-top: 50px;
   }
 
   .rolunk-email {

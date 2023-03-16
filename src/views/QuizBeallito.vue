@@ -122,7 +122,7 @@
           konnyuGomb.style.backgroundColor="green"
         }
         else if(param===kozepes){
-          kozepesGomb.style.backgroundColor="rgb(210, 180, 0)"
+          kozepesGomb.style.backgroundColor="rgb(200, 130, 0)"
         }
         else if(param===nehez){
           nehezGomb.style.backgroundColor="firebrick"
@@ -149,7 +149,7 @@
 <template>
   <div id="tartalom">
     <div id="temaDiv">
-      <img :src="`/img/tema/${tema}.webp`" id="temaKep">
+      <img :src="`/img/tema/nagy/${tema}.webp`" alt="Téma képe" decoding="async" id="temaKep">
       <div id="temaKepSzoveg">{{ temaNev }}</div>
     </div>
     <p id="temaMagyarazat">{{ temaMagyarazat }}</p>
@@ -203,9 +203,10 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    border-radius: 2vw;
+    border-radius: 25px;
     width: 60%;
-    height: auto;
+    height: 60%;
+    max-width: 750px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
 
@@ -214,7 +215,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 6vw;
+    font-size: 68pt;
     font-weight: bold;
   }
 
@@ -269,7 +270,7 @@
   #inditoGomb{
     border: none;
     color: white;
-    background-color: #c7940a;
+    background-color: rgb(200, 130, 0);
     width: 300px;
     height: 80px;
     font-size: 24pt;
@@ -282,22 +283,12 @@
     opacity: 0.8;
   }
 
-  @media screen and (max-width: 750px){
-    #temaKep{
-      width: 95%;
-    }
-    #temaKepSzoveg{
-      font-size: 12vw;
-    }
+  @media screen and (max-width: 1479px) {
     .beallitas{
       padding: 0px;
       padding-top: 20px;
       padding-bottom: 20px;
       width: 50%;
-    }
-    .beallitasNev{
-      font-size: 4.5vw;
-      padding: 10px;
     }
     .beallitasGomb{
       width: 26%;
@@ -306,6 +297,19 @@
       font-size: 2.6vw;
       border-radius: 2.5vw;
     }
+  }
+
+  @media screen and (max-width: 750px){
+    #temaKep{
+      width: 95%;
+    }
+    #temaKepSzoveg{
+      font-size: 12vw;
+    }
+    .beallitasNev{
+      font-size: 4.5vw;
+      padding: 10px;
+    }
     #inditoGombDiv{
       padding-bottom: 0px;
     }
@@ -313,15 +317,6 @@
       width: 35vw;
       height: 10vw;
       font-size: 5vw;
-    }
-  }
-
-  @media screen and (min-width: 750px){
-    #temaKep{
-      width: 750px;
-    }
-    #temaKepSzoveg{
-      font-size: 68pt;
     }
   }
 </style>

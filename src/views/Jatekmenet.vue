@@ -1,5 +1,6 @@
 <script>
   import { mapState, mapWritableState } from 'pinia'
+  import { useTemaStore } from '../stores/tema'
   import { useQuizBeallitoStore } from '../stores/quizbeallito'
   import { useJatekmenetStore } from '../stores/jatekmenet'
   import { useFelhasznaloStore } from '../stores/felhasznalo'
@@ -18,8 +19,9 @@
     },
     computed: {
       // olvasható quizbeállító adatok, írható játékmenet és felhasználó adatok
+      ...mapState(useTemaStore, ['tema']),
       ...mapState(useQuizBeallitoStore, ['nehezseg', 'ido', 'kerdesSzam', 'valaszSzam']),
-      ...mapWritableState(useFelhasznaloStore, ['exp', 'jatszmaSzam', 'valaszIdo', 'rekord']),
+      ...mapWritableState(useFelhasznaloStore, ['felhasznalo']),
       ...mapWritableState(useJatekmenetStore, [
         'kor',
         'kerdes',
@@ -45,38 +47,24 @@
     },
     methods: {
       kerdesValaszKezelo(){
-        let obj;
-        /*
-        axios.get('/user?ID=12345')
-        .then(function (response) {
-          // handle success
-          console.log(response);
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        })
-        .finally(function () {
-          // always executed
-        });
-        */
+        let obj
         obj = kerdesvalaszokJSON //átmeneti
+
+        // hozzáfűz a válaszokhoz egy true vagy false boolt
         for (let i = 0; i < Object.keys(obj).length; i++) {
           let kerdesvalasz = Object.values(obj)[i]
           for (let j = 0; j < this.valaszSzam; j++) {
             let igazE
-            if(j===0){
-              igazE=true
+            if(j === 0){
+              igazE = true
             }
             else{
-              igazE=false
+              igazE = false
             }
-            kerdesvalasz.valaszok[`valasz${j+1}`].helyes=igazE
+            kerdesvalasz.valaszok[`valasz${j+1}`].helyes = igazE
           }
-          obj[`kerdesvalasz${i+1}`]=kerdesvalasz
+          obj[`kerdesvalasz${i+1}`] = kerdesvalasz
         }
-        console.log('objekt')
-        console.log(obj)
         return obj
       },
       
@@ -159,19 +147,20 @@
         //exp, jatszmaSzam, valaszido mindig frissül
         //rekord frissül ha személyes rekord
 
-        this.exp += Math.round(this.pont / 100)
-        this.jatszmaSzam++
+        this.felhasznalo.exp += Math.round(this.pont / 100)
+        this.felhasznalo.jatszmaSzam++
         // globális válaszidő összeadva a játszmabeli válaszidővel, elosztva a játszmaszámmal majd 2 decimális pontra fixálva 
-        this.valaszIdo = ((this.valaszIdo + this.atlagosValaszIdo) / this.jatszmaSzam).toFixed(2)
+        // this.valaszIdo = ((this.valaszIdo + this.atlagosValaszIdo) / this.jatszmaSzam).toFixed(2)
+        this.felhasznalo.valaszIdo += (this.atlagosValaszIdo / this.kerdesSzam).toFixed(2)
 
         if(this.pont > this.rekord.pontszam) {
-          this.rekord.pontszam = this.pont
-          this.rekord.helyesHelytelen = this.helyesValasz + " / " + this.helytelenValasz
-          this.rekord.tema = localStorage.getItem('temaNev')
-          this.rekord.nehezseg = this.nehezseg
-          this.rekord.ido = this.ido
-          this.rekord.kerdesSzam = this.kerdesSzam
-          this.rekord.valaszSzam = this.valaszSzam
+          this.felhasznalo.rekord.pontszam = this.pont
+          this.felhasznalo.rekord.helyesHelytelen = this.helyesValasz + " / " + this.helytelenValasz
+          this.felhasznalo.rekord.tema = this.tema
+          this.felhasznalo.rekord.nehezseg = this.nehezseg
+          this.felhasznalo.rekord.ido = this.ido
+          this.felhasznalo.rekord.kerdesSzam = this.kerdesSzam
+          this.felhasznalo.rekord.valaszSzam = this.valaszSzam
 
           try {
             const res = await axios.post('/api/', {
@@ -182,7 +171,6 @@
             alert("Hiba az adatok felvitelekor: " + error)
           }
         }
-
         useJatekmenetStore().$reset()
       }
     }
@@ -191,10 +179,10 @@
 
 <template>
   <div id="tartalom">
-    <div v-if="kor<kerdesSzam">
+    <div v-if="kor < kerdesSzam">
       <p id="korSzamlalo">{{ kor + 1 }} / {{ kerdesSzam }}</p>
       <h3 id="kerdes">{{ kerdes.szoveg }}</h3>
-      <img id="kep" :src="kerdes.kep"/>
+      <img id="kep" :src="kerdes.kep" alt="Kérdés képe" decoding="async"/>
       <div id="gombTarolo">
         <div id="gombDiv">
           <button
@@ -235,7 +223,7 @@
       <h4 style="margin-top: 50px;">Pontszám: {{ pont }} pont</h4>
       <h4 style="margin-top: 25px;">Helyes: {{ helyesValasz }}</h4>
       <h4 style="margin-top: 25px;">Helytelen: {{ helytelenValasz }}</h4>
-      <h4 style="margin-top: 25px;">Átlagos válaszidő: {{ atlagosValaszIdo / kerdesSzam }} mp</h4>
+      <h4 style="margin-top: 25px;">Átlagos válaszidő: {{ (atlagosValaszIdo / kerdesSzam).toFixed(2) }} mp</h4>
       <RouterLink to="/">
         <button id='folytatasGomb' style="background-color:#4C4C4C; margin-top: 55px;">Kilépés</button>
       </RouterLink>

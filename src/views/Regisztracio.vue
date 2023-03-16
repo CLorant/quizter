@@ -43,7 +43,7 @@
   <div id="tartalom" class="my-5 d-flex flex-column justify-content-center align-items-center">
     <form @submit.prevent="register" class="needs-validation rounded bg-dark p-4" id="form" novalidate>
       <div class="d-flex justify-content-center mb-5">
-        <img src="/img/ikon/quizterlogo.webp" alt="Logo" class="w-75">
+        <img src="/img/ikon/quizterlogo.webp" decoding="async" alt="Logo" class="w-75">
       </div>
 
       <div class="mb-4">

@@ -29,11 +29,13 @@
 <template>
   <div id="tartalom">
     <div id="cim">
-      <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" id="cim-logo">
+      <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo">
       <h2>Teszteld a tudásod</h2>
     </div>
-    <div id="temaValasztoGombok">
-      <TemaGomb v-for="t in temak" :key="t.id" :tema="t.id" :temaNev="t.szoveg"/>
+    <div id="temaGombTarolo">
+      <div id="temaValasztoGombok">
+        <TemaGomb v-for="t in temak" :key="t.id" :tema="t.id" :temaNev="t.szoveg"/>
+      </div>
     </div>
   </div>
 </template>
@@ -42,24 +44,40 @@
   #tartalom{
     margin-top: 120px;
   }
+
   #cim{
     color: rgb(255, 200, 0);
     text-align: center;
   }
+
   #cim-logo{
     height: 90%;
     width: 90%;
     max-width: 600px;
   }
+
+  #temaGombTarolo {
+    display: flex;
+    justify-content: center;
+  }
+
   #temaValasztoGombok{
-    text-align: center;
-    padding-top: 80px;
-    padding-bottom: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0;
+    margin-top: 64pt;
+    margin-bottom: 64pt;
+    max-width: 2013px;
   }
 
   @media screen and (max-width: 420px){
     #cim h2{
       font-size: 6vw;
+    }
+
+    #temaValasztoGombok {
+      justify-content: space-around;
     }
   }
 </style>

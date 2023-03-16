@@ -36,14 +36,16 @@
     },
 
     beforeMount() {
-      if (this.$route.params.userId == this.felhasznalo.username){
-        this.bejelentkezettFelh = true
-        this.profil = this.felhasznalo
-      }
-      else {
-        this.profil = profilJSON // átmeneti
-        // getProfil
-        // ha fetch nem sikerül akkor -> NemTalalt.vue
+      this.getFelhasznalo()
+    },
+
+    watch: {
+      '$route.params.userId'() {
+        this.bejelentkezettFelh = false
+        this.szerkesztes =  false
+        this.torlesPopup = false
+        useProfilStore().$reset()
+        this.getFelhasznalo()
       }
     },
 
@@ -97,14 +99,31 @@
         }
       },
 
+      nehezsegSzoveg(nehezseg) {
+        switch(nehezseg) {
+          case "konnyu":
+            return "Könnyű"
+
+          case "kozepes":
+            return "Közepes"
+
+          case "nehez":
+            return "Nehéz"
+
+          // Helytelen "nehezseg" paraméterkor
+          default:
+            return "Könnyű"
+        }
+      },
+
       szerkesztesLenyomva(){
         this.szerkesztes = true
-        this.szerkesztettKep = this.profil.kep
-        this.szerkesztettNev = this.profil.name
-        this.szerkesztettBio = this.profil.bio
-        this.szerkesztettTema1 = this.profil.tema1
-        this.szerkesztettTema2 = this.profil.tema2
-        this.szerkesztettTema3 = this.profil.tema3
+        this.szerkesztettKep = this.profil.jellemzok.kep
+        this.szerkesztettNev = this.profil.jellemzok.name
+        this.szerkesztettBio = this.profil.jellemzok.bio
+        this.szerkesztettTema1 = this.profil.jellemzok.tema1
+        this.szerkesztettTema2 = this.profil.jellemzok.tema2
+        this.szerkesztettTema3 = this.profil.jellemzok.tema3
       },
 
       kepCsere(event) {
@@ -124,29 +143,51 @@
         reader.readAsDataURL(file);
       },
 
-      mentes() {
-        this.szerkesztes = false
-        // profil state (oldalon látható)
-        this.profil.kep = this.szerkesztettKep
-        this.profil.name = this.szerkesztettNev
-        this.profil.bio = this.szerkesztettBio
-        this.profil.tema1 = this.szerkesztettTema1
-        this.profil.tema2 = this.szerkesztettTema2
-        this.profil.tema3 = this.szerkesztettTema3
-
-        // felhasznalo state (oldalon nem látható)
-        this.felhasznalo.kep = this.profil.kep
-        this.felhasznalo.name = this.profil.name
-        this.felhasznalo.bio = this.profil.bio
-        this.felhasznalo.tema1 = this.profil.tema1
-        this.felhasznalo.tema2 = this.profil.tema2
-        this.felhasznalo.tema3 = this.profil.tema3
-
-        // ProfilUpdate
+      getFelhasznalo() {
+        if (this.$route.params.userId === this.felhasznalo.username){
+          this.bejelentkezettFelh = true
+          for (const prop in this.felhasznalo) {
+            if (this.profil.hasOwnProperty(prop)) {
+              this.profil[prop] = this.felhasznalo[prop];
+            }
+          }
+        }
+        else {
+          // getFelhasznalo
+          const res = profilJSON // átmeneti
+          for (const prop in res) {
+            if (this.profil.hasOwnProperty(prop)) {
+              this.profil[prop] = res[prop];
+            }
+          }
+          
+          // ha fetch nem sikerül akkor -> NemTalalt.vue
+        }
       },
 
-      torles() {
-        // ProfilDelete
+      updateUser() {
+        this.szerkesztes = false
+        // profil state (oldalon látható)
+        this.profil.jellemzok.kep = this.szerkesztettKep
+        this.profil.jellemzok.name = this.szerkesztettNev
+        this.profil.jellemzok.bio = this.szerkesztettBio
+        this.profil.jellemzok.tema1 = this.szerkesztettTema1
+        this.profil.jellemzok.tema2 = this.szerkesztettTema2
+        this.profil.jellemzok.tema3 = this.szerkesztettTema3
+
+        // felhasznalo state (oldalon nem látható)
+        this.felhasznalo.jellemzok.kep = this.profil.jellemzok.kep
+        this.felhasznalo.jellemzok.name = this.profil.jellemzok.name
+        this.felhasznalo.jellemzok.bio = this.profil.jellemzok.bio
+        this.felhasznalo.jellemzok.tema1 = this.profil.jellemzok.tema1
+        this.felhasznalo.jellemzok.tema2 = this.profil.jellemzok.tema2
+        this.felhasznalo.jellemzok.tema3 = this.profil.jellemzok.tema3
+
+        // updateUser
+      },
+
+      deleteUser() {
+        // deleteUser
         useFelhasznaloStore().$reset()
         this.$router.push("/")
       }
@@ -160,17 +201,17 @@
       <div class="tarolo">
         <div v-if="bejelentkezettFelh && szerkesztes">
           <label for="file-input">
-            <img :src="szerkesztettKep" alt="Felhasználókép" id="profil-kep">
+            <img :src="szerkesztettKep" alt="Felhasználókép" decoding="async" id="profil-kep">
           </label>
           <input type="file" accept="image/*" id="file-input" style="display: none;" v-on:change="kepCsere">
         </div>
-        <img v-else :src="profil.kep" alt="Felhasználókép" id="profil-kep">
+        <img v-else :src="profil.jellemzok.kep" alt="Felhasználókép" decoding="async" id="profil-kep">
         <div id="profil-tarolo">
           <input v-if="bejelentkezettFelh && szerkesztes" id="szerkesztettNev" type="text" maxlength="20" v-model="szerkesztettNev" class="form-control text-light border-secondary w-100">
-          <h2 v-else>{{ profil.name }}</h2>
+          <h2 v-else>{{ profil.jellemzok.name }}</h2>
           <h3>@{{ profil.username }}</h3>
-          <Szint :exp="profil.exp" magassag="30px" szelesseg="200px" betumeret="18pt"/>
-        <p>Csatlakozott: <span id="csatlakozas">{{ profil.csatlakozas }}</span></p>
+          <Szint :exp="profil.statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt"/>
+        <p>Csatlakozott: <b>{{ profil.csatlakozas }}</b></p>
         <button v-if="bejelentkezettFelh && !szerkesztes" id="szerkesztesGomb" class="btn btn-dark" @click="szerkesztesLenyomva" style="width: 200px;">
           Profil Módosítása
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="d-inline" viewBox="0 0 16 16">
@@ -184,7 +225,7 @@
             <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/>
           </svg>
         </button>
-        <button v-if="bejelentkezettFelh && szerkesztes" class="btn btn-success m-1" @click="mentes">
+        <button v-if="bejelentkezettFelh && szerkesztes" class="btn btn-success m-1" @click="updateUser">
           Mentés
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-down" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z"/>
@@ -202,7 +243,7 @@
       <div id="bio-tarolo">
         <h3>Rólam</h3>
         <input v-if="bejelentkezettFelh && szerkesztes" id="szerkesztettBio" type="text" maxlength="150" v-model="szerkesztettBio" class="form-control text-light border-secondary w-100">
-        <p v-else>{{ profil.bio }}</p>
+        <p v-else>{{ profil.jellemzok.bio }}</p>
       </div>
     </div>
     
@@ -217,7 +258,7 @@
               <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/>
             </svg>
           </button>
-          <button class="btn btn-lg btn-danger m-1" @click="torles">
+          <button class="btn btn-lg btn-danger m-1" @click="deleteUser">
             Törlés
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash3 text-danger" viewBox="0 0 16 16">
               <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
@@ -231,18 +272,18 @@
       <div id="rekord-tarolo">
         <div class="rekord-tablazat">
           <h3>Statisztika</h3><br>
-          <p>Játszmák: <span>{{ profil.jatszmaSzam }}</span></p>
-          <p>Átlagos válaszidő: <span>{{ (profil.valaszIdo / profil.jatszmaSzam).toFixed(2) }}</span> mp</p>
+          <p>Játszmák: <b>{{ profil.statisztika.jatszmaSzam }}</b></p>
+          <p>Átlagos válaszidő: <b>{{ (profil.statisztika.valaszIdo / profil.statisztika.jatszmaSzam).toFixed(2) }}</b> mp</p>
         </div>
         <div class="rekord-tablazat">
           <h3>Személyes Rekord</h3><br>
-          <p>Pontszám: <span>{{ profil.rekord.pontszam }}</span> pont</p>
-          <p>Helyes / Helytelen: <span>{{ profil.rekord.helyesHelytelen }}</span></p>
-          <p>Téma: <span>{{ profil.rekord.tema }}</span></p>
-          <p>Nehézség: <span>{{ profil.rekord.nehezseg }}</span></p>
-          <p>Idő kérdésenként: <span>{{ profil.rekord.ido }}</span> mp</p>
-          <p>Kérdésszám: <span>{{ profil.rekord.kerdesSzam }}</span></p>
-          <p>Válaszszám: <span>{{ profil.rekord.valaszSzam }}</span></p>
+          <p>Pontszám: <b>{{ profil.rekord.pontszam }}</b> pont</p>
+          <p>Helyes / Helytelen: <b>{{ profil.rekord.helyesHelytelen }}</b></p>
+          <p>Téma: <b>{{ temaSzoveg(profil.rekord.tema)  }}</b></p>
+          <p>Nehézség: <b>{{ nehezsegSzoveg(profil.rekord.nehezseg) }}</b></p>
+          <p>Idő kérdésenként: <b>{{ profil.rekord.ido }}</b> mp</p>
+          <p>Kérdésszám: <b>{{ profil.rekord.kerdesSzam }}</b></p>
+          <p>Válaszszám: <b>{{ profil.rekord.valaszSzam }}</b></p>
         </div>
       </div>
       
@@ -250,11 +291,11 @@
         <h3>Kedvenc témakörei</h3>
         <div id="temaGomb-tarolo">
           <div v-if="bejelentkezettFelh && szerkesztes" id="temaDiv" style="z-index: 3;">
-            <img :src="`/img/tema/${szerkesztettTema1}.webp`" alt="Téma képe" id="temaKep">
+            <img :src="`/img/tema/nagy/${szerkesztettTema1}.webp`" alt="Téma képe" decoding="async" id="temaKep">
             <div id="temaKepSzoveg">
               <div class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static">
                 {{ temaSzoveg(szerkesztettTema1) }}
-                <div class="dropdown-menu dropdown-menu-dark mx-auto" style="overflow-y: scroll; height: 200px">
+                <div class="dropdown-menu dropdown-menu-dark" style="overflow-y: scroll; height: 200px">
                   <p v-for="t in temak" :key="t" class="dropdown-item" :class="szerkesztettTema1==t || szerkesztettTema2==t || szerkesztettTema3==t ? 'd-none' : ''" @click="szerkesztettTema1=t">{{ temaSzoveg(t) }}</p>
                 </div>
               </div>
@@ -262,37 +303,37 @@
           </div>
 
           <div v-else id="temaDiv">
-            <img :src="`/img/tema/${profil.tema1}.webp`" alt="Téma képe" id="temaKep">
+            <img :src="`/img/tema/nagy/${profil.jellemzok.tema1}.webp`" alt="Téma képe" decoding="async" id="temaKep">
             <div id="temaKepSzoveg">
-              {{ temaSzoveg(profil.tema1) }}
+              {{ temaSzoveg(profil.jellemzok.tema1) }}
             </div>
           </div>
           
           <div v-if="bejelentkezettFelh && szerkesztes" id="temaDiv" style="z-index: 2;">
-            <img :src="`/img/tema/${szerkesztettTema2}.webp`" alt="Téma képe" id="temaKep">
+            <img :src="`/img/tema/nagy/${szerkesztettTema2}.webp`" alt="Téma képe" decoding="async" id="temaKep">
             <div id="temaKepSzoveg">
               <div  class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static">
                 {{ temaSzoveg(szerkesztettTema2) }}
               </div>
-              <div class="dropdown-menu dropdown-menu-dark mx-auto" style="overflow-y: scroll; height: 200px">
+              <div class="dropdown-menu dropdown-menu-dark" style="overflow-y: scroll; height: 200px">
                 <p v-for="t in temak" :key="t" class="dropdown-item" :class="szerkesztettTema1==t || szerkesztettTema2==t || szerkesztettTema3==t ? 'd-none' : ''" @click="szerkesztettTema2=t">{{ temaSzoveg(t) }}</p>
               </div>
             </div>
           </div>
 
           <div v-else id="temaDiv">
-            <img :src="`/img/tema/${profil.tema2}.webp`" alt="Téma képe" id="temaKep">
+            <img :src="`/img/tema/nagy/${profil.jellemzok.tema2}.webp`" alt="Téma képe" decoding="async" id="temaKep">
             <div id="temaKepSzoveg">
-              {{ temaSzoveg(profil.tema2) }}
+              {{ temaSzoveg(profil.jellemzok.tema2) }}
             </div>
           </div>
 
           <div v-if="bejelentkezettFelh && szerkesztes" id="temaDiv" style="z-index: 1;">
-            <img :src="`/img/tema/${szerkesztettTema3}.webp`" alt="Téma képe" id="temaKep">
+            <img :src="`/img/tema/nagy/${szerkesztettTema3}.webp`" alt="Téma képe" decoding="async" id="temaKep">
             <div id="temaKepSzoveg">
               <div  class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static">
                 {{ temaSzoveg(szerkesztettTema3) }}
-                <div class="dropdown-menu dropdown-menu-dark mx-auto" style="overflow-y: scroll; height: 200px">
+                <div class="dropdown-menu dropdown-menu-dark" style="overflow-y: scroll; height: 200px">
                   <p v-for="t in temak" :key="t" class="dropdown-item" :class="szerkesztettTema1==t || szerkesztettTema2==t || szerkesztettTema3==t ? 'd-none' : ''" @click="szerkesztettTema3=t">{{ temaSzoveg(t) }}</p>
                 </div>
               </div>
@@ -300,9 +341,9 @@
           </div>
 
           <div v-else id="temaDiv">
-            <img :src="`/img/tema/${profil.tema3}.webp`" alt="Téma képe" id="temaKep">
+            <img :src="`/img/tema/nagy/${profil.jellemzok.tema3}.webp`" alt="Téma képe" decoding="async" id="temaKep">
             <div id="temaKepSzoveg">
-              {{ temaSzoveg(profil.tema3) }}
+              {{ temaSzoveg(profil.jellemzok.tema3) }}
             </div>
           </div>
         </div>
@@ -314,10 +355,6 @@
 <style scoped>
   #tartalom{
     margin-top: 55px;
-  }
-
-  #tartalom span{
-    font-weight: bold;
   }
 
   #profil-bio{
@@ -417,10 +454,6 @@
     padding: 30px;
   }
 
-  #csatlakozas{
-    font-weight: bold;
-  }
-
   table, td {
     margin-left: 16px;
     padding: 10px;
@@ -442,7 +475,7 @@
     display: block;
     margin-left: auto;
     margin-right: auto;
-    border-radius: 2vw;
+    border-radius: 25px;
     width: 60%;
     height: 60%;
     max-width: 490px;
