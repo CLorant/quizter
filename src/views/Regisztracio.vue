@@ -17,6 +17,7 @@
     },
     methods: {
       async register() {
+        this.$router.push("/");
         try {
           if((this.nameEmpty + this.passwordEmpty  + this.nameInvalidLength  + this.passwordTooShort + this.passwordNotRepeatPassword) === false ) {
               const res = await axios.post('/api/register', {
@@ -33,7 +34,7 @@
           
         }
         
-        this.$router.push("/")
+        
       },
     },
   };

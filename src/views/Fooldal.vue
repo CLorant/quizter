@@ -1,29 +1,29 @@
 <script>
-  import TemaGomb from '../components/TemaGomb.vue'
+import TemaGomb from '../components/TemaGomb.vue'
 
-  export default {
-    components: {
-      TemaGomb
-    },
-    data() {
-      return {
-        temak: [
-          { id: 'autok', szoveg: 'Autók' },
-          { id: 'biologia', szoveg: 'Biológia' },
-          { id: 'fizika', szoveg: 'Fizika' },
-          { id: 'foldrajz', szoveg: 'Földrajz' },
-          { id: 'irodalom', szoveg: 'Irodalom' },
-          { id: 'kemia', szoveg: 'Kémia' },
-          { id: 'sport', szoveg: 'Sport' },
-          { id: 'szorakoztatas', szoveg: 'Szórakoztatás' },
-          { id: 'technologia', szoveg: 'Technológia' },
-          { id: 'tortenelem', szoveg: 'Történelem' },
-          { id: 'zene', szoveg: 'Zene' },
-          { id: 'vegyes', szoveg: 'Vegyes' }
-        ]
-      }
+export default {
+  components: {
+    TemaGomb
+  },
+  data() {
+    return {
+      temak: [
+        { id: 'autok', szoveg: 'Autók' },
+        { id: 'biologia', szoveg: 'Biológia' },
+        { id: 'fizika', szoveg: 'Fizika' },
+        { id: 'foldrajz', szoveg: 'Földrajz' },
+        { id: 'irodalom', szoveg: 'Irodalom' },
+        { id: 'kemia', szoveg: 'Kémia' },
+        { id: 'sport', szoveg: 'Sport' },
+        { id: 'szorakoztatas', szoveg: 'Szórakoztatás' },
+        { id: 'technologia', szoveg: 'Technológia' },
+        { id: 'tortenelem', szoveg: 'Történelem' },
+        { id: 'zene', szoveg: 'Zene' },
+        { id: 'vegyes', szoveg: 'Vegyes' }
+      ]
     }
   }
+}
 </script>
 
 <template>
@@ -34,50 +34,50 @@
     </div>
     <div id="temaGombTarolo">
       <div id="temaValasztoGombok">
-        <TemaGomb v-for="t in temak" :key="t.id" :tema="t.id" :temaNev="t.szoveg"/>
+        <TemaGomb v-for="t in temak" :key="t.id" :tema="t.id" :temaNev="t.szoveg" />
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-  #tartalom{
-    margin-top: 120px;
+#tartalom {
+  margin-top: 120px;
+}
+
+#cim {
+  color: rgb(255, 200, 0);
+  text-align: center;
+}
+
+#cim-logo {
+  height: 90%;
+  width: 90%;
+  max-width: 600px;
+}
+
+#temaGombTarolo {
+  display: flex;
+  justify-content: center;
+}
+
+#temaValasztoGombok {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0;
+  margin-top: 64pt;
+  margin-bottom: 64pt;
+  max-width: 2013px;
+}
+
+@media screen and (max-width: 420px) {
+  #cim h2 {
+    font-size: 6vw;
   }
 
-  #cim{
-    color: rgb(255, 200, 0);
-    text-align: center;
+  #temaValasztoGombok {
+    justify-content: space-around;
   }
-
-  #cim-logo{
-    height: 90%;
-    width: 90%;
-    max-width: 600px;
-  }
-
-  #temaGombTarolo {
-    display: flex;
-    justify-content: center;
-  }
-
-  #temaValasztoGombok{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 0;
-    margin-top: 64pt;
-    margin-bottom: 64pt;
-    max-width: 2013px;
-  }
-
-  @media screen and (max-width: 420px){
-    #cim h2{
-      font-size: 6vw;
-    }
-
-    #temaValasztoGombok {
-      justify-content: space-around;
-    }
-  }
+}
 </style>

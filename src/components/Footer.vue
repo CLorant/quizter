@@ -16,9 +16,11 @@
           </RouterLink>
         </div>
         <div class="col-md-3 col-sm-12 text-center text-md-end">
-          <a href="https://github.com/CLorant/quizter" target="_blank" rel="noreferrer"><img src="/img/ikon/github_icon.webp" alt="Github Ikon" decoding="async" class="kozossegi-gomb m-2"></a>
+          <a href="https://github.com/CLorant/quizter" target="_blank" rel="noreferrer"><img
+              src="/img/ikon/github_icon.webp" alt="Github Ikon" decoding="async" class="kozossegi-gomb m-2"></a>
           <div class="mt-3">
-            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com" target="_blank" rel=”noreferrer” class="text-decoration-none text-light">quizterhelp@gmail.com</a>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com" target="_blank" rel=”noreferrer”
+              class="text-decoration-none text-light">quizterhelp@gmail.com</a>
           </div>
         </div>
         <hr class="text-light my-4 d-md-none">
@@ -31,21 +33,26 @@
 </template>
 
 <style scoped>
-  footer {
-    background-color: #0b0c0e;
-  }
-  #logo{
-    height: 39px;
-    width: 150px;
-  }
-  .kozossegi-gomb {
-    height: 30px;
-    width: 30px;
-  }
-  .kozossegi-gomb:hover, #logo:hover, a:hover{
-    opacity: 0.8;
-  }
-  #copyright{
-    color: rgb(160, 160, 160);
-  }
-</style>
+footer {
+  background-color: #0b0c0e;
+}
+
+#logo {
+  height: 39px;
+  width: 150px;
+}
+
+.kozossegi-gomb {
+  height: 30px;
+  width: 30px;
+}
+
+.kozossegi-gomb:hover,
+#logo:hover,
+a:hover {
+  opacity: 0.8;
+}
+
+#copyright {
+  color: rgb(160, 160, 160);
+}</style>

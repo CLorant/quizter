@@ -32,10 +32,10 @@ const routes = [
     path: '/jatekmenet',
     name: 'jatekmenet',
     component: () => import('../views/Jatekmenet.vue'),
-    beforeEnter(from, to){
+    beforeEnter(from, to) {
       const store = useQuizBeallitoStore();
-      if(store.kitoltott===false){
-        return to
+      if (store.kitoltott === false) {
+        return to;
       }
     }
   },
