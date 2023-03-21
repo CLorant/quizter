@@ -113,7 +113,7 @@ export default {
     keresoGomb() {
       if(this.keresett !== "") {
         this.profil = this.keresesEredmeny.felhasznalo1;
-        this.$router.push({ name: 'profil', params: { userId: this.keresesEredmeny[`felhasznalo1`].username } });
+        this.$router.push({ name: 'profil', params: { userId: this.keresesEredmeny[`felhasznalo1`].felhasznaloNev } });
       }
     }
   }
@@ -137,7 +137,7 @@ export default {
       <div v-if="felhasznalo.bejelentkezett">
         <div class="collapse navbar-collapse jobb-nav" style="top:6px;">
           <div id="felhasznalo-tarolo">
-            <span id="felhasznalo-nev">{{ felhasznalo.username }}</span>
+            <span id="felhasznalo-nev">{{ felhasznalo.felhasznaloNev }}</span>
             <Szint :exp="felhasznalo.statisztika.exp" magassag="16px" szelesseg="100px" betumeret="10pt" />
           </div>
         </div>
@@ -146,7 +146,7 @@ export default {
             <img :src="felhasznalo.jellemzok.kep" alt="Felhasználókép" decoding="async" class="felhasznalo-kep">
           </div>
           <div class="dropdown-menu dropdown-menu-dark" id="felhasznaloDropdownMenu">
-            <RouterLink :to="{ name: 'profil', params: { userId: felhasznalo.username } }" class="dropdown-item">Profil
+            <RouterLink :to="{ name: 'profil', params: { userId: felhasznalo.felhasznaloNev } }" class="dropdown-item">Profil
             </RouterLink>
             <button class="dropdown-item" @click="kijelentkezes()">Kijelentkezés</button>
           </div>
@@ -166,7 +166,7 @@ export default {
       <div class="collapse navbar-collapse">
         <div class="navbar-nav">
           <RouterLink to="/" class="nav-item nav-link" :class="aktiv('fooldal')">Főoldal</RouterLink>
-          <RouterLink :to="{ name: 'profil', params: { userId: felhasznalo.username } }" class="nav-item nav-link"
+          <RouterLink :to="{ name: 'profil', params: { userId: felhasznalo.felhasznaloNev } }" class="nav-item nav-link"
             :class="aktiv('profil')">Profil</RouterLink>
           <RouterLink to="/ranglista" class="nav-item nav-link" :class="aktiv('ranglista')">Ranglista</RouterLink>
           <div class="nav-item dropdown">
@@ -199,13 +199,13 @@ export default {
 
   <div class="fixed-top" id="kereses-eredmeny-tarolo">
     <div class="bg-dark rounded" :class="keres ? '' : 'd-none'" id="kereses-eredmeny">
-      <RouterLink v-for="(item, index) in keresesEredmeny" :to="{ name: 'profil', params: { userId: item.username } }"
-        :key="item.username" class="m-1 text-light text-decoration-none row" @click="valasztottIndex = index.substring(11); profil = keresesEredmeny[`felhasznalo${this.valasztottIndex}`]">
+      <RouterLink v-for="(item, index) in keresesEredmeny" :to="{ name: 'profil', params: { userId: item.felhasznaloNev } }"
+        :key="item.felhasznaloNev" class="m-1 text-light text-decoration-none row" @click="valasztottIndex = index.substring(11); profil = keresesEredmeny[`felhasznalo${this.valasztottIndex}`]">
         <div class="col-3">
-          <img :src="item.jellemzok.kep" :alt="`${item.username} képe`" decoding="async" class="felhasznalo-kep">
+          <img :src="item.jellemzok.kep" :alt="`${item.felhasznaloNev} képe`" decoding="async" class="felhasznalo-kep">
         </div>
         <div class="col">
-          <p id="keresett-felhasznalo">{{ item.username }}</p>
+          <p id="keresett-felhasznalo">{{ item.felhasznaloNev }}</p>
         </div>
       </RouterLink>
     </div>
