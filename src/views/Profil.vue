@@ -118,7 +118,7 @@ export default {
     szerkesztesLenyomva() {
       this.szerkesztes = true;
       this.szerkesztettKep = this.profil.jellemzok.kep;
-      this.szerkesztettNev = this.profil.jellemzok.name;
+      this.szerkesztettNev = this.profil.jellemzok.nev;
       this.szerkesztettBio = this.profil.jellemzok.bio;
       this.szerkesztettTema1 = this.profil.jellemzok.tema1;
       this.szerkesztettTema2 = this.profil.jellemzok.tema2;
@@ -143,7 +143,7 @@ export default {
     },
 
     getUserByName() {
-      if (this.$route.params.userId === this.felhasznalo.username) {
+      if (this.$route.params.userId === this.felhasznalo.felhasznaloNev) {
         this.bejelentkezettFelh = true;
         for (const prop in this.felhasznalo) {
           if (this.profil.hasOwnProperty(prop)) {
@@ -151,7 +151,7 @@ export default {
           }
         }
       }
-      if (this.profil.username === "nem-meghatarozott-felhasznalo") {
+      if (this.profil.felhasznaloNev === "nem-meghatarozott-felhasznalo") {
         this.$router.push("/");
       }
     },
@@ -160,7 +160,7 @@ export default {
       this.szerkesztes = false
       // profil state (oldalon látható)
       this.profil.jellemzok.kep = this.szerkesztettKep;
-      this.profil.jellemzok.name = this.szerkesztettNev;
+      this.profil.jellemzok.nev = this.szerkesztettNev;
       this.profil.jellemzok.bio = this.szerkesztettBio;
       this.profil.jellemzok.tema1 = this.szerkesztettTema1;
       this.profil.jellemzok.tema2 = this.szerkesztettTema2;
@@ -168,7 +168,7 @@ export default {
 
       // felhasznalo state (oldalon nem látható)
       this.felhasznalo.jellemzok.kep = this.profil.jellemzok.kep;
-      this.felhasznalo.jellemzok.name = this.profil.jellemzok.name;
+      this.felhasznalo.jellemzok.nev = this.profil.jellemzok.nev;
       this.felhasznalo.jellemzok.bio = this.profil.jellemzok.bio;
       this.felhasznalo.jellemzok.tema1 = this.profil.jellemzok.tema1;
       this.felhasznalo.jellemzok.tema2 = this.profil.jellemzok.tema2;
@@ -200,8 +200,8 @@ export default {
         <div id="profil-tarolo">
           <input v-if="bejelentkezettFelh && szerkesztes" id="szerkesztettNev" type="text" maxlength="20"
             v-model="szerkesztettNev" class="form-control text-light border-secondary w-100">
-          <h2 v-else>{{ profil.jellemzok.name }}</h2>
-          <h3>@{{ profil.username }}</h3>
+          <h2 v-else>{{ profil.jellemzok.nev }}</h2>
+          <h3>@{{ profil.felhasznaloNev }}</h3>
           <Szint :exp="profil.statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
           <p>Csatlakozott: <b>{{ profil.csatlakozas }}</b></p>
           <button v-if="bejelentkezettFelh && !szerkesztes" id="szerkesztesGomb" class="btn btn-dark"
@@ -595,4 +595,5 @@ input:focus {
   .rekord-tablazat p {
     font-size: 5vw;
   }
-}</style>
+}
+</style>

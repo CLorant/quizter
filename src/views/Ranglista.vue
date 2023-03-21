@@ -219,12 +219,12 @@ export default {
         <div id="kereses-eredmeny-tarolo">
           <div class="bg-dark rounded" :class="keres ? '' : 'd-none'" id="kereses-eredmeny">
             <div v-for="(item, index) in keresesEredmeny"
-              :key="item.username" class="m-1 text-light text-decoration-none row" @click="ranglistaAdatok = keresesEredmeny[index]">
+              :key="item.felhasznaloNev" class="m-1 text-light text-decoration-none row" @click="ranglistaAdatok = keresesEredmeny[index]">
               <div class="col-3">
-                <img :src="item.jellemzok.kep" :alt="`${item.username} képe`" decoding="async" class="felhasznalo-kep">
+                <img :src="item.jellemzok.kep" :alt="`${item.felhasznaloNev} képe`" decoding="async" class="felhasznalo-kep">
               </div>
               <div class="col">
-                <p id="keresett-felhasznalo">{{ item.username }}</p>
+                <p id="keresett-felhasznalo">{{ item.felhasznaloNev }}</p>
               </div>
             </div>
           </div>
@@ -242,13 +242,20 @@ export default {
                   <tr v-for="(item, index) in ranglistaAdatok" :key="index" @click="valasztottIndex = index.substring(11)">
                     <td class="col-1">{{ index.substring(11) }}.</td>
                     <td class="col-1" @click="profil = item">
-                      <RouterLink :to="{ name: 'profil', params: { userId: item.username } }">
-                        <img :src="item.jellemzok.kep" :alt="item.username + ' képe'" decoding="async" id="ranglista-felhasznalo-kep">
+                      <RouterLink :to="{ name: 'profil', params: { userId: item.felhasznaloNev } }">
+                        <img :src="item.jellemzok.kep" :alt="item.felhasznaloNev + ' képe'" decoding="async" id="ranglista-felhasznalo-kep">
                       </RouterLink>
                     </td>
-                    <td class="col-3" style="text-align: left;">{{ item.jellemzok.name }}</td>
-                    <td class="col-2">@{{ item.username }}</td>
+                    <td class="col-3" style="text-align: left;">{{ item.jellemzok.nev }}</td>
+                    <td class="col-2">@{{ item.felhasznaloNev }}</td>
                     <td class="col-3">{{ item.rekord.pontszam }} pont</td>
+                  </tr>
+                  <tr>
+                    <td colspan="5">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                      </svg>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -257,12 +264,12 @@ export default {
           <div class="col-lg justify-content-center px-2" >
             <div class="table-responsive">
               <div id="seged-ranglista-felhasznalo-tarolo">
-                <RouterLink @click="profil = ranglistaAdatok[`felhasznalo${valasztottIndex}`]" :to="{ name: 'profil', params: { userId: ranglistaAdatok[`felhasznalo${valasztottIndex}`].username } }">
+                <RouterLink @click="profil = ranglistaAdatok[`felhasznalo${valasztottIndex}`]" :to="{ name: 'profil', params: { userId: ranglistaAdatok[`felhasznalo${valasztottIndex}`].felhasznaloNev } }">
                   <img :src="ranglistaAdatok[`felhasznalo${valasztottIndex}`].jellemzok.kep" alt="Felhasználó kép" decoding="async" id="seged-ranglista-felhasznalo-kep">
                 </RouterLink>
                 <div>
                   <div id="felhasznalo-tarolo">
-                    <span id="felhasznalo-nev">{{ranglistaAdatok[`felhasznalo${valasztottIndex}`].username}}</span>
+                    <span id="felhasznalo-nev">{{ranglistaAdatok[`felhasznalo${valasztottIndex}`].felhasznaloNev}}</span>
                     <div style="display: flex; justify-content: center;">
                       <Szint :exp="ranglistaAdatok[`felhasznalo${valasztottIndex}`].statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
                     </div>
