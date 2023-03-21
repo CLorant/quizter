@@ -23,7 +23,7 @@
       <div class="rolunk-oszlop">
         <img src="/img/fejlesztes/lori.webp" alt="Czibik Lóránt Patrik képe" class="rolunk-kep" />
         <h2>Czibik Lóránt Patrik</h2>
-        <p>Frontend Fejlesztő<br />Dizájner</p>
+        <p>Frontend Fejlesztő<br>Dizájner</p>
       </div>
       <div class="rolunk-oszlop">
         <img src="/img/fejlesztes/gergo.webp" alt="Nagy Gergő képe" class="rolunk-kep" />
@@ -32,7 +32,7 @@
       </div>
     </div>
     <h2 class="text-center my-5">Galéria a fejlesztésről</h2>
-    <div class="w-75 d-block mx-auto">
+    <div class="d-block mx-auto" id="carousel-container">
       <div id="slider" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
           <button type="button" data-bs-target="#slider" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -81,7 +81,6 @@
         quizterhelp@gmail.com
       </a>
     </div>
-
   </div>
 </template>
 
@@ -100,15 +99,15 @@
   padding-bottom: 100px;
 }
 
-.bemutatkozas-tarolo h1 {
+h1 {
   text-align: center;
   padding-bottom: 100px;
-  font-size: 48pt;
+  font-size: 40pt;
 }
 
-#tartalom p,
-#tartalom a {
-  font-size: 16pt;
+p, a {
+  font-size: 14pt;
+  line-height: 32pt;
 }
 
 .rolunk-kep-tarolo {
@@ -144,6 +143,10 @@
   padding-top: 30px;
 }
 
+#carousel-container {
+  width: 55%;
+}
+
 .rolunk-email {
   color: white;
   text-decoration: none;
@@ -158,11 +161,15 @@
     padding-bottom: 50px;
     width: 100%;
   }
+
+  #carousel-container {
+    width: 75%;
+  }
 }
 
 @media screen and (max-width: 430px) {
-  h1 {
-    font-size: 9vw;
+  h2 {
+    font-size: 16pt;
   }
 
   h3 {
@@ -174,8 +181,8 @@
     width: 100%;
   }
 
-  .rolunk-email {
-    word-break: break-all;
+  #carousel-container {
+    width: 95%;
   }
 }
 </style>

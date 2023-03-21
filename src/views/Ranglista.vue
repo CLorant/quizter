@@ -172,41 +172,40 @@ export default {
         <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false" :value="valasztottTema">{{ temaSzoveg(valasztottTema) }}</button>
         <ul class="dropdown-menu dropdown-menu-dark">
-          <li v-for="tema in temak" class="dropdown-item" @click="valasztottTema = tema">{{ temaSzoveg(tema) }}</li>
+          <li v-for="tema in temak" :key="tema" class="dropdown-item" @click="valasztottTema = tema">{{ temaSzoveg(tema) }}</li>
         </ul>
       </div>
       <div class="dropdown my-1">
         <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false" :value="valasztottNehezseg"> {{ nehezsegSzoveg(valasztottNehezseg) }}</button>
         <ul class="dropdown-menu dropdown-menu-dark">
-          <li v-for="nehezseg in nehezsegek" class="dropdown-item" @click="valasztottNehezseg = nehezseg">{{ nehezsegSzoveg(nehezseg) }}</li>
+          <li v-for="nehezseg in nehezsegek" :key="nehezseg" class="dropdown-item" @click="valasztottNehezseg = nehezseg">{{ nehezsegSzoveg(nehezseg) }}</li>
         </ul>
       </div>
       <div class="dropdown my-1">
         <button type="button" class="btn btn-toggle btn-dark dropdown-toggle" data-bs-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false" :value="valasztottIdo">{{ valasztottIdo }} mp</button>
         <ul class="dropdown-menu dropdown-menu-dark">
-          <li v-for="ido in idok" class="dropdown-item" @click="valasztottIdo = ido">{{ ido }} mp</li>
+          <li v-for="ido in idok" :key="ido" class="dropdown-item" @click="valasztottIdo = ido">{{ ido }} mp</li>
         </ul>
       </div>
       <div class="dropdown my-1">
         <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false" :value="valasztottKerdesSzam">{{ valasztottKerdesSzam }} kérdés</button>
         <ul class="dropdown-menu dropdown-menu-dark">
-          <li v-for="kerdesSzam in kerdesSzamok" class="dropdown-item" @click="valasztottKerdesSzam = kerdesSzam">{{ kerdesSzam }} kérdés</li>
+          <li v-for="kerdesSzam in kerdesSzamok" :key="kerdesSzam" class="dropdown-item" @click="valasztottKerdesSzam = kerdesSzam">{{ kerdesSzam }} kérdés</li>
         </ul>
       </div>
       <div class="dropdown my-1">
         <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false" value="2">{{ valasztottValaszSzam }} válasz</button>
         <ul class="dropdown-menu dropdown-menu-dark">
-          <li v-for="valaszSzam in valaszSzamok" class="dropdown-item" @click="valasztottValaszSzam = valaszSzam">{{ valaszSzam }} válasz</li>
+          <li v-for="valaszSzam in valaszSzamok" :key="valaszSzam" class="dropdown-item" @click="valasztottValaszSzam = valaszSzam">{{ valaszSzam }} válasz</li>
         </ul>
       </div>
       <button class="btn btn-warning fw-semibold my-auto" style="width: 130px; margin: 5px;" @click="getUsersByRecord">
         Szűrés
       </button>
-      <!-- valasztottIndex = index.substring(11); profil = keresesEredmeny[`felhasznalo${this.valasztottIndex}`] -->
       <div id="ranglista-kereses" class="my-2">
         <div class="input-group">
           <input class="form-control bg-dark border-secondary text-light" id="kereses-szoveg" v-model="keresett"
