@@ -6,7 +6,6 @@ export const useQuizBeallitoStore = defineStore('quizBeallito', {
     nehezseg: "",
     ido: 0,
     kerdesSzam: 0,
-    valaszSzam: 0,
-    kitoltott: false
+    valaszSzam: 0
   }),
 });
