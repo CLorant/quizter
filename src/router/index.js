@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Fooldal from '../views/Fooldal.vue'
-import { useQuizBeallitoStore } from '../stores/quizbeallito'
 
 const routes = [
   {
@@ -32,12 +31,6 @@ const routes = [
     path: '/jatekmenet',
     name: 'jatekmenet',
     component: () => import('../views/Jatekmenet.vue'),
-    beforeEnter(from, to) {
-      const store = useQuizBeallitoStore();
-      if (store.kitoltott === false) {
-        return to;
-      }
-    }
   },
   {
     path: '/bejelentkezes',
