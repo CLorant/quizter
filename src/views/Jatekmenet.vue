@@ -14,10 +14,12 @@ export default {
       interval: null
     }
   },
+
   beforeRouteLeave() {
     clearInterval(this.interval);
     useJatekmenetStore().$reset();
   },
+
   computed: {
     // olvasható quizbeállító adatok, írható játékmenet és felhasználó adatok
     ...mapState(useTemaStore, ['tema']),
@@ -37,7 +39,12 @@ export default {
       'atlagosValaszIdo'
     ])
   },
+
   beforeMount() {
+    // visszanavigál a főoldalra ha helytelen a téma state
+    if(this.tema === "") {
+      this.$router.push("/");
+    }
     //kezdő állapot
     this.kerdesvalaszok = this.kerdesValaszKezelo();
     this.kerdes.szoveg = this.kerdesvalaszok.kerdesvalasz1.kerdes.szoveg;
@@ -50,18 +57,19 @@ export default {
   methods: {
     kerdesValaszKezelo() {
       /*
-      axios.get('/api/getQuestions', {
-        params: {
-          tema: this.tema,
-          nehezseg: this.nehezseg,
-          kerdesSzam: this.kerdesSzam,
-          valaszSzam: this.valaszSzam
-        }
-      })
-      .then(function (res) {
+      try {
+        let questionsRes = axios.get('/api/getQuestions', {
+          params: {
+            tema: this.tema,
+            nehezseg: this.nehezseg,
+            kerdesSzam: this.kerdesSzam,
+            valaszSzam: this.valaszSzam
+          }
+        });
+        
         // hozzáfűz a válaszokhoz egy true vagy false boolt
-        for (let i = 0; i < Object.keys(res.data).length; i++) {
-          let kerdesvalasz = Object.values(res.data)[i];
+        for (let i = 0; i < Object.keys(questionsRes).length; i++) {
+          let kerdesvalasz = Object.values(questionsRes)[i];
           for (let j = 0; j < this.valaszSzam; j++) {
             let igazE;
             if (j === 0) {
@@ -74,13 +82,13 @@ export default {
           }
           res.data[`kerdesvalasz${i + 1}`] = kerdesvalasz;
         }
-        return res.data
-      })
-      .catch(function (error) {
-        console.error(error);
+        return questionsRes
+      } catch (error) {
+        console.log(error);
         this.$router.push('/');
-      });
+      }
       */
+     
       let obj = kerdesvalaszokJSON; //átmeneti
       // hozzáfűz a válaszokhoz egy true vagy false boolt
       for (let i = 0; i < Object.keys(obj).length; i++) {
@@ -330,6 +338,10 @@ export default {
   box-sizing: border-box;
   font-size: 24pt;
   box-shadow: 10px 0 8px -2px rgba(0, 0, 0, 0.1);
+  -webkit-transition: .5s ease-in-out;
+  -moz-transition: .5s ease-in-out;
+  -o-transition: .5s ease-in-out;
+  transition: .5s ease-in-out;
 }
 
 .valaszGomb {

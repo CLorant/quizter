@@ -7,18 +7,22 @@ export default {
   setup() {
     useQuizBeallitoStore().$reset();
   },
+
   mounted() {
     this.temaAllito();
   },
+
   watch: {
     '$route.params.temaId'() {
       this.temaAllito();
     }
   },
+
   computed: {
     ...mapWritableState(useTemaStore, ['tema', 'temaNev', 'temaMagyarazat']),
-    ...mapWritableState(useQuizBeallitoStore, ['nehezseg', 'ido', 'kerdesSzam', 'valaszSzam', 'kitoltott'])
+    ...mapWritableState(useQuizBeallitoStore, ['nehezseg', 'ido', 'kerdesSzam', 'valaszSzam'])
   },
+
   methods: {
     temaAllito() {
       this.tema = this.$route.params.temaId
@@ -134,7 +138,7 @@ export default {
 
     indit() {
       if (this.nehezseg != "" && this.ido != 0 && this.kerdesSzam != 0 && this.valaszSzam != 0) {
-        this.kitoltott = true;
+        this.$router.push("/jatekmenet");
       }
       else {
         alert("Nem adott meg elegendő beállítást!");
@@ -178,10 +182,7 @@ export default {
       </div>
     </div>
     <div id="inditoGombDiv">
-      <!-- navigálás elutasítása ha null érték valamelyik beállítás -->
-      <RouterLink to="/jatekmenet">
-        <button id="inditoGomb" @click="indit()">Indítás</button>
-      </RouterLink>
+      <button id="inditoGomb" @click="indit">Indítás</button>
     </div>
   </div>
 </template>

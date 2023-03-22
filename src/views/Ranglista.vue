@@ -22,8 +22,8 @@ export default {
       valasztottKerdesSzam: 20,
       valaszSzamok: [2, 4, 6],
       valasztottValaszSzam: 6,
+      valasztottIndex: "felhasznalo1",
       keresett: "",
-      valasztottIndex: 1,
       keres: false,
       throttle: null,
       ranglistaAdatok: [],
@@ -120,38 +120,36 @@ export default {
 
     getUsersByRecord() {
       /*
-      axios.get('/api/getUsersByRecord', {
-        params: {
-          tema: this.valasztottTema,
-          nehezseg: this.valasztottNehezseg,
-          ido: this.valasztottIdo,
-          kerdesSzam: this.valasztottKerdesSzam,
-          valaszSzam: this.valasztottValaszSzam
-        }
-      })
-      .then((res) => {
-        this.ranglistaAdatok = res.data
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      try {
+        const getRes = axios.get('/api/getUsersByRecord', {
+          params: {
+            tema: this.valasztottTema,
+            nehezseg: this.valasztottNehezseg,
+            ido: this.valasztottIdo,
+            kerdesSzam: this.valasztottKerdesSzam,
+            valaszSzam: this.valasztottValaszSzam
+          }
+        });
+        this.ranglistaAdatok = getRes;
+      } catch (error) {
+        console.log(error)
+      }
       */
       this.ranglistaAdatok = ranglistaJSON; // átmeneti
     },
 
     getUsersByName() {
       /*
-      axios.get('/api/getUsersByName', {
-        params: {
-          felhasznalo: this.keresett
-        }
-      })
-      .then((res) => {
-        this.keresesEredmeny = res.data
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      try {
+        const getRes = axios.get('/api/getUsersByName', {
+          params: {
+            felhasznalo: this.keresett
+          }
+        });
+        this.keresesEredmeny = getRes;
+      } catch (error) {
+        console.log(error)
+      }
       */
       this.keresesEredmeny = ranglistaJSON; // átmeneti
     },
@@ -160,6 +158,11 @@ export default {
       if (this.keresett !== "") {
         this.ranglistaAdatok = this.keresesEredmeny;
       }
+    },
+
+    singleUser(i) {
+      this.valasztottIndex = i;
+      this.ranglistaAdatok = {[i]: {...this.keresesEredmeny[i]}};
     }
   }
 }
@@ -219,7 +222,7 @@ export default {
         <div id="kereses-eredmeny-tarolo">
           <div class="bg-dark rounded" :class="keres ? '' : 'd-none'" id="kereses-eredmeny">
             <div v-for="(item, index) in keresesEredmeny"
-              :key="item.felhasznaloNev" class="m-1 text-light text-decoration-none row" @click="ranglistaAdatok = keresesEredmeny[index]">
+              :key="item.felhasznaloNev" class="m-1 text-light text-decoration-none row" @click="singleUser(index)">
               <div class="col-3">
                 <img :src="item.jellemzok.kep" :alt="`${item.felhasznaloNev} képe`" decoding="async" class="felhasznalo-kep">
               </div>
@@ -239,9 +242,9 @@ export default {
             <div class="table-responsive" style="cursor: pointer;">
               <table class="table table-borderless table-sm text-light">
                 <tbody>
-                  <tr v-for="(item, index) in ranglistaAdatok" :key="index" @click="valasztottIndex = index.substring(11)">
+                  <tr v-for="(item, index) in ranglistaAdatok" :key="index" @click="valasztottIndex = index">
                     <td class="col-1">{{ index.substring(11) }}.</td>
-                    <td class="col-1" @click="profil = item">
+                    <td class="col-1">
                       <RouterLink :to="{ name: 'profil', params: { userId: item.felhasznaloNev } }">
                         <img :src="item.jellemzok.kep" :alt="item.felhasznaloNev + ' képe'" decoding="async" id="ranglista-felhasznalo-kep">
                       </RouterLink>
@@ -252,7 +255,7 @@ export default {
                   </tr>
                   <tr>
                     <td colspan="5">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                         <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
                       </svg>
                     </td>
@@ -264,14 +267,14 @@ export default {
           <div class="col-lg justify-content-center px-2" >
             <div class="table-responsive">
               <div id="seged-ranglista-felhasznalo-tarolo">
-                <RouterLink @click="profil = ranglistaAdatok[`felhasznalo${valasztottIndex}`]" :to="{ name: 'profil', params: { userId: ranglistaAdatok[`felhasznalo${valasztottIndex}`].felhasznaloNev } }">
-                  <img :src="ranglistaAdatok[`felhasznalo${valasztottIndex}`].jellemzok.kep" alt="Felhasználó kép" decoding="async" id="seged-ranglista-felhasznalo-kep">
+                <RouterLink @click="profil = ranglistaAdatok[valasztottIndex]" :to="{ name: 'profil', params: { userId: ranglistaAdatok[valasztottIndex].felhasznaloNev } }">
+                  <img :src="ranglistaAdatok[valasztottIndex].jellemzok.kep" alt="Felhasználó kép" decoding="async" id="seged-ranglista-felhasznalo-kep">
                 </RouterLink>
                 <div>
                   <div id="felhasznalo-tarolo">
-                    <span id="felhasznalo-nev">{{ranglistaAdatok[`felhasznalo${valasztottIndex}`].felhasznaloNev}}</span>
+                    <span id="felhasznalo-nev">{{ranglistaAdatok[valasztottIndex].felhasznaloNev}}</span>
                     <div style="display: flex; justify-content: center;">
-                      <Szint :exp="ranglistaAdatok[`felhasznalo${valasztottIndex}`].statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
+                      <Szint :exp="ranglistaAdatok[valasztottIndex].statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
                     </div>
                   </div>
                 </div>
@@ -280,31 +283,31 @@ export default {
                 <thead>
                   <tr class="szemelyes-rekord-sor">
                     <td class="col-2">Pontszám</td>
-                    <td class="col-2">{{ ranglistaAdatok[`felhasznalo${valasztottIndex}`].rekord.pontszam }}</td>
+                    <td class="col-2">{{ ranglistaAdatok[valasztottIndex].rekord.pontszam }}</td>
                   </tr>
                   <tr class="szemelyes-rekord-sor">
                     <td class="col-2">Helyes / Helytelen</td>
-                    <td class="col-2">{{ ranglistaAdatok[`felhasznalo${valasztottIndex}`].rekord.helyesHelytelen }}</td>
+                    <td class="col-2">{{ ranglistaAdatok[valasztottIndex].rekord.helyesHelytelen }}</td>
                   </tr>
                   <tr class="szemelyes-rekord-sor">
                     <td class="col-2">Téma</td>
-                    <td class="col-2">{{ temaSzoveg(ranglistaAdatok[`felhasznalo${valasztottIndex}`].rekord.tema) }}</td>
+                    <td class="col-2">{{ temaSzoveg(ranglistaAdatok[valasztottIndex].rekord.tema) }}</td>
                   </tr>
                   <tr class="szemelyes-rekord-sor">
                     <td class="col-2">Nehézség</td>
-                    <td class="col-2">{{ nehezsegSzoveg(ranglistaAdatok[`felhasznalo${valasztottIndex}`].rekord.nehezseg) }}</td>
+                    <td class="col-2">{{ nehezsegSzoveg(ranglistaAdatok[valasztottIndex].rekord.nehezseg) }}</td>
                   </tr>
                   <tr class="szemelyes-rekord-sor">
                     <td class="col-2">Idő kérdésenként</td>
-                    <td class="col-2">{{ ranglistaAdatok[`felhasznalo${valasztottIndex}`].rekord.ido }} mp</td>
+                    <td class="col-2">{{ ranglistaAdatok[valasztottIndex].rekord.ido }} mp</td>
                   </tr>
                   <tr class="szemelyes-rekord-sor">
                     <td class="col-2">Kérdésszám</td>
-                    <td class="col-2">{{ ranglistaAdatok[`felhasznalo${valasztottIndex}`].rekord.kerdesSzam }}</td>
+                    <td class="col-2">{{ ranglistaAdatok[valasztottIndex].rekord.kerdesSzam }}</td>
                   </tr>
                   <tr class="szemelyes-rekord-sor">
                     <td class="col-2">Válaszszám</td>
-                    <td class="col-2">{{ ranglistaAdatok[`felhasznalo${valasztottIndex}`].rekord.valaszSzam }}</td>
+                    <td class="col-2">{{ ranglistaAdatok[valasztottIndex].rekord.valaszSzam }}</td>
                   </tr>
                 </thead>
               </table>

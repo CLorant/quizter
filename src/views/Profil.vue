@@ -3,7 +3,6 @@ import Szint from '../components/Szint.vue'
 import { mapWritableState } from 'pinia'
 import { useProfilStore } from '../stores/profil'
 import { useFelhasznaloStore } from '../stores/felhasznalo'
-import profilJSON from '../profil.json'
 
 export default {
   components: {
@@ -24,7 +23,7 @@ export default {
       temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes'],
     }
   },
-
+  
   beforeRouteEnter(to, from, next) {
     if (to.params.userId == "nem-meghatarozott-felhasznalo") {
       alert("Regisztrálj hogy hozzáférhess a saját profil oldaladhoz");
@@ -175,6 +174,7 @@ export default {
       this.felhasznalo.jellemzok.tema3 = this.profil.jellemzok.tema3;
 
       // updateUserPage
+      
     },
 
     deleteUser() {
