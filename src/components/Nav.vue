@@ -29,7 +29,6 @@ export default {
         { id: 'vegyes', szoveg: 'Vegyes' }
       ],
       keresett: "",
-      valasztottIndex: 1,
       keres: false,
       keresesEredmeny: [],
       throttle: null
@@ -94,17 +93,16 @@ export default {
 
     getUsersByName() {
       /*
-      axios.get('/api/getUsersByName', {
-        params: {
-          felhasznalo: this.keresett
-        }
-      })
-      .then((res) => {
-        this.ranglistaAdatok = res.data
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      try {
+        const getRes = axios.get('/api/getUsersByName', {
+          params: {
+            felhasznalo: this.keresett
+          }
+        });
+        this.keresesEredmeny = getRes;
+      } catch (error) {
+        console.log(error)
+      }
       */
 
       this.keresesEredmeny = ranglistaJSON; // átmeneti
@@ -200,7 +198,7 @@ export default {
   <div class="fixed-top" id="kereses-eredmeny-tarolo">
     <div class="bg-dark rounded" :class="keres ? '' : 'd-none'" id="kereses-eredmeny">
       <RouterLink v-for="(item, index) in keresesEredmeny" :to="{ name: 'profil', params: { userId: item.felhasznaloNev } }"
-        :key="item.felhasznaloNev" class="m-1 text-light text-decoration-none row" @click="valasztottIndex = index.substring(11); profil = keresesEredmeny[`felhasznalo${this.valasztottIndex}`]">
+        :key="item.felhasznaloNev" class="m-1 text-light text-decoration-none row" @click="profil = keresesEredmeny[index]">
         <div class="col-3">
           <img :src="item.jellemzok.kep" :alt="`${item.felhasznaloNev} képe`" decoding="async" class="felhasznalo-kep">
         </div>
@@ -343,7 +341,6 @@ export default {
   height: 40px;
   width: 40px;
   border-radius: 20px;
-  cursor: pointer;
 }
 
 #felhasznaloDropdownMenu {
