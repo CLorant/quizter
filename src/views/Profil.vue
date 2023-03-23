@@ -3,6 +3,7 @@ import Szint from '../components/Szint.vue'
 import { mapWritableState } from 'pinia'
 import { useProfilStore } from '../stores/profil'
 import { useFelhasznaloStore } from '../stores/felhasznalo'
+import axios from 'axios'
 
 export default {
   components: {
@@ -34,7 +35,7 @@ export default {
     }
   },
 
-  beforeMount() {
+  mounted() {
     this.getUserByName();
   },
 
@@ -142,6 +143,9 @@ export default {
     },
 
     getUserByName() {
+      if (this.profil.felhasznaloNev === "nem-meghatarozott-felhasznalo") {
+        this.$router.push("/");
+      }
       if (this.$route.params.userId === this.felhasznalo.felhasznaloNev) {
         this.bejelentkezettFelh = true;
         for (const prop in this.felhasznalo) {
@@ -150,35 +154,44 @@ export default {
           }
         }
       }
-      if (this.profil.felhasznaloNev === "nem-meghatarozott-felhasznalo") {
-        this.$router.push("/");
+    },
+
+    async updateUserPage() {
+      this.szerkesztes = false;
+
+      // felhasznalo state frissítése
+      this.felhasznalo.jellemzok.kep = this.szerkesztettKep;
+      this.felhasznalo.jellemzok.nev = this.szerkesztettNev;
+      this.felhasznalo.jellemzok.bio = this.szerkesztettBio;
+      this.felhasznalo.jellemzok.tema1 = this.szerkesztettTema1;
+      this.felhasznalo.jellemzok.tema2 = this.szerkesztettTema2;
+      this.felhasznalo.jellemzok.tema3 = this.szerkesztettTema3;
+
+      // updateUserPage
+      try {
+        await axios.post("api/updateUserPage", {
+          kep: this.szerkesztettKep,
+          nev: this.szerkesztettNev,
+          bio: this.szerkesztettBio,
+          tema1: this.szerkesztettTema1,
+          tema2: this.szerkesztettTema2,
+          tema3: this.szerkesztettTema3
+        });
+      } catch (error) {
+        console.log(error);
       }
     },
 
-    updateUserPage() {
-      this.szerkesztes = false
-      // profil state (oldalon látható)
-      this.profil.jellemzok.kep = this.szerkesztettKep;
-      this.profil.jellemzok.nev = this.szerkesztettNev;
-      this.profil.jellemzok.bio = this.szerkesztettBio;
-      this.profil.jellemzok.tema1 = this.szerkesztettTema1;
-      this.profil.jellemzok.tema2 = this.szerkesztettTema2;
-      this.profil.jellemzok.tema3 = this.szerkesztettTema3;
-
-      // felhasznalo state (oldalon nem látható)
-      this.felhasznalo.jellemzok.kep = this.profil.jellemzok.kep;
-      this.felhasznalo.jellemzok.nev = this.profil.jellemzok.nev;
-      this.felhasznalo.jellemzok.bio = this.profil.jellemzok.bio;
-      this.felhasznalo.jellemzok.tema1 = this.profil.jellemzok.tema1;
-      this.felhasznalo.jellemzok.tema2 = this.profil.jellemzok.tema2;
-      this.felhasznalo.jellemzok.tema3 = this.profil.jellemzok.tema3;
-
-      // updateUserPage
-      
-    },
-
-    deleteUser() {
+    async deleteUser() {
       // deleteUser
+      try {
+        await axios.delete("api/deleteUserPage", {
+          felhasznaloNev: this.felhasznalo.felhasznaloNev
+        });
+      } catch (error) {
+        console.log(error);
+      }
+
       useFelhasznaloStore().$reset();
       this.$router.push("/");
     }

@@ -11,7 +11,8 @@ export default {
   data() {
     return {
       kerdesvalaszok: null,
-      interval: null
+      interval: null,
+      jatekVege: false
     }
   },
 
@@ -30,7 +31,6 @@ export default {
       'kerdes',
       'valaszok',
       'maradtIdo',
-      'valaszGombokKikapcsol',
       'folytatasGombKikapcsol',
       'leNyomottValaszGomb',
       'pont',
@@ -40,7 +40,7 @@ export default {
     ])
   },
 
-  beforeMount() {
+  mounted() {
     // visszanavigál a főoldalra ha helytelen a téma state
     if(this.tema === "") {
       this.$router.push("/");
@@ -82,16 +82,15 @@ export default {
           }
           res.data[`kerdesvalasz${i + 1}`] = kerdesvalasz;
         }
-        return questionsRes
+        return questionsRes;
       } catch (error) {
         console.log(error);
-        this.$router.push('/');
       }
       */
      
       let obj = kerdesvalaszokJSON; //átmeneti
       // hozzáfűz a válaszokhoz egy true vagy false boolt
-      for (let i = 0; i < Object.keys(obj).length; i++) {
+      for (let i = 0; i < this.kerdesSzam; i++) {
         let kerdesvalasz = Object.values(obj)[i];
         for (let j = 0; j < this.valaszSzam; j++) {
           let igazE;
@@ -119,10 +118,6 @@ export default {
     },
 
     valaszVizsgalat(helyes) {
-      this.leNyomottValaszGomb = true;
-      this.valaszGombokKikapcsol = true;
-      this.folytatasGombKikapcsol = false;
-
       //pont számolás 'ido' nehezítés alapján
       if (helyes) {
         this.helyesValasz++;
@@ -139,39 +134,48 @@ export default {
       else {
         this.helytelenValasz++;
       }
+
+      this.leNyomottValaszGomb = true;
+      this.folytatasGombKikapcsol = false;
     },
 
     valaszFigyelo() {
-      this.interval = setInterval(() => {
-        this.maradtIdo--;
-        this.atlagosValaszIdo++;
-      }, 1000)
-      this.$watch(() => this.maradtIdo, ujIdo => {
-        if (ujIdo < 1) {
-          clearInterval(this.interval);
-          this.valaszVizsgalat(false);
-        }
-      })
-      this.$watch(() => this.valaszGombokKikapcsol, kikapcsol => {
-        if (kikapcsol === true) {
-          clearInterval(this.interval);
-        }
-      })
+      try {
+        this.interval = setInterval(() => {
+          this.maradtIdo--;
+          this.atlagosValaszIdo++;
+        }, 1000)
+        this.$watch(() => this.leNyomottValaszGomb, kikapcsol => {
+          if (kikapcsol === true) {
+            clearInterval(this.interval);
+          }
+        })
+        this.$watch(() => this.maradtIdo, ujIdo => {
+          if (ujIdo < 1) {
+            clearInterval(this.interval);
+            this.valaszVizsgalat(false);
+          }
+        })
+      } catch (error) {
+        console.log(error)
+      }
+      
     },
 
     folytat() {
+      this.folytatasGombKikapcsol = true;
       this.kor++;
       const obj = Object.values(this.kerdesvalaszok)[this.kor];
       this.kerdes = obj.kerdes;
       this.valaszok = this.valaszKevero(obj.valaszok);
-      this.leNyomottValaszGomb = false;
-      this.valaszGombokKikapcsol = false;
-      this.folytatasGombKikapcsol = true;
       this.maradtIdo = this.ido;
+      this.leNyomottValaszGomb = false;
       this.valaszFigyelo();
     },
 
     async vege() {
+      this.jatekVege = true
+
       if (this.nehezseg == "kozepes") {
         this.pont *= 1.25;
       }
@@ -194,21 +198,17 @@ export default {
 
       // updateUserStats
       try {
-        
+        await axios.patch('/api/updateUserStats', {
+          exp: this.felhasznalo.statisztika.exp,
+          jatszmaSzam: this.felhasznalo.statisztika.jatszmaSzam,
+          valaszIdo: this.felhasznalo.statisztika.valaszIdo
+        });
       } catch (error) {
-        
+        console.log(error)
       }
-      axios.patch('/api/data/1', {
-        statisztika: this.felhasznalo.statisztika
-      })
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      
 
-      if (this.pont > this.rekord.pontszam) {
+      if (this.pont > this.felhasznalo.rekord.pontszam) {
         this.felhasznalo.rekord.pontszam = this.pont;
         this.felhasznalo.rekord.helyesHelytelen = this.helyesValasz + " / " + this.helytelenValasz;
         this.felhasznalo.rekord.tema = this.tema;
@@ -218,7 +218,19 @@ export default {
         this.felhasznalo.rekord.valaszSzam = this.valaszSzam;
 
         // updateUserRecord
-
+        try {
+          await axios.patch('/api/updateUserRecord', {
+            pontszam: this.felhasznalo.rekord.pontszam,
+            helyesHelytelen: this.felhasznalo.rekord.helyesHelytelen,
+            tema: this.felhasznalo.rekord.tema,
+            nehezseg: this.felhasznalo.rekord.nehezseg,
+            ido: this.felhasznalo.rekord.ido,
+            kerdesSzam: this.felhasznalo.rekord.kerdesSzam,
+            valaszSzam: this.felhasznalo.rekord.valaszSzam
+          });
+        } catch (error) {
+          console.log(error)
+        }
       }
       useJatekmenetStore().$reset();
     }
@@ -228,13 +240,13 @@ export default {
 
 <template>
   <div id="tartalom">
-    <div v-if="kor < kerdesSzam">
+    <div v-if="!jatekVege">
       <p id="korSzamlalo">{{ kor + 1 }} / {{ kerdesSzam }}</p>
       <h3 id="kerdes">{{ kerdes.szoveg }}</h3>
       <img id="kep" :src="kerdes.kep" alt="Kérdés képe" decoding="async" />
       <div id="gombTarolo">
         <div id="gombDiv">
-          <button v-for="(value, key) in valaszok" :key="key" class="valaszGomb" :disabled="valaszGombokKikapcsol"
+          <button v-for="(value, key) in valaszok" :key="key" class="valaszGomb" :disabled="leNyomottValaszGomb"
             @click="valaszVizsgalat(value.helyes)" :style="{
               //ha a gomb megnyomott akkor a válasz helyessége szerint színezi, ha nem akkor az alapszínt használja
               backgroundColor: leNyomottValaszGomb ? (value.helyes ? 'green' : 'firebrick') : ('#4C4C4C')
@@ -249,11 +261,17 @@ export default {
         }">{{ maradtIdo }}</div>
       </div>
       <div id="folytatasGombDiv">
-        <button id=folytatasGomb :disabled="folytatasGombKikapcsol" @click="kor < kerdesSzam ? (folytat()) : (vege())"
+        <button v-if="kor < kerdesSzam - 1" id=folytatasGomb :disabled="folytatasGombKikapcsol" @click="folytat()"
           :style="{
             backgroundColor: folytatasGombKikapcsol ? '#333333' : '#4C4C4C'
           }">
           Folytatás
+        </button>
+        <button v-else id=folytatasGomb @click="vege()"
+        :style="{
+          backgroundColor: folytatasGombKikapcsol ? '#333333' : '#4C4C4C'
+        }">
+          Befejezés
         </button>
       </div>
     </div>
@@ -379,12 +397,6 @@ export default {
 .valaszGomb:hover,
 #folytatasGomb:hover {
   opacity: 0.8;
-}
-
-#gif {
-  height: 500px;
-  padding-top: 25px;
-  padding-bottom: 25px;
 }
 
 @media screen and (max-width: 500px) {

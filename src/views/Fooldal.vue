@@ -68,7 +68,7 @@ export default {
   margin: 0;
   margin-top: 64pt;
   margin-bottom: 64pt;
-  max-width: 2013px;
+  max-width: 2000px;
 }
 
 @media screen and (max-width: 420px) {

@@ -358,6 +358,7 @@ li {
 }
 
 #kereses-eredmeny-tarolo {
+  cursor: pointer;
   position: absolute;
   z-index: 2;
   margin-top: 40px;
