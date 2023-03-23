@@ -1,5 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Fooldal from '../views/Fooldal.vue';
+import { useFelhasznaloStore } from '../stores/felhasznalo';
+
+const adminGuard = (to, from, next) => {
+  if (useFelhasznaloStore().felhasznalo.jogosultsag === "admin") {
+    next();
+  } else {
+    next({ name: 'nem-talalt' });
+  }
+};
 
 const routes = [
   {
@@ -45,17 +54,20 @@ const routes = [
   {
     path: '/kerdesek',
     name: 'kerdesek',
-    component: () => import('../views/Kerdesek.vue')
+    component: () => import('../views/Kerdesek.vue'),
+    beforeEnter: adminGuard
   },
   {
     path: '/kerdes/:kerdesId',
     name: 'kerdes',
-    component: () => import('../views/Kerdes.vue')
+    component: () => import('../views/Kerdes.vue'),
+    beforeEnter: adminGuard
   },
   {
     path: '/uj-kerdes',
     name: 'uj-kerdes',
-    component: () => import('../views/UjKerdes.vue')
+    component: () => import('../views/UjKerdes.vue'),
+    beforeEnter: adminGuard
   },
   {
     path: '/:pathMatch(.*)*',
