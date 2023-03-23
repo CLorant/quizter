@@ -135,6 +135,8 @@ export default {
         console.log(error)
       }
       */
+
+      // ha this.ranglistaAdatok.length === 0 akkor '=', más esetben '+=' WIP
       this.ranglistaAdatok = ranglistaJSON; // átmeneti
     },
 
@@ -206,7 +208,7 @@ export default {
           <li v-for="valaszSzam in valaszSzamok" :key="valaszSzam" class="dropdown-item" @click="valasztottValaszSzam = valaszSzam">{{ valaszSzam }} válasz</li>
         </ul>
       </div>
-      <button class="btn btn-warning fw-semibold my-auto" style="width: 130px; margin: 5px;" @click="getUsersByRecord">
+      <button class="btn btn-warning fw-semibold my-auto szuroGomb" @click="getUsersByRecord">
         Szűrés
       </button>
       <div id="ranglista-kereses" class="my-2">
@@ -254,7 +256,7 @@ export default {
                     <td class="col-3">{{ item.rekord.pontszam }} pont</td>
                   </tr>
                   <tr>
-                    <td colspan="5">
+                    <td colspan="5" @click="getUsersByRecord">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                         <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
                       </svg>
@@ -335,6 +337,11 @@ table {
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 20px;
+}
+
+.szuroGomb {
+  width: 130px;
+  margin: 5px;
 }
 
 .dropdown-toggle {

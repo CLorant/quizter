@@ -16,14 +16,14 @@ export default {
     }
   },
 
-  beforeRouteLeave() {
+  beforeUnmount() {
     clearInterval(this.interval);
     useJatekmenetStore().$reset();
   },
 
   computed: {
     // olvasható quizbeállító adatok, írható játékmenet és felhasználó adatok
-    ...mapState(useTemaStore, ['tema']),
+    ...mapState(useTemaStore, ['tema', 'temaNev']),
     ...mapState(useQuizBeallitoStore, ['nehezseg', 'ido', 'kerdesSzam', 'valaszSzam']),
     ...mapWritableState(useFelhasznaloStore, ['felhasznalo']),
     ...mapWritableState(useJatekmenetStore, [
@@ -50,7 +50,7 @@ export default {
     this.kerdes.szoveg = this.kerdesvalaszok.kerdesvalasz1.kerdes.szoveg;
     this.kerdes.kep = this.kerdesvalaszok.kerdesvalasz1.kerdes.kep
     //Véletlenszerű sorrendű válaszokat ad vissza az objektumból
-    this.valaszok = this.valaszKevero(this.kerdesvalaszok.kerdesvalasz1.valaszok);
+    this.valaszok = this.valaszKevero(Object.values(this.kerdesvalaszok.kerdesvalasz1.valaszok));
     this.maradtIdo = this.ido;
     this.valaszFigyelo();
   },
@@ -109,9 +109,8 @@ export default {
 
     //Fisher-Yates keverés
     valaszKevero(valaszokObj) {
-      valaszokObj = Object.values(valaszokObj);
       for (let i = valaszokObj.length - 1; i > 0; i--) {
-        const j = Math.round(Math.random() * (i + 1));
+        const j = Math.floor(Math.random() * (i + 1));
         [valaszokObj[i], valaszokObj[j]] = [valaszokObj[j], valaszokObj[i]];
       }
       return valaszokObj;
@@ -140,26 +139,21 @@ export default {
     },
 
     valaszFigyelo() {
-      try {
-        this.interval = setInterval(() => {
-          this.maradtIdo--;
-          this.atlagosValaszIdo++;
-        }, 1000)
-        this.$watch(() => this.leNyomottValaszGomb, kikapcsol => {
-          if (kikapcsol === true) {
-            clearInterval(this.interval);
-          }
-        })
-        this.$watch(() => this.maradtIdo, ujIdo => {
-          if (ujIdo < 1) {
-            clearInterval(this.interval);
-            this.valaszVizsgalat(false);
-          }
-        })
-      } catch (error) {
-        console.log(error)
-      }
-      
+      this.interval = setInterval(() => {
+        this.maradtIdo--;
+        this.atlagosValaszIdo++;
+      }, 1000)
+      this.$watch(() => this.leNyomottValaszGomb, kikapcsol => {
+        if (kikapcsol === true) {
+          clearInterval(this.interval);
+        }
+      })
+      this.$watch(() => this.maradtIdo, ujIdo => {
+        if (ujIdo < 1) {
+          clearInterval(this.interval);
+          this.valaszVizsgalat(false);
+        }
+      })
     },
 
     folytat() {
@@ -167,13 +161,13 @@ export default {
       this.kor++;
       const obj = Object.values(this.kerdesvalaszok)[this.kor];
       this.kerdes = obj.kerdes;
-      this.valaszok = this.valaszKevero(obj.valaszok);
+      this.valaszok = this.valaszKevero(Object.values(obj.valaszok));
       this.maradtIdo = this.ido;
       this.leNyomottValaszGomb = false;
       this.valaszFigyelo();
     },
 
-    async vege() {
+    vege() {
       this.jatekVege = true
 
       if (this.nehezseg == "kozepes") {
@@ -197,6 +191,10 @@ export default {
       this.felhasznalo.valaszIdo += (this.atlagosValaszIdo / this.kerdesSzam).toFixed(2);
 
       // updateUserStats
+      this.updateUser()
+    },
+
+    async updateUser() {
       try {
         await axios.patch('/api/updateUserStats', {
           exp: this.felhasznalo.statisztika.exp,
@@ -232,8 +230,24 @@ export default {
           console.log(error)
         }
       }
-      useJatekmenetStore().$reset();
-    }
+    },
+
+    nehezsegSzoveg(nehezseg) {
+      switch (nehezseg) {
+        case "konnyu":
+          return "Könnyű";
+
+        case "kozepes":
+          return "Közepes";
+
+        case "nehez":
+          return "Nehéz";
+
+        // Helytelen "nehezseg" paraméterkor
+        default:
+          return "Könnyű";
+      }
+    },
   }
 }
 </script>
@@ -276,12 +290,19 @@ export default {
       </div>
     </div>
 
-    <div v-else style="text-align: center;">
-      <h1 style="margin-top: 25px;">Játszma adatai</h1>
-      <h4 style="margin-top: 50px;">Pontszám: {{ pont }} pont</h4>
-      <h4 style="margin-top: 25px;">Helyes: {{ helyesValasz }}</h4>
-      <h4 style="margin-top: 25px;">Helytelen: {{ helytelenValasz }}</h4>
-      <h4 style="margin-top: 25px;">Átlagos válaszidő: {{ (atlagosValaszIdo / kerdesSzam).toFixed(2) }} mp</h4>
+    <div v-else class="d-flex align-items-center justify-content-center flex-column pt-5">
+      <div class="rekord-tablazat">
+          <h1>Játszma adatai</h1>
+          <p>Pontszám: <b>{{ pont }}</b> pont</p>
+          <p>Helyes: <b>{{ helyesValasz }}</b></p>
+          <p>Helytelen: <b>{{ helytelenValasz }}</b></p>
+          <p>Téma: <b>{{ temaNev }}</b></p>
+          <p>Nehézség: <b>{{ nehezsegSzoveg(nehezseg) }}</b></p>
+          <p>Idő kérdésenként: <b>{{ ido }}</b> mp</p>
+          <p>Kérdésszám: <b>{{ kerdesSzam }}</b></p>
+          <p>Válaszszám: <b>{{ valaszSzam }}</b></p>
+          <p>Átlagos válaszidő: <b>{{ (atlagosValaszIdo / kerdesSzam).toFixed(2) }}</b> mp</p>
+        </div>
       <RouterLink to="/">
         <button id='folytatasGomb' style="background-color:#4C4C4C; margin-top: 55px;">Kilépés</button>
       </RouterLink>
@@ -394,6 +415,23 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.rekord-tablazat {
+  margin: 20px;
+  background: rgb(16, 16, 16);
+  border-radius: 15px;
+  padding: 30px;
+  width: 75%;
+}
+
+.rekord-tablazat h1 {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.rekord-tablazat p {
+  font-size: 16pt;
+}
+
 .valaszGomb:hover,
 #folytatasGomb:hover {
   opacity: 0.8;
@@ -428,6 +466,18 @@ export default {
   #visszaSzamoloDiv div {
     line-height: 25px;
     font-size: 12pt;
+  }
+
+  .rekord-tablazat {
+    width: 95%;
+  }
+
+  .rekord-tablazat h1 {
+    font-size: 8vw;
+  }
+
+.rekord-tablazat p {
+    font-size: 5vw;
   }
 }
 </style>
