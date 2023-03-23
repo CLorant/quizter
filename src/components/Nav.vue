@@ -3,7 +3,6 @@ import Szint from './Szint.vue'
 import { mapWritableState } from 'pinia'
 import { useFelhasznaloStore } from '../stores/felhasznalo'
 import { useProfilStore } from '../stores/profil'
-import felhasznaloJSON from '../felhasznalo.json' // átmeneti
 import ranglistaJSON from '../ranglista.json' // átmeneti
 
 export default {
@@ -38,17 +37,6 @@ export default {
   computed: {
     ...mapWritableState(useFelhasznaloStore, ['felhasznalo']),
     ...mapWritableState(useProfilStore, ['profil'])
-  },
-
-  beforeMount() {
-    const res = felhasznaloJSON // átmeneti
-
-    for (const prop in this.felhasznalo) { 
-      if (res.hasOwnProperty(prop)) {
-        this.felhasznalo[prop] = res[prop];
-      }
-    }
-    this.felhasznalo.bejelentkezett = true // átmeneti
   },
 
   // ha a route változik akkor visszaállítja a navbart
@@ -103,6 +91,7 @@ export default {
       } catch (error) {
         console.log(error)
       }
+      this.keresesEredmeny = getRes
       */
 
       this.keresesEredmeny = ranglistaJSON; // átmeneti
