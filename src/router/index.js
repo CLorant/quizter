@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Fooldal from '../views/Fooldal.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import Fooldal from '../views/Fooldal.vue';
 
 const routes = [
   {
@@ -43,11 +43,26 @@ const routes = [
     component: () => import('../views/Regisztracio.vue')
   },
   {
+    path: '/kerdesek',
+    name: 'kerdesek',
+    component: () => import('../views/Kerdesek.vue')
+  },
+  {
+    path: '/kerdes/:kerdesId',
+    name: 'kerdes',
+    component: () => import('../views/Kerdes.vue')
+  },
+  {
+    path: '/uj-kerdes',
+    name: 'uj-kerdes',
+    component: () => import('../views/UjKerdes.vue')
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'nem-talalt',
     component: () => import('../views/NemTalalt.vue')
   }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,6 +74,6 @@ const router = createRouter({
       behavior: "instant"
     });
   },
-})
+});
 
-export default router
+export default router;
