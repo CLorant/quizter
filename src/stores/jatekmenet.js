@@ -14,7 +14,6 @@ export const useJatekmenetStore = defineStore('jatekmenet', {
       valasz6: { szoveg: String, helyes: Boolean }
     },
     maradtIdo: 0,
-    valaszGombokKikapcsol: false,
     folytatasGombKikapcsol: true,
     leNyomottValaszGomb: false,
     pont: 0,
