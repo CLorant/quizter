@@ -17,23 +17,7 @@
     },
 
     beforeMount() {
-      // automatikus bejelentkezést ide majd valahogy
-      /*
-      try {
-        const getRes = axios.get('/api/getUserByName', {
-          params: {
-            felhasznalo: "asd" 
-          }
-        });
-        for (const prop in this.felhasznalo) { 
-          if (getRes.hasOwnProperty(prop)) {
-            this.felhasznalo[prop] = getRes[prop];
-          }
-        }
-      } catch (error) {
-        console.log(error)
-      }
-      */
+      // this.getUserByName();
 
       const res = felhasznaloJSON // átmeneti
       for (const prop in this.felhasznalo) { 
@@ -43,6 +27,26 @@
       }
       this.felhasznalo.bejelentkezett = true // átmeneti
       this.felhasznalo.jogosultsag = "admin" // átmeneti
+    }
+
+    methods: {
+      async getUserByName() {
+        // automatikus bejelentkezést ide majd valahogy
+        try {
+          const res = await axios.get('/api/getUserByName', {
+            params: {
+              felhasznalo: "asd" 
+            }
+          });
+          for (const prop in this.felhasznalo) { 
+            if (res.data.hasOwnProperty(prop)) {
+              this.felhasznalo[prop] = res.data[prop];
+            }
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
     }
   }
 </script>
