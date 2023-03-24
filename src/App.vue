@@ -27,7 +27,7 @@
       }
       this.felhasznalo.bejelentkezett = true // átmeneti
       this.felhasznalo.jogosultsag = "admin" // átmeneti
-    }
+    },
 
     methods: {
       async getUserByName() {
@@ -35,7 +35,7 @@
         try {
           const res = await axios.get('/api/getUserByName', {
             params: {
-              felhasznalo: "asd" 
+              username: "asd" 
             }
           });
           for (const prop in this.felhasznalo) { 
