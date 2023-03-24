@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 export const useProfilStore = defineStore('profil', {
   state: () => ({
     profil: {
-      felhasznaloNev: "nem-meghatarozott-felhasznalo",
+      felhasznalonev: "nem-meghatarozott-felhasznalo",
       csatlakozas: Date,
       jogosultsag: "user",
       jellemzok: {

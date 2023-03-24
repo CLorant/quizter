@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 export const useFelhasznaloStore = defineStore('felhasznalo', {
   state: () => ({
     felhasznalo: {
-      felhasznaloNev: "nem-meghatarozott-felhasznalo",
+      felhasznalonev: "nem-meghatarozott-felhasznalo",
       csatlakozas: Date,
       jogosultsag: "user",
       jellemzok: {
