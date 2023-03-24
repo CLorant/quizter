@@ -118,10 +118,10 @@ export default {
       }
     },
 
-    getUsersByRecord() {
+    async getUsersByRecord() {
       /*
       try {
-        const getRes = axios.get('/api/getUsersByRecord', {
+        const res = await axios.get('/api/getUsersByRecord', {
           params: {
             tema: this.valasztottTema,
             nehezseg: this.valasztottNehezseg,
@@ -130,7 +130,7 @@ export default {
             valaszSzam: this.valasztottValaszSzam
           }
         });
-        this.ranglistaAdatok = getRes;
+        this.ranglistaAdatok = res.data;
       } catch (error) {
         console.log(error)
       }
@@ -140,15 +140,15 @@ export default {
       this.ranglistaAdatok = ranglistaJSON; // átmeneti
     },
 
-    getUsersByName() {
+    async getUsersByName() {
       /*
       try {
-        const getRes = axios.get('/api/getUsersByName', {
+        const res = await axios.get('/api/getUsersByName', {
           params: {
             felhasznalo: this.keresett
           }
         });
-        this.keresesEredmeny = getRes;
+        this.keresesEredmeny = res.data;
       } catch (error) {
         console.log(error)
       }
@@ -247,7 +247,7 @@ export default {
                   <tr v-for="(item, index) in ranglistaAdatok" :key="index" @click="valasztottIndex = index">
                     <td class="col-1">{{ index.substring(11) }}.</td>
                     <td class="col-1">
-                      <RouterLink :to="{ name: 'profil', params: { userId: item.felhasznaloNev } }">
+                      <RouterLink :to="{ name: 'profil', params: { felhasznaloId: item.felhasznaloNev } }">
                         <img :src="item.jellemzok.kep" :alt="item.felhasznaloNev + ' képe'" decoding="async" id="ranglista-felhasznalo-kep">
                       </RouterLink>
                     </td>
@@ -269,7 +269,7 @@ export default {
           <div class="col-lg justify-content-center px-2" >
             <div class="table-responsive">
               <div id="seged-ranglista-felhasznalo-tarolo">
-                <RouterLink @click="profil = ranglistaAdatok[valasztottIndex]" :to="{ name: 'profil', params: { userId: ranglistaAdatok[valasztottIndex].felhasznaloNev } }">
+                <RouterLink @click="profil = ranglistaAdatok[valasztottIndex]" :to="{ name: 'profil', params: { felhasznaloId: ranglistaAdatok[valasztottIndex].felhasznaloNev } }">
                   <img :src="ranglistaAdatok[valasztottIndex].jellemzok.kep" alt="Felhasználó kép" decoding="async" id="seged-ranglista-felhasznalo-kep">
                 </RouterLink>
                 <div>
@@ -349,7 +349,7 @@ table {
   width: 130px;
 }
 
-li {
+ul {
   cursor: pointer;
 }
 

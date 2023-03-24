@@ -5,7 +5,7 @@ import { useQuizBeallitoStore } from '../stores/quizbeallito'
 import { useJatekmenetStore } from '../stores/jatekmenet'
 import { useFelhasznaloStore } from '../stores/felhasznalo'
 import axios from 'axios'
-import kerdesvalaszokJSON from '../kerdesvalasz.json'
+import kerdesvalaszokJSON from '../kerdesvalasz.json' // átmeneti
 
 export default {
   data() {
@@ -58,7 +58,7 @@ export default {
     kerdesValaszKezelo() {
       /*
       try {
-        let questionsRes = axios.get('/api/getQuestions', {
+        let res = axios.get('/api/getGameQuestions', {
           params: {
             tema: this.tema,
             nehezseg: this.nehezseg,
@@ -68,8 +68,8 @@ export default {
         });
         
         // hozzáfűz a válaszokhoz egy true vagy false boolt
-        for (let i = 0; i < Object.keys(questionsRes).length; i++) {
-          let kerdesvalasz = Object.values(questionsRes)[i];
+        for (let i = 0; i < this.kerdesSzam; i++) {
+          let kerdesvalasz = Object.values(res.data)[i];
           for (let j = 0; j < this.valaszSzam; j++) {
             let igazE;
             if (j === 0) {
@@ -82,7 +82,7 @@ export default {
           }
           res.data[`kerdesvalasz${i + 1}`] = kerdesvalasz;
         }
-        return questionsRes;
+        return res;
       } catch (error) {
         console.log(error);
       }

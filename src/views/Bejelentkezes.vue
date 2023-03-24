@@ -16,11 +16,11 @@ export default {
   methods: {
     async bejelentkezes() {
       try {
-        const loginResponse = await axios.post("/api/login", {
+        const res = await axios.post("/api/login", {
           felhasznaloNev: this.felhasznaloNev,
           jelszo: this.jelszo
         });
-        useFelhasznaloStore().$patch(loginResponse);
+        useFelhasznaloStore().$patch(res.data);
         this.$router.push("/");
       } catch (error) {
         console.log(error);

@@ -26,7 +26,7 @@ export default {
   },
   
   beforeRouteEnter(to, from, next) {
-    if (to.params.userId == "nem-meghatarozott-felhasznalo") {
+    if (to.params.felhasznaloId == "nem-meghatarozott-felhasznalo") {
       alert("Regisztrálj hogy hozzáférhess a saját profil oldaladhoz");
       next("/regisztracio");
     }
@@ -40,7 +40,7 @@ export default {
   },
 
   watch: {
-    '$route.params.userId'() {
+    '$route.params.felhasznaloId'() {
       this.bejelentkezettFelh = false;
       this.szerkesztes = false;
       this.torlesPopup = false;
@@ -144,9 +144,10 @@ export default {
 
     getUserByName() {
       if (this.profil.felhasznaloNev === "nem-meghatarozott-felhasznalo") {
+        // getUserByName - talán
         this.$router.push("/");
       }
-      if (this.$route.params.userId === this.felhasznalo.felhasznaloNev) {
+      if (this.$route.params.felhasznaloId === this.felhasznalo.felhasznaloNev) {
         this.bejelentkezettFelh = true;
         for (const prop in this.felhasznalo) {
           if (this.profil.hasOwnProperty(prop)) {

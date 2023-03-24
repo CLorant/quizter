@@ -3,8 +3,13 @@ import axios from 'axios'
   export default {
     data() {
       return {
+        temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes'],
+        valasztottTema: 'autok',
+        nehezsegek: ['konnyu', 'kozepes', 'nehez'],
+        valasztottNehezseg: 'konnyu',
         kerdes: '',
-        kep: '',
+        kep: null,
+        kepUrl: '',
         valasz1: '',
         valasz2: '',
         valasz3: '',
@@ -16,20 +21,94 @@ import axios from 'axios'
     },
 
     methods: {
+      temaSzoveg(tema) {
+        switch (tema) {
+          case "autok":
+            return "Autók";
+
+          case "biologia":
+            return "Biológia";
+
+          case "fizika":
+            return "Fizika";
+
+          case "foldrajz":
+            return "Földrajz";
+
+          case "irodalom":
+            return "Irodalom";
+
+          case "kemia":
+            return "Kémia";
+
+          case "sport":
+            return "Sport";
+
+          case "szorakoztatas":
+            return "Szórakoztatás";
+
+          case "technologia":
+            return "Technológia";
+
+          case "tortenelem":
+            return "Történelem";
+
+          case "zene":
+            return "Zene";
+
+          case "vegyes":
+            return "Vegyes";
+
+          // Helytelen "tema" paraméterkor
+          default:
+            return "Autók";
+        }
+      },
+
+      nehezsegSzoveg(nehezseg) {
+        switch (nehezseg) {
+          case "konnyu":
+            return "Könnyű";
+
+          case "kozepes":
+            return "Közepes";
+
+          case "nehez":
+            return "Nehéz";
+
+          // Helytelen "nehezseg" paraméterkor
+          default:
+            return "Könnyű";
+        }
+      },
+
+      onFileChange(event) {
+        const file = event.target.files[0];
+        this.kep = file;
+        this.kepUrl = URL.createObjectURL(file);
+      },
+
       async createQuestion() {
         try {
-          await axios.post("api/createQuestion", {
-            kerdes: this.kerdes,
-            kep: this.kep,
-            valasz1: this.valasz1,
-            valasz2: this.valasz2,
-            valasz3: this.valasz3,
-            valasz4: this.valasz4,
-            valasz5: this.valasz5,
-            valasz6: this.valasz6
-          });
+          const formData = new FormData();
+
+          formData.append('tema', this.valasztottTema);
+          formData.append('nehezseg', this.valasztottNehezseg);
+          formData.append('kerdes', this.kerdes);
+          formData.append('valasz1', this.valasz1);
+          formData.append('valasz2', this.valasz2);
+          formData.append('valasz3', this.valasz3);
+          formData.append('valasz4', this.valasz4);
+          formData.append('valasz5', this.valasz5);
+          formData.append('valasz6', this.valasz6);
+
+          if (this.kep) {
+            formData.append('kep', this.kep);
+          }
+
+        await axios.post('api/createQuestion', formData);
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
       }
     }
@@ -38,23 +117,37 @@ import axios from 'axios'
 
 <template>
   <div id="tartalom">
-    <div>
-      <input id="kerdes" type="text" v-model="kerdes" class="form-control text-light border-secondary w-100">
-      <input v-if="kepMegjelenit==false" type="text" v-model="kep" id="kep" class="form-control text-light border-secondary w-100">
-      <img v-else id="kep" :src="kep" alt="Kérdés képe" decoding="async" />
-      <button v-if="kep !== ''" class="btn" :class="kepMegjelenit ? 'btn-secondary' : 'btn-primary'" @click="kepMegjelenit = !kepMegjelenit">Kép {{ kepMegjelenit ? 'Elrejtése' : 'Megjelenítése' }}</button>
-      <div id="gombTarolo">
-        <div id="gombDiv">
-          <input class="valaszGomb" v-model="valasz1">
-          <input class="valaszGomb" v-model="valasz2">
-          <input class="valaszGomb" v-model="valasz3">
-          <input class="valaszGomb" v-model="valasz4">
-          <input class="valaszGomb" v-model="valasz5">
-          <input class="valaszGomb" v-model="valasz6">
-        </div>
+    <div id="szuro-tarolo">
+      <div class="dropdown my-1">
+        <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" :value="valasztottTema">{{ temaSzoveg(valasztottTema) }}</button>
+        <ul class="dropdown-menu dropdown-menu-dark">
+          <li v-for="tema in temak" :key="tema" class="dropdown-item" @click="valasztottTema = tema">{{ temaSzoveg(tema) }}</li>
+        </ul>
       </div>
-      <button class="btn btn-lg btn-success" @click="createQuestion">Mentés</button>
+      <div class="dropdown my-1">
+        <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" :value="valasztottNehezseg"> {{ nehezsegSzoveg(valasztottNehezseg) }}</button>
+        <ul class="dropdown-menu dropdown-menu-dark">
+          <li v-for="nehezseg in nehezsegek" :key="nehezseg" class="dropdown-item" @click="valasztottNehezseg = nehezseg">{{ nehezsegSzoveg(nehezseg) }}</li>
+        </ul>
+      </div>
     </div>
+    <input id="kerdes" type="text" v-model="kerdes" class="form-control text-light border-secondary w-100">
+    <input v-if="kepMegjelenit===false" type="file" id="kep" name="kep" @change="onFileChange" accept="image/*" class="form-control text-light border-secondary w-100">
+    <img v-else id="kep" :src="kepUrl" alt="Kérdés képe" decoding="async" />
+    <button v-if="kep !== null" class="btn mb-3" :class="kepMegjelenit ? 'btn-secondary' : 'btn-light'" @click="kepMegjelenit = !kepMegjelenit">Kép {{ kepMegjelenit ? 'Elrejtése' : 'Megjelenítése' }}</button>
+    <div id="gombTarolo">
+      <div id="gombDiv">
+        <input class="valaszGomb" v-model="valasz1">
+        <input class="valaszGomb" v-model="valasz2">
+        <input class="valaszGomb" v-model="valasz3">
+        <input class="valaszGomb" v-model="valasz4">
+        <input class="valaszGomb" v-model="valasz5">
+        <input class="valaszGomb" v-model="valasz6">
+      </div>
+    </div>
+    <button class="btn btn-lg btn-success" @click="createQuestion">Mentés</button>
   </div>
 </template>
 
@@ -68,6 +161,26 @@ import axios from 'axios'
     height: auto;
     margin-top: 60px;
     text-align: center;
+  }
+
+  #szuro-tarolo {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .dropdown-toggle {
+    margin: 5px;
+    width: 130px;
+  }
+
+  ul {
+    cursor: pointer;
+  }
+
+  .dropdown-item:active {
+    background-color: rgb(255, 200, 0);
   }
 
   #kerdes {
