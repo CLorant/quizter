@@ -22,7 +22,7 @@ const routes = [
     component: () => import('../views/Rolunk.vue')
   },
   {
-    path: '/profil/:userId',
+    path: '/profil/:felhasznaloId',
     name: 'profil',
     component: () => import('../views/Profil.vue')
   },
