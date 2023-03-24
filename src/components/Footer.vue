@@ -1,3 +1,15 @@
+<script>
+import { mapWritableState } from 'pinia'
+import { useFelhasznaloStore } from '../stores/felhasznalo';
+
+export default {
+  computed: {
+    ...mapWritableState(useFelhasznaloStore, ['felhasznalo'])
+  }
+}
+</script>
+
+
 <template>
   <footer class="pt-4">
     <div class="mx-4">
@@ -13,6 +25,12 @@
           </RouterLink>
           <RouterLink to="/sutik" class="text-decoration-none text-light m-3">
             Sütik
+          </RouterLink>
+          <RouterLink v-if="felhasznalo.jogosultsag === 'admin'" to="/kerdesek" class="text-decoration-none text-light m-3">
+            Kérdések
+          </RouterLink>
+          <RouterLink v-if="felhasznalo.jogosultsag === 'admin'" to="/uj-kerdes" class="text-decoration-none text-light m-3">
+            Új Kérdés
           </RouterLink>
         </div>
         <div class="col-md-3 col-sm-12 text-center text-md-end">

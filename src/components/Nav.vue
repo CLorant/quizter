@@ -1,4 +1,5 @@
 <script>
+import axios from 'axios'
 import Szint from './Szint.vue'
 import { mapWritableState } from 'pinia'
 import { useFelhasznaloStore } from '../stores/felhasznalo'
@@ -82,25 +83,23 @@ export default {
     getUsersByName() {
       /*
       try {
-        const getRes = axios.get('/api/getUsersByName', {
+        const res = axios.get('/api/getUsersByName', {
           params: {
             felhasznalo: this.keresett
           }
         });
-        this.keresesEredmeny = getRes;
+        this.keresesEredmeny = res.data;
       } catch (error) {
         console.log(error)
       }
-      this.keresesEredmeny = getRes
       */
-
       this.keresesEredmeny = ranglistaJSON; // átmeneti
     },
 
     keresoGomb() {
       if(this.keresett !== "") {
         this.profil = this.keresesEredmeny.felhasznalo1;
-        this.$router.push({ name: 'profil', params: { userId: this.keresesEredmeny[`felhasznalo1`].felhasznaloNev } });
+        this.$router.push({ name: 'profil', params: { felhasznaloId: this.keresesEredmeny[`felhasznalo1`].felhasznaloNev } });
       }
     }
   }
@@ -133,7 +132,7 @@ export default {
             <img :src="felhasznalo.jellemzok.kep" alt="Felhasználókép" decoding="async" class="felhasznalo-kep">
           </div>
           <div class="dropdown-menu dropdown-menu-dark" id="felhasznaloDropdownMenu">
-            <RouterLink :to="{ name: 'profil', params: { userId: felhasznalo.felhasznaloNev } }" class="dropdown-item">Profil
+            <RouterLink :to="{ name: 'profil', params: { felhasznaloId: felhasznalo.felhasznaloNev } }" class="dropdown-item">Profil
             </RouterLink>
             <button class="dropdown-item" @click="kijelentkezes()">Kijelentkezés</button>
           </div>
@@ -153,7 +152,7 @@ export default {
       <div class="collapse navbar-collapse">
         <div class="navbar-nav">
           <RouterLink to="/" class="nav-item nav-link" :class="aktiv('fooldal')">Főoldal</RouterLink>
-          <RouterLink :to="{ name: 'profil', params: { userId: felhasznalo.felhasznaloNev } }" class="nav-item nav-link"
+          <RouterLink :to="{ name: 'profil', params: { felhasznaloId: felhasznalo.felhasznaloNev } }" class="nav-item nav-link"
             :class="aktiv('profil')">Profil</RouterLink>
           <RouterLink to="/ranglista" class="nav-item nav-link" :class="aktiv('ranglista')">Ranglista</RouterLink>
           <div class="nav-item dropdown">
@@ -186,7 +185,7 @@ export default {
 
   <div class="fixed-top" id="kereses-eredmeny-tarolo">
     <div class="bg-dark rounded" :class="keres ? '' : 'd-none'" id="kereses-eredmeny">
-      <RouterLink v-for="(item, index) in keresesEredmeny" :to="{ name: 'profil', params: { userId: item.felhasznaloNev } }"
+      <RouterLink v-for="(item, index) in keresesEredmeny" :to="{ name: 'profil', params: { felhasznaloId: item.felhasznaloNev } }"
         :key="item.felhasznaloNev" class="m-1 text-light text-decoration-none row" @click="profil = keresesEredmeny[index]">
         <div class="col-3">
           <img :src="item.jellemzok.kep" :alt="`${item.felhasznaloNev} képe`" decoding="async" class="felhasznalo-kep">
