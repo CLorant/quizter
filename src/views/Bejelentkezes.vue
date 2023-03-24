@@ -5,7 +5,7 @@ import { useFelhasznaloStore } from '../stores/felhasznalo'
 export default {
   data() {
     return {
-      felhasznaloNev: '',
+      felhasznalonev: '',
       jelszo: '',
       helytelen: false
     };
@@ -17,7 +17,7 @@ export default {
     async bejelentkezes() {
       try {
         const res = await axios.post("/api/login", {
-          felhasznaloNev: this.felhasznaloNev,
+          felhasznalonev: this.felhasznalonev,
           jelszo: this.jelszo
         });
         useFelhasznaloStore().$patch(res.data);
@@ -39,8 +39,8 @@ export default {
       </div>
 
       <div class="mb-1">
-        <label for="felhasznaloNevInput" class="form-label">Felhasználónév</label>
-        <input type="text" minlength="3" maxlength="12" pattern="[a-zA-Z0-9]+" v-model="felhasznaloNev" @click="helytelen = false" id="felhasznaloNevInput" class="form-control form-control-md text-light" :class="helytelen ? 'border-danger' : 'border-dark'" placeholder="Felhasználónév" required>
+        <label for="felhasznalonevInput" class="form-label">Felhasználónév</label>
+        <input type="text" minlength="3" maxlength="12" pattern="[a-zA-Z0-9]+" v-model="felhasznalonev" @click="helytelen = false" id="felhasznalonevInput" class="form-control form-control-md text-light" :class="helytelen ? 'border-danger' : 'border-dark'" placeholder="Felhasználónév" required>
           <div class="mt-1" style="height: 24px">
           <div class="text-danger" :class="helytelen ? 'd-block' : 'd-none'">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-exclamation-diamond mb-1" viewBox="0 0 16 16">

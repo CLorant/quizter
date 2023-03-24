@@ -143,11 +143,11 @@ export default {
     },
 
     getUserByName() {
-      if (this.profil.felhasznaloNev === "nem-meghatarozott-felhasznalo") {
+      if (this.profil.felhasznalonev === "nem-meghatarozott-felhasznalo") {
         // getUserByName - talán
         this.$router.push("/");
       }
-      if (this.$route.params.felhasznaloId === this.felhasznalo.felhasznaloNev) {
+      if (this.$route.params.felhasznaloId === this.felhasznalo.felhasznalonev) {
         this.bejelentkezettFelh = true;
         for (const prop in this.felhasznalo) {
           if (this.profil.hasOwnProperty(prop)) {
@@ -187,7 +187,7 @@ export default {
       // deleteUser
       try {
         await axios.delete("api/deleteUserPage", {
-          felhasznaloNev: this.felhasznalo.felhasznaloNev
+          felhasznalonev: this.felhasznalo.felhasznalonev
         });
       } catch (error) {
         console.log(error);
@@ -215,7 +215,7 @@ export default {
           <input v-if="bejelentkezettFelh && szerkesztes" id="szerkesztettNev" type="text" maxlength="20"
             v-model="szerkesztettNev" class="form-control text-light border-secondary w-100">
           <h2 v-else>{{ profil.jellemzok.nev }}</h2>
-          <h3>@{{ profil.felhasznaloNev }}</h3>
+          <h3>@{{ profil.felhasznalonev }}</h3>
           <Szint :exp="profil.statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
           <p>Csatlakozott: <b>{{ profil.csatlakozas }}</b></p>
           <button v-if="bejelentkezettFelh && !szerkesztes" id="szerkesztesGomb" class="btn btn-dark"

@@ -1,11 +1,11 @@
 <script>
-import { mapState, mapWritableState } from 'pinia'
-import { useTemaStore } from '../stores/tema'
-import { useQuizBeallitoStore } from '../stores/quizbeallito'
-import { useJatekmenetStore } from '../stores/jatekmenet'
-import { useFelhasznaloStore } from '../stores/felhasznalo'
-import axios from 'axios'
-import kerdesvalaszokJSON from '../kerdesvalasz.json' // átmeneti
+import { mapState, mapWritableState } from 'pinia';
+import { useTemaStore } from '../stores/tema';
+import { useQuizBeallitoStore } from '../stores/quizbeallito';
+import { useJatekmenetStore } from '../stores/jatekmenet';
+import { useFelhasznaloStore } from '../stores/felhasznalo';
+import axios from 'axios';
+import kerdesvalaszokJSON from '../kerdesvalasz.json'; // átmeneti
 
 export default {
   data() {
@@ -48,7 +48,7 @@ export default {
     //kezdő állapot
     this.kerdesvalaszok = this.kerdesValaszKezelo();
     this.kerdes.szoveg = this.kerdesvalaszok.kerdesvalasz1.kerdes.szoveg;
-    this.kerdes.kep = this.kerdesvalaszok.kerdesvalasz1.kerdes.kep
+    this.kerdes.kep = this.kerdesvalaszok.kerdesvalasz1.kerdes.kep;
     //Véletlenszerű sorrendű válaszokat ad vissza az objektumból
     this.valaszok = this.valaszKevero(Object.values(this.kerdesvalaszok.kerdesvalasz1.valaszok));
     this.maradtIdo = this.ido;
@@ -143,12 +143,12 @@ export default {
         this.maradtIdo--;
         this.atlagosValaszIdo++;
       }, 1000)
-      this.$watch(() => this.leNyomottValaszGomb, kikapcsol => {
+      this.$watch(() => this.leNyomottValaszGomb, (kikapcsol) => {
         if (kikapcsol === true) {
           clearInterval(this.interval);
         }
       })
-      this.$watch(() => this.maradtIdo, ujIdo => {
+      this.$watch(() => this.maradtIdo, (ujIdo) => {
         if (ujIdo < 1) {
           clearInterval(this.interval);
           this.valaszVizsgalat(false);
@@ -191,7 +191,7 @@ export default {
       this.felhasznalo.valaszIdo += (this.atlagosValaszIdo / this.kerdesSzam).toFixed(2);
 
       // updateUserStats
-      this.updateUser()
+      this.updateUser();
     },
 
     async updateUser() {
@@ -201,22 +201,17 @@ export default {
           jatszmaSzam: this.felhasznalo.statisztika.jatszmaSzam,
           valaszIdo: this.felhasznalo.statisztika.valaszIdo
         });
-      } catch (error) {
-        console.log(error)
-      }
-      
 
-      if (this.pont > this.felhasznalo.rekord.pontszam) {
-        this.felhasznalo.rekord.pontszam = this.pont;
-        this.felhasznalo.rekord.helyesHelytelen = this.helyesValasz + " / " + this.helytelenValasz;
-        this.felhasznalo.rekord.tema = this.tema;
-        this.felhasznalo.rekord.nehezseg = this.nehezseg;
-        this.felhasznalo.rekord.ido = this.ido;
-        this.felhasznalo.rekord.kerdesSzam = this.kerdesSzam;
-        this.felhasznalo.rekord.valaszSzam = this.valaszSzam;
+        if (this.pont > this.felhasznalo.rekord.pontszam) {
+          this.felhasznalo.rekord.pontszam = this.pont;
+          this.felhasznalo.rekord.helyesHelytelen = this.helyesValasz + " / " + this.helytelenValasz;
+          this.felhasznalo.rekord.tema = this.tema;
+          this.felhasznalo.rekord.nehezseg = this.nehezseg;
+          this.felhasznalo.rekord.ido = this.ido;
+          this.felhasznalo.rekord.kerdesSzam = this.kerdesSzam;
+          this.felhasznalo.rekord.valaszSzam = this.valaszSzam;
 
-        // updateUserRecord
-        try {
+          // updateUserRecord
           await axios.patch('/api/updateUserRecord', {
             pontszam: this.felhasznalo.rekord.pontszam,
             helyesHelytelen: this.felhasznalo.rekord.helyesHelytelen,
@@ -226,9 +221,9 @@ export default {
             kerdesSzam: this.felhasznalo.rekord.kerdesSzam,
             valaszSzam: this.felhasznalo.rekord.valaszSzam
           });
-        } catch (error) {
-          console.log(error)
         }
+      } catch (error) {
+        console.log(error);
       }
     },
 

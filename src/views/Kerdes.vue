@@ -1,5 +1,7 @@
 <script>
-import axios from 'axios'
+import { mapWritableState } from 'pinia';
+import { useKerdesStore } from '../stores/kerdes';
+import axios from 'axios';
   export default {
     data() {
       return {
@@ -7,15 +9,15 @@ import axios from 'axios'
         valasztottTema: 'autok',
         nehezsegek: ['konnyu', 'kozepes', 'nehez'],
         valasztottNehezseg: 'konnyu',
-        kerdes: '',
-        kep: null,
-        kepUrl: '',
-        valasz1: '',
-        valasz2: '',
-        valasz3: '',
-        valasz4: '',
-        valasz5: '',
-        valasz6: '',
+        modKerdesSzoveg: '',
+        modKep: null,
+        modKepUrl: null,
+        modValasz1: '',
+        modValasz2: '',
+        modValasz3: '',
+        modValasz4: '',
+        modValasz5: '',
+        modValasz6: '',
         kepMegjelenit: false,
         modositas: false,
         torles: false
@@ -23,14 +25,13 @@ import axios from 'axios'
     },
 
     beforeMount() {
-
-      /*
-      try {
-        const res = axios.get(`/api/getQuestion/${this.$route.params.kerdesId}`);
-      } catch (error) {
-        console.log(error);
+      if (this.tema === "nem-meghatarozott") {
+        this.$router.push("/kerdesek");
       }
-      */
+    },
+
+    computed: {
+      ...mapWritableState(useKerdesStore, ['tema', 'nehezseg', 'kerdes', 'valaszok'])
     },
 
     methods: {
@@ -97,32 +98,69 @@ import axios from 'axios'
 
       onFileChange(event) {
         const file = event.target.files[0];
-        this.kep = file;
-        this.kepUrl = URL.createObjectURL(file);
+        this.modKep = file;
+        this.modKepUrl = URL.createObjectURL(file);
       },
 
       async updateQuestion() {
         try {
+          // statek beállítása
+          this.tema = this.valasztottTema;
+          this.nehezseg = this.valasztottNehezseg;
+          this.kerdes.szoveg = this.modKerdesSzoveg;
+          this.kerdes.kep = this.modKepUrl;
+          this.valaszok.valasz1.szoveg = this.modValasz1;
+          this.valaszok.valasz2.szoveg = this.modValasz2;
+          this.valaszok.valasz3.szoveg = this.modValasz3;
+          this.valaszok.valasz4.szoveg = this.modValasz4;
+          this.valaszok.valasz5.szoveg = this.modValasz5;
+          this.valaszok.valasz6.szoveg = this.modValasz6;
+          this.modositas = false;
           const formData = new FormData();
 
           formData.append('tema', this.valasztottTema);
           formData.append('nehezseg', this.valasztottNehezseg);
-          formData.append('kerdes', this.kerdes);
-          formData.append('valasz1', this.valasz1);
-          formData.append('valasz2', this.valasz2);
-          formData.append('valasz3', this.valasz3);
-          formData.append('valasz4', this.valasz4);
-          formData.append('valasz5', this.valasz5);
-          formData.append('valasz6', this.valasz6);
+          formData.append('kerdes', this.modKerdesSzoveg);
+          formData.append('valasz1', this.modValasz1);
+          formData.append('valasz2', this.modValasz2);
+          formData.append('valasz3', this.modValasz3);
+          formData.append('valasz4', this.modValasz4);
+          formData.append('valasz5', this.modValasz5);
+          formData.append('valasz6', this.modValasz6);
 
-          if (this.kep) {
-            formData.append('kep', this.kep);
+          if (this.modKep) {
+            formData.append('kep', this.modKep);
           }
 
         await axios.patch('api/updateQuestion', formData);
         } catch (error) {
           console.log(error);
         }
+      },
+
+      async deleteQuestion() {
+        try {
+          await axios.delete(`api/deleteQuestion/${this.$route.params.kerdesId}`);
+          this.$router.push("/kerdesek");
+        } catch (error) {
+          console.log(error);
+        }
+      },
+
+      modositasKezelo() {
+        // értékek beállítása
+
+        this.valasztottTema = this.tema;
+        this.valasztottNehezseg = this.nehezseg;
+        this.modKerdesSzoveg = this.kerdes.szoveg;
+        this.modKepUrl = this.kerdes.kep;
+        this.modValasz1 = this.valaszok.valasz1.szoveg;
+        this.modValasz2 = this.valaszok.valasz2.szoveg;
+        this.modValasz3 = this.valaszok.valasz3.szoveg;
+        this.modValasz4 = this.valaszok.valasz4.szoveg;
+        this.modValasz5 = this.valaszok.valasz5.szoveg;
+        this.modValasz6 = this.valaszok.valasz6.szoveg;
+        this.modositas = true;
       }
     }
   }
@@ -133,41 +171,49 @@ import axios from 'axios'
     <div v-if="modositas">
       <div id="szuro-tarolo">
         <div class="dropdown my-1">
-          <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
+          <button type="button" class="btn btn-dark dropdown-toggle szuroGomb" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false" :value="valasztottTema">{{ temaSzoveg(valasztottTema) }}</button>
           <ul class="dropdown-menu dropdown-menu-dark">
             <li v-for="tema in temak" :key="tema" class="dropdown-item" @click="valasztottTema = tema">{{ temaSzoveg(tema) }}</li>
           </ul>
         </div>
         <div class="dropdown my-1">
-          <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
+          <button type="button" class="btn btn-dark dropdown-toggle szuroGomb" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false" :value="valasztottNehezseg"> {{ nehezsegSzoveg(valasztottNehezseg) }}</button>
           <ul class="dropdown-menu dropdown-menu-dark">
             <li v-for="nehezseg in nehezsegek" :key="nehezseg" class="dropdown-item" @click="valasztottNehezseg = nehezseg">{{ nehezsegSzoveg(nehezseg) }}</li>
           </ul>
         </div>
       </div>
-      <input id="kerdes" type="text" v-model="kerdes" class="form-control text-light border-secondary w-100">
+      <input id="kerdes" type="text" v-model="modKerdesSzoveg" class="form-control text-light border-secondary w-100">
       <input v-if="kepMegjelenit===false" type="file" id="kep" name="kep" @change="onFileChange" accept="image/*" class="form-control text-light border-secondary w-100">
-      <img v-else id="kep" :src="kepUrl" alt="Kérdés képe" decoding="async" />
-      <button v-if="kep !== null" class="btn mb-3" :class="kepMegjelenit ? 'btn-secondary' : 'btn-light'" @click="kepMegjelenit = !kepMegjelenit">Kép {{ kepMegjelenit ? 'Elrejtése' : 'Megjelenítése' }}</button>
+      <img v-else id="kep" :src="modKepUrl" alt="Kérdés képe" decoding="async" />
+      <button v-if="modKep || modKepUrl !== null" class="btn mb-3" :class="kepMegjelenit ? 'btn-secondary' : 'btn-light'" @click="kepMegjelenit = !kepMegjelenit">Kép {{ kepMegjelenit ? 'Elrejtése' : 'Megjelenítése' }}</button>
       <div id="gombTarolo">
         <div id="gombDiv">
-          <input class="valaszGomb" v-model="valasz1">
-          <input class="valaszGomb" v-model="valasz2">
-          <input class="valaszGomb" v-model="valasz3">
-          <input class="valaszGomb" v-model="valasz4">
-          <input class="valaszGomb" v-model="valasz5">
-          <input class="valaszGomb" v-model="valasz6">
+          <input class="valaszGomb" v-model="modValasz1">
+          <input class="valaszGomb" v-model="modValasz2">
+          <input class="valaszGomb" v-model="modValasz3">
+          <input class="valaszGomb" v-model="modValasz4">
+          <input class="valaszGomb" v-model="modValasz5">
+          <input class="valaszGomb" v-model="modValasz6">
         </div>
       </div>
     </div>
     <div v-else>
+      <div id="szuro-tarolo">
+        <div class="btn btn-dark szuroGomb my-1">
+          {{ temaSzoveg(tema) }}
+        </div>
+        <div class="btn btn-dark szuroGomb my-1">
+          {{ nehezsegSzoveg(nehezseg) }}
+        </div>
+      </div>
       <h3 id="kerdes">{{ kerdes.szoveg }}</h3>
       <img id="kep" :src="kerdes.kep" alt="Kérdés képe" decoding="async" />
       <div id="gombTarolo">
         <div id="gombDiv">
-          <button v-for="(value, index) in valaszok" :key="index" class="valaszGomb" :style="{backgroundColor: index === 0 ? 'green' : 'firebrick'}">
+          <button v-for="(value, index) in valaszok" :key="index" class="valaszGomb">
             {{ value.szoveg }}
           </button>
         </div>
@@ -188,7 +234,7 @@ import axios from 'axios'
     </div>
     <div v-else>
       <RouterLink to="/kerdesek" class="btn btn-lg btn-secondary m-2">Vissza</RouterLink>
-      <button class="btn btn-lg btn-success m-2" @click="modositas = true">Módosítás</button>
+      <button class="btn btn-lg btn-success m-2" @click="modositasKezelo()">Módosítás</button>
       <button class="btn btn-lg btn-danger m-2" @click="torles = true">Törlés</button>
     </div>
   </div>
@@ -213,9 +259,10 @@ import axios from 'axios'
     margin-bottom: 20px;
   }
 
-  .dropdown-toggle {
-    margin: 5px;
+  .szuroGomb {
     width: 130px;
+    height: 40px;
+    margin: 5px;
   }
 
   ul {
@@ -255,7 +302,7 @@ import axios from 'axios'
     text-align: center;
     border: none;
     border-radius: 15px;
-    background-color: #4C4C4C;
+    background-color: firebrick;
     font-size: 14pt;
     color: white;
     height: 80px;
@@ -264,6 +311,14 @@ import axios from 'axios'
     margin: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     white-space: pre-wrap;
+  }
+
+  .valaszGomb:focus {
+    background-color: firebrick;
+  }
+
+  #gombDiv .valaszGomb:nth-child(1) {
+    background-color: green;
   }
 
   input,

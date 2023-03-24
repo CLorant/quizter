@@ -133,18 +133,18 @@ import axios from 'axios'
         </ul>
       </div>
     </div>
-    <input id="kerdes" type="text" v-model="kerdes" class="form-control text-light border-secondary w-100">
-    <input v-if="kepMegjelenit===false" type="file" id="kep" name="kep" @change="onFileChange" accept="image/*" class="form-control text-light border-secondary w-100">
+    <input type="text" id="kerdes" v-model="kerdes" class="form-control text-light border-secondary w-100" placeholder="Kérdés">
+    <input v-if="kepMegjelenit===false" type="file" id="kep" name="kep" @change="onFileChange" accept="image/*" class="form-control text-light border-secondary w-100" aria-label="Kép Input">
     <img v-else id="kep" :src="kepUrl" alt="Kérdés képe" decoding="async" />
     <button v-if="kep !== null" class="btn mb-3" :class="kepMegjelenit ? 'btn-secondary' : 'btn-light'" @click="kepMegjelenit = !kepMegjelenit">Kép {{ kepMegjelenit ? 'Elrejtése' : 'Megjelenítése' }}</button>
     <div id="gombTarolo">
       <div id="gombDiv">
-        <input class="valaszGomb" v-model="valasz1">
-        <input class="valaszGomb" v-model="valasz2">
-        <input class="valaszGomb" v-model="valasz3">
-        <input class="valaszGomb" v-model="valasz4">
-        <input class="valaszGomb" v-model="valasz5">
-        <input class="valaszGomb" v-model="valasz6">
+        <input class="valaszGomb" v-model="valasz1" placeholder="Igaz válasz">
+        <input class="valaszGomb" v-model="valasz2" placeholder="Hamis válasz">
+        <input class="valaszGomb" v-model="valasz3" placeholder="Hamis válasz">
+        <input class="valaszGomb" v-model="valasz4" placeholder="Hamis válasz">
+        <input class="valaszGomb" v-model="valasz5" placeholder="Hamis válasz">
+        <input class="valaszGomb" v-model="valasz6" placeholder="Hamis válasz">
       </div>
     </div>
     <button class="btn btn-lg btn-success" @click="createQuestion">Mentés</button>
@@ -216,7 +216,7 @@ import axios from 'axios'
     text-align: center;
     border: none;
     border-radius: 15px;
-    background-color: #4C4C4C;
+    background-color: firebrick;
     font-size: 14pt;
     color: white;
     height: 80px;
@@ -227,6 +227,14 @@ import axios from 'axios'
     white-space: pre-wrap;
   }
 
+  .valaszGomb:focus {
+    background-color: firebrick;
+  }
+
+  #gombDiv .valaszGomb:nth-child(1) {
+    background-color: green;
+  }
+
   input,
   input:focus {
     background-color: #0D1117;
@@ -235,6 +243,14 @@ import axios from 'axios'
   .valaszGomb:hover,
   #folytatasGomb:hover {
     opacity: 0.8;
+  }
+
+  .form-control::-webkit-input-placeholder {
+    color: gray;
+  }
+
+  .valaszGomb::-webkit-input-placeholder {
+    color: rgb(200, 200, 200)
   }
 
   @media screen and (max-width: 500px) {

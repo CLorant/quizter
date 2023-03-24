@@ -224,12 +224,12 @@ export default {
         <div id="kereses-eredmeny-tarolo">
           <div class="bg-dark rounded" :class="keres ? '' : 'd-none'" id="kereses-eredmeny">
             <div v-for="(item, index) in keresesEredmeny"
-              :key="item.felhasznaloNev" class="m-1 text-light text-decoration-none row" @click="singleUser(index)">
+              :key="item.felhasznalonev" class="m-1 text-light text-decoration-none row" @click="singleUser(index)">
               <div class="col-3">
-                <img :src="item.jellemzok.kep" :alt="`${item.felhasznaloNev} képe`" decoding="async" class="felhasznalo-kep">
+                <img :src="item.jellemzok.kep" :alt="`${item.felhasznalonev} képe`" decoding="async" class="felhasznalo-kep">
               </div>
               <div class="col">
-                <p id="keresett-felhasznalo">{{ item.felhasznaloNev }}</p>
+                <p id="keresett-felhasznalo">{{ item.felhasznalonev }}</p>
               </div>
             </div>
           </div>
@@ -247,12 +247,12 @@ export default {
                   <tr v-for="(item, index) in ranglistaAdatok" :key="index" @click="valasztottIndex = index">
                     <td class="col-1">{{ index.substring(11) }}.</td>
                     <td class="col-1">
-                      <RouterLink :to="{ name: 'profil', params: { felhasznaloId: item.felhasznaloNev } }">
-                        <img :src="item.jellemzok.kep" :alt="item.felhasznaloNev + ' képe'" decoding="async" id="ranglista-felhasznalo-kep">
+                      <RouterLink :to="{ name: 'profil', params: { felhasznaloId: item.felhasznalonev } }">
+                        <img :src="item.jellemzok.kep" :alt="item.felhasznalonev + ' képe'" decoding="async" id="ranglista-felhasznalo-kep">
                       </RouterLink>
                     </td>
                     <td class="col-3" style="text-align: left;">{{ item.jellemzok.nev }}</td>
-                    <td class="col-2">@{{ item.felhasznaloNev }}</td>
+                    <td class="col-2">@{{ item.felhasznalonev }}</td>
                     <td class="col-3">{{ item.rekord.pontszam }} pont</td>
                   </tr>
                   <tr>
@@ -269,12 +269,12 @@ export default {
           <div class="col-lg justify-content-center px-2" >
             <div class="table-responsive">
               <div id="seged-ranglista-felhasznalo-tarolo">
-                <RouterLink @click="profil = ranglistaAdatok[valasztottIndex]" :to="{ name: 'profil', params: { felhasznaloId: ranglistaAdatok[valasztottIndex].felhasznaloNev } }">
+                <RouterLink @click="profil = ranglistaAdatok[valasztottIndex]" :to="{ name: 'profil', params: { felhasznaloId: ranglistaAdatok[valasztottIndex].felhasznalonev } }">
                   <img :src="ranglistaAdatok[valasztottIndex].jellemzok.kep" alt="Felhasználó kép" decoding="async" id="seged-ranglista-felhasznalo-kep">
                 </RouterLink>
                 <div>
                   <div id="felhasznalo-tarolo">
-                    <span id="felhasznalo-nev">{{ranglistaAdatok[valasztottIndex].felhasznaloNev}}</span>
+                    <span id="felhasznalo-nev">{{ranglistaAdatok[valasztottIndex].felhasznalonev}}</span>
                     <div style="display: flex; justify-content: center;">
                       <Szint :exp="ranglistaAdatok[valasztottIndex].statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
                     </div>

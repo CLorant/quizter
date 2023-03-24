@@ -5,7 +5,7 @@
   export default {
     data() {
       return {
-        felhasznaloNev: '',
+        felhasznalonev: '',
         email: '',
         jelszo: '',
         ismeteltJelszo: '',
@@ -22,13 +22,13 @@
         if(!this.helytelenIsmeteltJelszo) {
           try {
             const regRes = await axios.post("/api/register", {
-              felhasznaloNev: this.felhasznaloNev,
+              username: this.felhasznalonev,
               email: this.email,
-              jelszo: this.jelszo,
+              password: this.jelszo,
             });
             const loginRes = await axios.post("/api/login", {
-              felhasznaloNev: this.felhasznaloNev,
-              jelszo: this.jelszo
+              username: this.felhasznalonev,
+              password: this.jelszo
             });
             useFelhasznaloStore().$patch(loginRes.data);
             this.$router.push("/");
@@ -50,10 +50,10 @@
       </div>
       <div class="mb-1">
         <div class="d-flex justify-content-between">
-          <label for="felhasznaloNevInput" class="form-label">Felhasználónév</label>
+          <label for="felhasznalonevInput" class="form-label">Felhasználónév</label>
           <label class="link">Betű és szám</label>
         </div>
-        <input type="text" minlength="3" maxlength="12" pattern="[a-zA-Z0-9]+" v-model="felhasznaloNev" id="felhasznaloNevInput" class="form-control form-control-md text-light border-dark" placeholder="Felhasználónév" required>
+        <input type="text" minlength="3" maxlength="12" pattern="[a-zA-Z0-9]+" v-model="felhasznalonev" id="felhasznalonevInput" class="form-control form-control-md text-light border-dark" placeholder="Felhasználónév" required>
         <div class="mt-1" />
       </div>
 
