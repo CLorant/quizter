@@ -61,7 +61,7 @@
 
 <style scoped>
   #tarolo{
-    color: white;
+    color: whitesmoke;
     min-height: 100vh;
   }
 </style>
