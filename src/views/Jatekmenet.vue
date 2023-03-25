@@ -251,7 +251,7 @@ export default {
   <div id="tartalom">
     <div v-if="!jatekVege">
       <p id="korSzamlalo">{{ kor + 1 }} / {{ kerdesSzam }}</p>
-      <h3 id="kerdes">{{ kerdes.szoveg }}</h3>
+      <h4 id="kerdes">{{ kerdes.szoveg }}</h4>
       <img id="kep" :src="kerdes.kep" alt="Kérdés képe" decoding="async" />
       <div id="gombTarolo">
         <div id="gombDiv">
@@ -285,7 +285,7 @@ export default {
       </div>
     </div>
 
-    <div v-else class="d-flex align-items-center justify-content-center flex-column pt-5">
+    <div v-else class="d-flex align-items-center justify-content-center flex-column pt-3">
       <div class="rekord-tablazat">
           <h1>Játszma adatai</h1>
           <p>Pontszám: <b>{{ pont }}</b> pont</p>
@@ -298,9 +298,7 @@ export default {
           <p>Válaszszám: <b>{{ valaszSzam }}</b></p>
           <p>Átlagos válaszidő: <b>{{ (atlagosValaszIdo / kerdesSzam).toFixed(2) }}</b> mp</p>
         </div>
-      <RouterLink to="/">
-        <button id='folytatasGomb' style="background-color:#4C4C4C; margin-top: 55px;">Kilépés</button>
-      </RouterLink>
+        <button id="folytatasGomb" class="my-4 fs-6" @click="$router.push('/')">Kilépés</button>
     </div>
   </div>
 </template>
@@ -324,8 +322,9 @@ export default {
 
 #kerdes {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 35px;
   font-size: 28pt;
+  max-height: 28pt;
 }
 
 #kep {
@@ -335,7 +334,7 @@ export default {
   height: 300px;
   max-width: 95%;
   width: auto;
-  border-radius: 1vw;
+  border-radius: 15px;
   margin-bottom: 25px;
 }
 
@@ -367,7 +366,6 @@ export default {
   text-align: right;
   padding: 0 10px;
   line-height: 50px;
-  width: 0;
   background-color: rgb(255, 200, 0);
   box-sizing: border-box;
   font-size: 24pt;
@@ -379,11 +377,11 @@ export default {
 }
 
 .valaszGomb {
+  font-weight: 500;
   border: none;
   border-radius: 15px;
-  background-color: #4C4C4C;
   font-size: 14pt;
-  color: white;
+  color: whitesmoke;
   height: 80px;
   max-width: 246px;
   width: 42%;
@@ -399,10 +397,11 @@ export default {
 }
 
 #folytatasGomb {
+  font-weight: 500;
   border: none;
   border-radius: 12px;
   background-color: #333333;
-  color: white;
+  color: whitesmoke;
   font-size: 14pt;
   height: 60px;
   width: 160px;
@@ -432,17 +431,92 @@ export default {
   opacity: 0.8;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-height: 800px) {
+  #kep {
+    height: 20vh;
+  }
+
   #kerdes {
-    font-size: 6vw;
+    font-size: 3vw;
+    max-height: 3vw;
+  }
+
+  .valaszGomb {
+    height: 8vh;
+    font-size: 1.5vw;
+  }
+
+  #visszaSzamoloDiv {
+    margin-top: 0px;
+    height: 35px;
+  }
+
+  #visszaSzamoloDiv div {
+    line-height: 35px;
+    font-size: 16pt;
+  }
+
+  #folytatasGomb {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 1.5vw;
+    height: 7vh;
+  }
+
+  .rekord-tablazat p {
+    margin-bottom: 1vh;
+  }
+}
+
+@media screen and (max-width: 997px) {
+  #korSzamlalo {
+    font-size: 2.5vw;
   }
 
   #kep {
-    height: 100px;
+    height: 20vh;
+    object-fit: cover;
   }
 
-  #korSzamlalo {
+  #kerdes {
     font-size: 4vw;
+    max-height: 4vw;
+  }
+
+  .valaszGomb {
+    margin: 1vw;
+    height: 5.5vh;
+    font-size: 2.5vw;
+  }
+
+  #visszaSzamoloDiv {
+    height: 35px;
+    margin-bottom: 0px;
+  }
+
+  #visszaSzamoloDiv div {
+    line-height: 35px;
+    font-size: 16pt;
+  }
+
+  #folytatasGomb {
+    font-size: 2.5vw;
+  }
+
+  .rekord-tablazat p {
+    margin-bottom: 1vh;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #korSzamlalo {
+    font-size: 4.5vw;
+  }
+
+  #kerdes {
+    position: relative;
+    font-size: 5.5vw;
+    max-height: 6vw;
   }
 
   .valaszGomb {
@@ -463,6 +537,11 @@ export default {
     font-size: 12pt;
   }
 
+  #folytatasGomb {
+    font-size: 3.5vw;
+    width: 40%;
+  }
+
   .rekord-tablazat {
     width: 95%;
   }
@@ -471,7 +550,7 @@ export default {
     font-size: 8vw;
   }
 
-.rekord-tablazat p {
+  .rekord-tablazat p {
     font-size: 5vw;
   }
 }

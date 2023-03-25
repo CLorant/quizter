@@ -5,7 +5,7 @@
       <p>
         Helló, itt a Quizter csapata! Ezt a weboldalt 3 középiskolai tanuló
         készítette egy iskolai projektnek 2022-ben. Viszont ezután is
-        karbantartjuk majd a weboldalt. A Quizter-en 11 különböző témában érhető
+        karbantartjuk majd a weboldalt. A Quizteren 11 különböző témában érhető
         el nagyjából 1300 kérdés. Emellett van még egy véletlenszerű kérdésekből
         álló téma is, így összesen 12 téma van. A játszma a kérdések nehézsége,
         a körönkénti idő, a kérdések és válaszok száma szerint 3 nehézségen
@@ -135,7 +135,7 @@ p, a {
   margin-bottom: 10px;
   border-radius: 50%;
   height: 200px;
-  width: auto;
+  width: 200px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -157,6 +157,11 @@ p, a {
 }
 
 @media screen and (max-width: 764px) {
+  .bemutatkozas-tarolo p {
+    font-size: 12pt;
+    line-height: 24pt;
+  }
+
   .rolunk-oszlop {
     padding-bottom: 50px;
     width: 100%;

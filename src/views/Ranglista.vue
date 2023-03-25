@@ -157,7 +157,7 @@ export default {
     },
 
     keresoGomb() {
-      if (this.keresett !== "") {
+      if (this.keresett !== "" && this.keresesEredmeny.length != 0) {
         this.ranglistaAdatok = this.keresesEredmeny;
       }
     },
@@ -171,7 +171,7 @@ export default {
 </script>
 
 <template>
-  <div id="tartalom" style="overflow-x: hidden;">
+  <div id="tartalom">
     <div id="szuro-tarolo">
       <div class="dropdown my-1">
         <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
@@ -323,6 +323,7 @@ export default {
 
 <style scoped>
 #tartalom {
+  overflow-x: hidden;
   padding-top: 100px;
   width: 100%;
 }
