@@ -97,7 +97,7 @@ export default {
     },
 
     keresoGomb() {
-      if(this.keresett !== "") {
+      if(this.keresett !== "" && this.keresesEredmeny.length != 0) {
         this.profil = this.keresesEredmeny.felhasznalo1;
         this.$router.push({ name: 'profil', params: { felhasznaloId: this.keresesEredmeny[`felhasznalo1`].felhasznalonev } });
       }
