@@ -12,7 +12,7 @@
 
 <style scoped>
 #tartalom {
-  color: white;
+  color: whitesmoke;
   text-align: center;
   margin-top: 150px;
 }
@@ -30,7 +30,7 @@
   border: none;
   border-radius: 12px;
   background-color: #4C4C4C;
-  color: white;
+  color: whitesmoke;
   font-size: 14pt;
   height: 60px;
   width: 160px;

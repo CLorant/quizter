@@ -251,7 +251,7 @@ export default {
 
 .beallitasGomb {
   border: none;
-  color: white;
+  color: whitesmoke;
   background-color: #4C4C4C;
   width: 200px;
   height: 100px;
@@ -268,7 +268,7 @@ export default {
 
 #inditoGomb {
   border: none;
-  color: white;
+  color: whitesmoke;
   background-color: rgb(200, 130, 0);
   width: 300px;
   height: 80px;
@@ -315,6 +315,7 @@ export default {
   }
 
   #inditoGombDiv {
+    padding-top: 0px;
     padding-bottom: 0px;
   }
 

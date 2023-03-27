@@ -96,10 +96,29 @@ export default {
       }
     },
 
-    onFileChange(event) {
+    kepCsere(event) {
       const file = event.target.files[0];
-      this.modKep = file;
-      this.modKepUrl = URL.createObjectURL(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const aspectRatio = img.width / img.height;
+          canvas.height = 450;
+          canvas.width = aspectRatio * canvas.height;
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob((blob) => {
+            const resizedFile = new File([blob], file.name, {
+              type: file.type,
+              lastModified: Date.now(),
+            });
+            this.modKep = resizedFile;
+            this.modKepUrl = URL.createObjectURL(resizedFile);
+          }, file.type);
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
     },
 
     async updateQuestion() {
@@ -251,9 +270,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   max-width: 1000px;
-  width: 100%;
-  height: auto;
-  margin-top: 60px;
+  margin-top: 50px;
   text-align: center;
 }
 
@@ -309,7 +326,7 @@ ul {
   border-radius: 15px;
   background-color: firebrick;
   font-size: 14pt;
-  color: white;
+  color: whitesmoke;
   height: 80px;
   max-width: 246px;
   width: 42%;
@@ -341,69 +358,59 @@ input:focus {
   opacity: 0.8;
 }
 
-@media screen and (max-height: 800px) {
+@media screen and (max-height: 900px) {
+  #kerdes {
+    font-size: 20pt;
+  }
+
   #kep {
     height: 20vh;
   }
 
-  #kerdes {
-    font-size: 3vw;
-  }
-
   .valaszGomb {
     height: 8vh;
-    font-size: 1.5vw;
+    font-size: 12pt;
   }
 
   .muveletGomb {
     margin-top: 5px;
     margin-bottom: 5px;
-    font-size: 1.5vw;
+    font-size: 12pt;
   }
 }
 
 @media screen and (max-width: 997px) {
-  #korSzamlalo {
-    font-size: 2.5vw;
-  }
-
   #kep {
     height: 20vh;
     object-fit: cover;
   }
 
   #kerdes {
-    font-size: 4vw;
-  }
-
-  .valaszGomb {
-    margin: 1vw;
-    height: 5.5vh;
-    font-size: 2.5vw;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  #korSzamlalo {
-    font-size: 4.5vw;
-  }
-
-  #kerdes {
-    position: relative;
-    font-size: 6vw;
-  }
-
-  .valaszGomb {
-    height: 7.5vh;
-    font-size: 3.5vw;
+    font-size: 20pt;
   }
 
   #gombDiv {
     width: 100%;
   }
 
+  .valaszGomb {
+    margin: 5px;
+    height: 7.5vh;
+    font-size: 12pt;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #kerdes {
+    font-size: 5vw;
+  }
+
+  .valaszGomb {
+    font-size: 3.2vw;
+  }
+
   .muveletGomb {
-    font-size: 3.5vw;
+    font-size: 3.2vw;
     width: 30%;
     margin: 4px;
   }

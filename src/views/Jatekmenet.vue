@@ -47,8 +47,7 @@ export default {
     }
     //kezdő állapot
     this.kerdesvalaszok = this.kerdesValaszKezelo();
-    this.kerdes.szoveg = this.kerdesvalaszok.kerdesvalasz1.kerdes.szoveg;
-    this.kerdes.kep = this.kerdesvalaszok.kerdesvalasz1.kerdes.kep;
+    this.kerdes = this.kerdesvalaszok.kerdesvalasz1.kerdes;
     //Véletlenszerű sorrendű válaszokat ad vissza az objektumból
     this.valaszok = this.valaszKevero(Object.values(this.kerdesvalaszok.kerdesvalasz1.valaszok));
     this.maradtIdo = this.ido;
@@ -58,14 +57,7 @@ export default {
     kerdesValaszKezelo() {
       /*
       try {
-        let res = axios.get('/api/getGameQuestions', {
-          params: {
-            tema: this.tema,
-            nehezseg: this.nehezseg,
-            kerdesSzam: this.kerdesSzam,
-            valaszSzam: this.valaszSzam
-          }
-        });
+        let res = axios.get(`/api/getGameQuestions/${this.tema}/${this.nehezseg}/${this.kerdesSzam}/${this.valaszSzam}`);
         
         // hozzáfűz a válaszokhoz egy true vagy false boolt
         for (let i = 0; i < this.kerdesSzam; i++) {
@@ -82,7 +74,7 @@ export default {
           }
           res.data[`kerdesvalasz${i + 1}`] = kerdesvalasz;
         }
-        return res;
+        return res.data;
       } catch (error) {
         console.log(error);
       }
@@ -256,7 +248,7 @@ export default {
       <div id="gombTarolo">
         <div id="gombDiv">
           <button v-for="(value, key) in valaszok" :key="key" class="valaszGomb" :disabled="leNyomottValaszGomb"
-            @click="valaszVizsgalat(value.helyes)" :style="{
+            @click="leNyomottValaszGomb ? '' : valaszVizsgalat(value.helyes)" :style="{
               //ha a gomb megnyomott akkor a válasz helyessége szerint színezi, ha nem akkor az alapszínt használja
               backgroundColor: leNyomottValaszGomb ? (value.helyes ? 'green' : 'firebrick') : ('#4C4C4C')
             }">
@@ -270,13 +262,13 @@ export default {
         }">{{ maradtIdo }}</div>
       </div>
       <div id="folytatasGombDiv">
-        <button v-if="kor < kerdesSzam - 1" id=folytatasGomb :disabled="folytatasGombKikapcsol" @click="folytat()"
+        <button v-if="kor < kerdesSzam - 1" id=folytatasGomb :disabled="folytatasGombKikapcsol" @click="folytatasGombKikapcsol ? '' : folytat()"
           :style="{
             backgroundColor: folytatasGombKikapcsol ? '#333333' : '#4C4C4C'
           }">
           Folytatás
         </button>
-        <button v-else id=folytatasGomb @click="vege()"
+        <button v-else id=folytatasGomb @click="folytatasGombKikapcsol ? '' : vege()"
         :style="{
           backgroundColor: folytatasGombKikapcsol ? '#333333' : '#4C4C4C'
         }">
@@ -309,8 +301,6 @@ export default {
   margin-left: auto;
   margin-right: auto;
   max-width: 1000px;
-  width: 100%;
-  height: auto;
   margin-top: 50px;
 }
 
@@ -355,7 +345,7 @@ export default {
   width: 90%;
   margin: 10px auto;
   height: 50px;
-  background-color: white;
+  background-color: whitesmoke;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -431,19 +421,24 @@ export default {
   opacity: 0.8;
 }
 
-@media screen and (max-height: 800px) {
+@media screen and (max-height: 900px){
+  #korSzamlalo {
+    font-size: 14pt;
+  }
+
+  #kerdes {
+    position: relative;
+    font-size: 20pt;
+    max-height: 20pt;
+  }
+
   #kep {
     height: 20vh;
   }
 
-  #kerdes {
-    font-size: 3vw;
-    max-height: 3vw;
-  }
-
   .valaszGomb {
     height: 8vh;
-    font-size: 1.5vw;
+    font-size: 12pt;
   }
 
   #visszaSzamoloDiv {
@@ -459,7 +454,7 @@ export default {
   #folytatasGomb {
     margin-top: 5px;
     margin-bottom: 5px;
-    font-size: 1.5vw;
+    font-size: 12pt;
     height: 7vh;
   }
 
@@ -470,7 +465,7 @@ export default {
 
 @media screen and (max-width: 997px) {
   #korSzamlalo {
-    font-size: 2.5vw;
+    font-size: 16pt;
   }
 
   #kep {
@@ -479,14 +474,19 @@ export default {
   }
 
   #kerdes {
-    font-size: 4vw;
-    max-height: 4vw;
+    position: relative;
+    font-size: 20pt;
+    max-height: 20pt;
+  }
+
+  #gombDiv {
+    width: 100%;
   }
 
   .valaszGomb {
-    margin: 1vw;
-    height: 5.5vh;
-    font-size: 2.5vw;
+    margin: 5px;
+    height: 7.5vh;
+    font-size: 12pt;
   }
 
   #visszaSzamoloDiv {
@@ -500,7 +500,7 @@ export default {
   }
 
   #folytatasGomb {
-    font-size: 2.5vw;
+    font-size: 12pt;
   }
 
   .rekord-tablazat p {
@@ -510,22 +510,17 @@ export default {
 
 @media screen and (max-width: 500px) {
   #korSzamlalo {
-    font-size: 4.5vw;
+    font-size: 4vw;
   }
 
   #kerdes {
     position: relative;
-    font-size: 5.5vw;
+    font-size: 5vw;
     max-height: 6vw;
   }
 
   .valaszGomb {
-    height: 7.5vh;
-    font-size: 3.5vw;
-  }
-
-  #gombDiv {
-    width: 100%;
+    font-size: 3.2vw;
   }
 
   #visszaSzamoloDiv {
@@ -538,7 +533,7 @@ export default {
   }
 
   #folytatasGomb {
-    font-size: 3.5vw;
+    font-size: 3.2vw;
     width: 40%;
   }
 

@@ -82,10 +82,29 @@ export default {
       }
     },
 
-    onFileChange(event) {
+    kepCsere(event) {
       const file = event.target.files[0];
-      this.kep = file;
-      this.kepUrl = URL.createObjectURL(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const aspectRatio = img.width / img.height;
+          canvas.height = 450;
+          canvas.width = aspectRatio * canvas.height;
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob((blob) => {
+            const resizedFile = new File([blob], file.name, {
+              type: file.type,
+              lastModified: Date.now(),
+            });
+            this.kep = resizedFile;
+            this.kepUrl = URL.createObjectURL(resizedFile);
+          }, file.type);
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
     },
 
     async createQuestion() {
@@ -137,7 +156,7 @@ export default {
     </div>
     <input type="text" id="kerdes" v-model="kerdes" class="form-control text-light border-secondary w-100"
       placeholder="Kérdés">
-    <input v-if="kepMegjelenit === false" type="file" id="kep" name="kep" @change="onFileChange" accept="image/*"
+    <input v-if="kepMegjelenit === false" type="file" id="kep" name="kep" @change="kepCsere" accept="image/*"
       class="form-control text-light border-secondary w-100" aria-label="Kép Input">
     <img v-else id="kep" :src="kepUrl" alt="Kérdés képe" decoding="async" />
     <button v-if="kep !== null" class="btn mb-3" :class="kepMegjelenit ? 'btn-secondary' : 'btn-light'"
@@ -162,14 +181,12 @@ export default {
 
 <style scoped>
 #tartalom {
-  text-align: center;
   display: block;
   margin-left: auto;
   margin-right: auto;
   max-width: 1000px;
-  width: 100%;
-  height: auto;
-  margin-top: 60px;
+  margin-top: 50px;
+  text-align: center;
 }
 
 #szuro-tarolo {
@@ -194,7 +211,7 @@ ul {
 
 #kerdes {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 35px;
   font-size: 28pt;
 }
 
@@ -222,7 +239,6 @@ ul {
 
 .valaszGomb {
   font-weight: 500;
-  text-align: center;
   border: none;
   border-radius: 15px;
   background-color: firebrick;
@@ -234,6 +250,7 @@ ul {
   margin: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   white-space: pre-wrap;
+  text-align: center;
 }
 
 .valaszGomb:focus {
@@ -280,33 +297,29 @@ input:focus {
   color: rgb(200, 200, 200)
 }
 
-@media screen and (max-height: 800px) {
+@media screen and (max-height: 900px) {
+  #kerdes {
+    font-size: 20pt;
+  }
+
   #kep {
     height: 20vh;
   }
 
-  #kerdes {
-    font-size: 3vw;
-  }
-
   .valaszGomb {
     height: 8vh;
-    font-size: 1.5vw;
+    font-size: 12pt;
   }
 
   #mentesGomb {
     margin-top: 5px;
     margin-bottom: 5px;
-    font-size: 1.5vw;
+    font-size: 12pt;
     height: 7vh;
   }
 }
 
 @media screen and (max-width: 997px) {
-  #korSzamlalo {
-    font-size: 2.5vw;
-  }
-
   #kep {
     height: 20vh;
     object-fit: cover;
@@ -316,38 +329,32 @@ input:focus {
     font-size: 4vw;
   }
 
-  .valaszGomb {
-    margin: 1vw;
-    height: 5.5vh;
-    font-size: 2.5vw;
-  }
-
-  #mentesGomb {
-    font-size: 2.5vw;
-  }
-}
-
-@media screen and (max-width: 500px) {
-  #korSzamlalo {
-    font-size: 4.5vw;
-  }
-
-  #kerdes {
-    position: relative;
-    font-size: 6vw;
-  }
-
-  .valaszGomb {
-    height: 7.5vh;
-    font-size: 3.5vw;
-  }
-
   #gombDiv {
     width: 100%;
   }
 
+  .valaszGomb {
+    margin: 5px;
+    height: 7.5vh;
+    font-size: 12pt;
+  }
+
   #mentesGomb {
-    font-size: 4.5vw;
+    font-size: 12pt;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #kerdes {
+    font-size: 5vw;
+  }
+
+  .valaszGomb {
+    font-size: 3.2vw;
+  }
+
+  #mentesGomb {
+    font-size: 3.2vw;
     width: 40%;
   }
 }

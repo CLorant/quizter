@@ -246,11 +246,7 @@ export default {
                 <tbody>
                   <tr v-for="(item, index) in ranglistaAdatok" :key="index" @click="valasztottIndex = index">
                     <td class="col-1">{{ index.substring(11) }}.</td>
-                    <td class="col-1">
-                      <RouterLink :to="{ name: 'profil', params: { felhasznaloId: item.felhasznalonev } }">
-                        <img :src="item.jellemzok.kep" :alt="item.felhasznalonev + ' képe'" decoding="async" id="ranglista-felhasznalo-kep">
-                      </RouterLink>
-                    </td>
+                    <td class="col-1"><img :src="item.jellemzok.kep" :alt="item.felhasznalonev + ' képe'" decoding="async" id="ranglista-felhasznalo-kep"></td>
                     <td class="col-3" style="text-align: left;">{{ item.jellemzok.nev }}</td>
                     <td class="col-2">@{{ item.felhasznalonev }}</td>
                     <td class="col-3">{{ item.rekord.pontszam }} pont</td>
@@ -437,7 +433,7 @@ td {
 #felhasznalo-nev {
   font-size: 22pt;
   font-weight: bold;
-  color: white;
+  color: whitesmoke;
 }
 
 @media screen and (max-width: 540px) {

@@ -148,7 +148,7 @@ p, a {
 }
 
 .rolunk-email {
-  color: white;
+  color: whitesmoke;
   text-decoration: none;
 }
 

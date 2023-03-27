@@ -132,10 +132,16 @@ export default {
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          canvas.width = 150;
           canvas.height = 150;
-          canvas.getContext('2d').drawImage(img, 0, 0, 150, 150);
-          this.szerkesztettKep = canvas.toDataURL(file.type);
+          canvas.width = 150;
+          canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob((blob) => {
+            const resizedFile = new File([blob], file.name, {
+              type: file.type,
+              lastModified: Date.now(),
+            });
+            this.szerkesztettKep = resizedFile;
+          }, file.type);
         };
         img.src = reader.result;
       };
@@ -411,7 +417,7 @@ export default {
 #felhasznalo-nev {
   font-size: 10pt;
   font-weight: bold;
-  color: white;
+  color: whitesmoke;
 }
 
 #rekord-tarolo {
