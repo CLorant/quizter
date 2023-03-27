@@ -62,7 +62,7 @@ export default {
 
 <style scoped>
 #szint-tarolo {
-  background-color: white;
+  background-color: whitesmoke;
 }
 
 #szint {

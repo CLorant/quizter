@@ -220,7 +220,7 @@ export default {
   position: absolute;
   height: 3px;
   width: 100%;
-  background: white;
+  background: whitesmoke;
   left: 0;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
@@ -316,7 +316,7 @@ export default {
 #felhasznalo-nev {
   font-size: 10pt;
   font-weight: bold;
-  color: white;
+  color: whitesmoke;
 }
 
 .jobb-nav {

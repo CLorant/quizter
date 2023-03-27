@@ -33,7 +33,7 @@ export default {
 }
 
 .temaNev {
-  color: white;
+  color: whitesmoke;
   font-size: 29pt;
   font-weight: bold;
   position: absolute;
