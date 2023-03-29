@@ -109,7 +109,7 @@ export default {
           canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
           canvas.toBlob((blob) => {
             const resizedFile = new File([blob], file.name, {
-              type: file.type,
+              type: 'image/webp',
               lastModified: Date.now(),
             });
             this.modKep = resizedFile;
@@ -123,6 +123,8 @@ export default {
 
     async updateQuestion() {
       try {
+        this.modositas = false;
+
         // statek beállítása
         this.tema = this.valasztottTema;
         this.nehezseg = this.valasztottNehezseg;
@@ -134,9 +136,8 @@ export default {
         this.valaszok.valasz4.szoveg = this.modValasz4;
         this.valaszok.valasz5.szoveg = this.modValasz5;
         this.valaszok.valasz6.szoveg = this.modValasz6;
-        this.modositas = false;
+        
         const formData = new FormData();
-
         formData.append('tema', this.valasztottTema);
         formData.append('nehezseg', this.valasztottNehezseg);
         formData.append('kerdes', this.modKerdesSzoveg);
@@ -224,10 +225,10 @@ export default {
     </div>
     <div v-else>
       <div id="szuro-tarolo">
-        <div class="btn btn-dark szuroGomb my-1">
+        <div class="btn btn-dark szuroGomb my-2">
           {{ temaSzoveg(tema) }}
         </div>
-        <div class="btn btn-dark szuroGomb my-1">
+        <div class="btn btn-dark szuroGomb my-2">
           {{ nehezsegSzoveg(nehezseg) }}
         </div>
       </div>

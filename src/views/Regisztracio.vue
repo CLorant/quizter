@@ -1,52 +1,62 @@
 <script>
-  import axios from 'axios';
-  import { useFelhasznaloStore } from '../stores/felhasznalo'
+import axios from 'axios';
+import { mapWritableState } from 'pinia';
+import { useFelhasznaloStore } from '../stores/felhasznalo'
 
-  export default {
-    data() {
-      return {
-        felhasznalonev: '',
-        email: '',
-        jelszo: '',
-        ismeteltJelszo: '',
-        helytelenIsmeteltJelszo: false,
-        regisztracioHiba: false
-      };
-    },
-    methods: {
-      async regisztralas() {
-        if (this.ismeteltJelszo !== this.jelszo) {
-          this.helytelenIsmeteltJelszo = true;
-        }
+export default {
+  data() {
+    return {
+      felhasznalonev: '',
+      email: '',
+      jelszo: '',
+      ismeteltJelszo: '',
+      helytelenIsmeteltJelszo: false,
+      regisztracioHiba: false
+    };
+  },
 
-        if(!this.helytelenIsmeteltJelszo) {
-          try {
-            const regRes = await axios.post("/api/register", {
-              username: this.felhasznalonev,
-              email: this.email,
-              password: this.jelszo,
-            });
-            const loginRes = await axios.post("/api/login", {
-              username: this.felhasznalonev,
-              password: this.jelszo
-            });
-            useFelhasznaloStore().$patch(loginRes.data);
-            this.$router.push("/");
-          } catch (error) {
-            this.regisztracioHiba = true
-            console.log(error);
+  computed: {
+    ...mapWritableState(useFelhasznaloStore, ['felhasznalo'])
+  },
+  
+  methods: {
+    async regisztralas() {
+      if (this.ismeteltJelszo !== this.jelszo) {
+        this.helytelenIsmeteltJelszo = true;
+      }
+
+      if(!this.helytelenIsmeteltJelszo) {
+        try {
+          const regRes = await axios.post("/api/register", {
+            username: this.felhasznalonev,
+            email: this.email,
+            password: this.jelszo,
+          });
+          const loginRes = await axios.post("/api/login", {
+            username: this.felhasznalonev,
+            password: this.jelszo
+          });
+          for (const prop in this.felhasznalo) { 
+            if (loginRes.data.hasOwnProperty(prop)) {
+              this.felhasznalo[prop] = loginRes.data[prop];
+            }
           }
+          this.$router.push("/");
+        } catch (error) {
+          this.regisztracioHiba = true
+          console.log(error);
         }
       }
     }
-  };
+  }
+};
 </script>
 
 <template>
   <div id="tartalom" class="my-5 d-flex flex-column justify-content-center align-items-center">
     <form @submit.prevent="regisztralas" class="needs-validation rounded bg-dark p-4" id="form">
       <div class="d-flex justify-content-center mb-5">
-        <img src="/img/ikon/quizterlogo.webp" decoding="async" alt="Logo" class="w-75">
+        <img src="/img/ikon/quizterlogo.webp" decoding="async" alt="Logo">
       </div>
       <div class="mb-1">
         <div class="d-flex justify-content-between">
@@ -103,17 +113,22 @@
     height: 720px;
   }
 
+  #form{
+    max-width: 350px;
+    width: 95%;
+  }
+
+  img {
+    width: 75%;
+    height: 100%;
+  }
+
   label, p {
     color: rgb(220, 220, 220)
   }
 
   .mt-1 {
     height: 24px
-  }
-
-  #form{
-    max-width: 350px;
-    width: 95%;
   }
 
   input, input:focus {

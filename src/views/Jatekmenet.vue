@@ -5,14 +5,15 @@ import { useQuizBeallitoStore } from '../stores/quizbeallito';
 import { useJatekmenetStore } from '../stores/jatekmenet';
 import { useFelhasznaloStore } from '../stores/felhasznalo';
 import axios from 'axios';
-import kerdesvalaszokJSON from '../kerdesvalasz.json'; // átmeneti
 
 export default {
   data() {
     return {
-      kerdesvalaszok: null,
+      pending: false,
+      hiba: false,
+      kerdesvalaszok: {},
       interval: null,
-      jatekVege: false
+      jatekVege: false,
     }
   },
 
@@ -40,30 +41,24 @@ export default {
     ])
   },
 
-  mounted() {
-    // visszanavigál a főoldalra ha helytelen a téma state
-    if(this.tema === "") {
+  created() {
+    this.pending = true;
+    const tStore = useTemaStore();
+
+    if(tStore.tema === "") {
       this.$router.push("/");
     }
-    //kezdő állapot
-    this.kerdesvalaszok = this.kerdesValaszKezelo();
-    this.kerdes = this.kerdesvalaszok.kerdesvalasz1.kerdes;
-    //Véletlenszerű sorrendű válaszokat ad vissza az objektumból
-    this.valaszok = this.valaszKevero(Object.values(this.kerdesvalaszok.kerdesvalasz1.valaszok));
-    this.maradtIdo = this.ido;
-    this.valaszFigyelo();
-  },
-  methods: {
-    kerdesValaszKezelo() {
-      /*
-      try {
-        let res = axios.get(`/api/getGameQuestions/${this.tema}/${this.nehezseg}/${this.kerdesSzam}/${this.valaszSzam}`);
-        
-        // hozzáfűz a válaszokhoz egy true vagy false boolt
-        for (let i = 0; i < this.kerdesSzam; i++) {
-          let kerdesvalasz = Object.values(res.data)[i];
-          for (let j = 0; j < this.valaszSzam; j++) {
-            let igazE;
+
+    const qStore = useQuizBeallitoStore();
+    const jStore = useJatekmenetStore();
+    let igazE;
+
+    axios.get(`${import.meta.env.VITE_API_URL}/getGameQuestions/${tStore.tema}/${qStore.nehezseg}/${qStore.kerdesSzam}/${qStore.valaszSzam}`,
+    {withCredentials: true})
+      .then(response => {
+        for (let i = 0; i < qStore.kerdesSzam; i++) {
+          let kerdesvalasz = Object.values(response.data)[i];
+          for (let j = 0; j < qStore.valaszSzam; j++) {
             if (j === 0) {
               igazE = true;
             }
@@ -72,33 +67,21 @@ export default {
             }
             kerdesvalasz.valaszok[`valasz${j + 1}`].helyes = igazE;
           }
-          res.data[`kerdesvalasz${i + 1}`] = kerdesvalasz;
+          this.kerdesvalaszok[`kerdesvalasz${i + 1}`] = kerdesvalasz;
         }
-        return res.data;
-      } catch (error) {
+        jStore.kerdes = this.kerdesvalaszok.kerdesvalasz1.kerdes;
+        jStore.valaszok = this.valaszKevero(Object.values(this.kerdesvalaszok.kerdesvalasz1.valaszok));
+        jStore.maradtIdo = qStore.ido;
+        this.valaszFigyelo();
+        this.pending = false;
+      })
+      .catch(error => {
+        this.hiba = true;
         console.log(error);
-      }
-      */
-     
-      let obj = kerdesvalaszokJSON; //átmeneti
-      // hozzáfűz a válaszokhoz egy true vagy false boolt
-      for (let i = 0; i < this.kerdesSzam; i++) {
-        let kerdesvalasz = Object.values(obj)[i];
-        for (let j = 0; j < this.valaszSzam; j++) {
-          let igazE;
-          if (j === 0) {
-            igazE = true;
-          }
-          else {
-            igazE = false;
-          }
-          kerdesvalasz.valaszok[`valasz${j + 1}`].helyes = igazE;
-        }
-        obj[`kerdesvalasz${i + 1}`] = kerdesvalasz;
-      }
-      return obj
-    },
+      });
+  },
 
+  methods: {
     //Fisher-Yates keverés
     valaszKevero(valaszokObj) {
       for (let i = valaszokObj.length - 1; i > 0; i--) {
@@ -183,12 +166,14 @@ export default {
       this.felhasznalo.valaszIdo += (this.atlagosValaszIdo / this.kerdesSzam).toFixed(2);
 
       // updateUserStats
-      this.updateUser();
+      if(this.felhasznalo.bejelentkezett) {
+        this.updateUser();
+      }
     },
 
     async updateUser() {
       try {
-        await axios.patch('/api/updateUserStats', {
+        await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserStats`, {
           exp: this.felhasznalo.statisztika.exp,
           jatszmaSzam: this.felhasznalo.statisztika.jatszmaSzam,
           valaszIdo: this.felhasznalo.statisztika.valaszIdo
@@ -240,11 +225,11 @@ export default {
 </script>
 
 <template>
-  <div id="tartalom">
+  <div id="tartalom" v-if="!pending">
     <div v-if="!jatekVege">
       <p id="korSzamlalo">{{ kor + 1 }} / {{ kerdesSzam }}</p>
       <h4 id="kerdes">{{ kerdes.szoveg }}</h4>
-      <img id="kep" :src="kerdes.kep" alt="Kérdés képe" decoding="async" />
+      <img id="kep" :src="kerdes.kep" alt="Kérdés képe" decoding="async">
       <div id="gombTarolo">
         <div id="gombDiv">
           <button v-for="(value, key) in valaszok" :key="key" class="valaszGomb" :disabled="leNyomottValaszGomb"
@@ -276,26 +261,34 @@ export default {
         </button>
       </div>
     </div>
-
     <div v-else class="d-flex align-items-center justify-content-center flex-column pt-3">
+      <div v-if="pont > felhasznalo.rekord.pontszam" class="rekord-tablazat mb-0">
+        <h2 class="mb-0">Új Személyes Rekord!</h2>
+      </div>
       <div class="rekord-tablazat">
-          <h1>Játszma adatai</h1>
-          <p>Pontszám: <b>{{ pont }}</b> pont</p>
-          <p>Helyes: <b>{{ helyesValasz }}</b></p>
-          <p>Helytelen: <b>{{ helytelenValasz }}</b></p>
-          <p>Téma: <b>{{ temaNev }}</b></p>
-          <p>Nehézség: <b>{{ nehezsegSzoveg(nehezseg) }}</b></p>
-          <p>Idő kérdésenként: <b>{{ ido }}</b> mp</p>
-          <p>Kérdésszám: <b>{{ kerdesSzam }}</b></p>
-          <p>Válaszszám: <b>{{ valaszSzam }}</b></p>
-          <p>Átlagos válaszidő: <b>{{ (atlagosValaszIdo / kerdesSzam).toFixed(2) }}</b> mp</p>
-        </div>
-        <button id="folytatasGomb" class="my-4 fs-6" @click="$router.push('/')">Kilépés</button>
+        <h2>Játszma adatai</h2>
+        <p>Pontszám: <b>{{ pont }}</b> pont</p>
+        <p>Helyes: <b>{{ helyesValasz }}</b></p>
+        <p>Helytelen: <b>{{ helytelenValasz }}</b></p>
+        <p>Téma: <b>{{ temaNev }}</b></p>
+        <p>Nehézség: <b>{{ nehezsegSzoveg(nehezseg) }}</b></p>
+        <p>Idő kérdésenként: <b>{{ ido }}</b> mp</p>
+        <p>Kérdésszám: <b>{{ kerdesSzam }}</b></p>
+        <p>Válaszszám: <b>{{ valaszSzam }}</b></p>
+        <p>Átlagos válaszidő: <b>{{ (atlagosValaszIdo / kerdesSzam).toFixed(2) }}</b> mp</p>
+      </div>
+      <button id="folytatasGomb" class="my-4 fs-6" @click="$router.push('/')">Kilépés</button>
     </div>
+  </div>
+  <div v-else-if="hiba" class="d-flex justify-content-center pt-5 mt-5">
+    Fak man
+  </div>
+  <div v-else class="d-flex justify-content-center pt-5 mt-5">
+    <div class="spinner-border text-warning" />
   </div>
 </template>
 
-<style>
+<style scoped>
 #tartalom {
   display: block;
   margin-left: auto;
@@ -407,7 +400,7 @@ export default {
   width: 75%;
 }
 
-.rekord-tablazat h1 {
+.rekord-tablazat h2 {
   text-align: center;
   margin-bottom: 50px;
 }
@@ -541,7 +534,7 @@ export default {
     width: 95%;
   }
 
-  .rekord-tablazat h1 {
+  .rekord-tablazat h2 {
     font-size: 8vw;
   }
 

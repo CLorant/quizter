@@ -17,7 +17,8 @@ export default {
       torlesPopup: false,
       szerkesztettNev: "",
       szerkesztettBio: "",
-      szerkesztettKep: "",
+      szerkesztettKep: null,
+      szerkesztettKepUrl: "",
       szerkesztettTema1: "",
       szerkesztettTema2: "",
       szerkesztettTema3: "",
@@ -26,7 +27,7 @@ export default {
   },
   
   beforeRouteEnter(to, from, next) {
-    if (to.params.felhasznaloId == "nem-meghatarozott-felhasznalo") {
+    if (to.params.felhasznaloId == "nem-meghatarozott") {
       alert("Regisztrálj hogy hozzáférhess a saját profil oldaladhoz");
       next("/regisztracio");
     }
@@ -117,7 +118,7 @@ export default {
 
     szerkesztesLenyomva() {
       this.szerkesztes = true;
-      this.szerkesztettKep = this.profil.jellemzok.kep;
+      this.szerkesztettKepUrl = this.profil.jellemzok.kep;
       this.szerkesztettNev = this.profil.jellemzok.nev;
       this.szerkesztettBio = this.profil.jellemzok.bio;
       this.szerkesztettTema1 = this.profil.jellemzok.tema1;
@@ -136,11 +137,12 @@ export default {
           canvas.width = 150;
           canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
           canvas.toBlob((blob) => {
-            const resizedFile = new File([blob], file.name, {
-              type: file.type,
+            const resizedFile = new File([blob], `${this.felhasznalo.felhasznalonev}`, {
+              type: 'image/webp',
               lastModified: Date.now(),
             });
             this.szerkesztettKep = resizedFile;
+            this.szerkesztettKepUrl = URL.createObjectURL(resizedFile);
           }, file.type);
         };
         img.src = reader.result;
@@ -157,32 +159,36 @@ export default {
           }
         }
       }
-      if (this.profil.felhasznalonev === "nem-meghatarozott-felhasznalo") {
+      if (this.profil.felhasznalonev === "nem-meghatarozott") {
         this.$router.push("/nem-talalt");
       }
     },
 
     async updateUserPage() {
+      try {
       this.szerkesztes = false;
-
-      // felhasznalo state frissítése
-      this.felhasznalo.jellemzok.kep = this.szerkesztettKep;
+      
+      // statek beállítása
+      this.felhasznalo.jellemzok.kep = this.szerkesztettKepUrl;
       this.felhasznalo.jellemzok.nev = this.szerkesztettNev;
       this.felhasznalo.jellemzok.bio = this.szerkesztettBio;
       this.felhasznalo.jellemzok.tema1 = this.szerkesztettTema1;
       this.felhasznalo.jellemzok.tema2 = this.szerkesztettTema2;
       this.felhasznalo.jellemzok.tema3 = this.szerkesztettTema3;
 
+      const formData = new FormData();
+      formData.append('nev', this.szerkesztettNev);
+      formData.append('bio', this.szerkesztettBio);
+      formData.append('tema1', this.szerkesztettTema1);
+      formData.append('tema2', this.szerkesztettTema2);
+      formData.append('tema3', this.szerkesztettTema3);
+      
+      if (this.szerkesztettKep) {
+        formData.append('kep', this.szerkesztettKep);
+      }
+
       // updateUserPage
-      try {
-        await axios.post("api/updateUserPage", {
-          kep: this.szerkesztettKep,
-          nev: this.szerkesztettNev,
-          bio: this.szerkesztettBio,
-          tema1: this.szerkesztettTema1,
-          tema2: this.szerkesztettTema2,
-          tema3: this.szerkesztettTema3
-        });
+        await axios.patch("api/updateUserPage", formData);
       } catch (error) {
         console.log(error);
       }
@@ -211,7 +217,7 @@ export default {
       <div class="tarolo">
         <div v-if="bejelentkezettFelh && szerkesztes">
           <label for="file-input">
-            <img :src="szerkesztettKep" alt="Felhasználókép" decoding="async" id="profil-kep">
+            <img :src="szerkesztettKepUrl" alt="Felhasználókép" decoding="async" id="profil-kep">
           </label>
           <input type="file" accept="image/*" id="file-input" style="display: none;" v-on:change="kepCsere">
         </div>
@@ -316,7 +322,7 @@ export default {
               <div class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown"
                 data-bs-display="static">
                 {{ temaSzoveg(szerkesztettTema1) }}
-                <div class="dropdown-menu dropdown-menu-dark" style="overflow-y: scroll; height: 200px">
+                <div class="dropdown-menu dropdown-menu-dark">
                   <p v-for="t in temak" :key="t" class="dropdown-item"
                     :class="szerkesztettTema1 == t || szerkesztettTema2 == t || szerkesztettTema3 == t ? 'd-none' : ''"
                     @click="szerkesztettTema1 = t">{{ temaSzoveg(t) }}</p>
@@ -339,7 +345,7 @@ export default {
                 data-bs-display="static">
                 {{ temaSzoveg(szerkesztettTema2) }}
               </div>
-              <div class="dropdown-menu dropdown-menu-dark" style="overflow-y: scroll; height: 200px">
+              <div class="dropdown-menu dropdown-menu-dark">
                 <p v-for="t in temak" :key="t" class="dropdown-item"
                   :class="szerkesztettTema1 == t || szerkesztettTema2 == t || szerkesztettTema3 == t ? 'd-none' : ''"
                   @click="szerkesztettTema2 = t">{{ temaSzoveg(t) }}</p>
@@ -360,7 +366,7 @@ export default {
               <div class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown"
                 data-bs-display="static">
                 {{ temaSzoveg(szerkesztettTema3) }}
-                <div class="dropdown-menu dropdown-menu-dark" style="overflow-y: scroll; height: 200px">
+                <div class="dropdown-menu dropdown-menu-dark">
                   <p v-for="t in temak" :key="t" class="dropdown-item"
                     :class="szerkesztettTema1 == t || szerkesztettTema2 == t || szerkesztettTema3 == t ? 'd-none' : ''"
                     @click="szerkesztettTema3 = t">{{ temaSzoveg(t) }}</p>
@@ -551,6 +557,11 @@ input:focus {
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
   z-index: 4;
+}
+
+.dropdown-menu {
+  overflow-y: scroll;
+  height: 200px
 }
 
 .dropdown-item:active {

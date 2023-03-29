@@ -32,7 +32,7 @@ export default {
   },
 
   beforeMount() {
-    this.getUsersByRecord(this.valasztottTema, this.valasztottNehezseg, this.valasztottIdo, this.valasztottKerdesSzam, this.valasztottValaszSzam);
+    this.getUsersByRecord();
   },
 
   watch: {
@@ -119,40 +119,29 @@ export default {
     },
 
     async getUsersByRecord() {
-      /*
       try {
-        const res = await axios.get('/api/getUsersByRecord', {
-          params: {
-            tema: this.valasztottTema,
-            nehezseg: this.valasztottNehezseg,
-            ido: this.valasztottIdo,
-            kerdesSzam: this.valasztottKerdesSzam,
-            valaszSzam: this.valasztottValaszSzam
-          }
-        });
-        this.ranglistaAdatok = res.data;
+        const res = await axios.get(`/api/getUsersByRecord/${this.valasztottTema}/${this.valasztottNehezseg}/${this.valasztottIdo}/${this.valasztottKerdesSzam}/${this.valasztottValaszSzam}`,);
+        if (this.ranglistaAdatok.length === 0) {
+          this.ranglistaAdatok = res.data;
+        }
+        else {
+          this.ranglistaAdatok += res.data;
+        }
       } catch (error) {
         console.log(error)
       }
-      */
 
       // ha this.ranglistaAdatok.length === 0 akkor '=', más esetben '+=' WIP
       this.ranglistaAdatok = ranglistaJSON; // átmeneti
     },
 
     async getUsersByName() {
-      /*
       try {
-        const res = await axios.get('/api/getUsersByName', {
-          params: {
-            felhasznalo: this.keresett
-          }
-        });
+        const res = await axios.get(`/api/getUsersByName/${this.keresett}`);
         this.keresesEredmeny = res.data;
       } catch (error) {
         console.log(error)
       }
-      */
       this.keresesEredmeny = ranglistaJSON; // átmeneti
     },
 

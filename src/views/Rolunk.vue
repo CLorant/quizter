@@ -16,17 +16,17 @@
     </div>
     <div class="rolunk-kep-tarolo">
       <div class="rolunk-oszlop">
-        <img src="/img/fejlesztes/tamas.webp" alt="Kerényi Tamás képe" class="rolunk-kep" />
+        <img src="/img/fejlesztes/tamas.webp" alt="Kerényi Tamás képe" decoding="async" class="rolunk-kep" />
         <h2>Kerényi Tamás</h2>
         <p>Backend Fejlesztő</p>
       </div>
       <div class="rolunk-oszlop">
-        <img src="/img/fejlesztes/lori.webp" alt="Czibik Lóránt Patrik képe" class="rolunk-kep" />
+        <img src="/img/fejlesztes/lori.webp" alt="Czibik Lóránt Patrik képe" decoding="async" class="rolunk-kep" />
         <h2>Czibik Lóránt Patrik</h2>
         <p>Frontend Fejlesztő<br>Dizájner</p>
       </div>
       <div class="rolunk-oszlop">
-        <img src="/img/fejlesztes/gergo.webp" alt="Nagy Gergő képe" class="rolunk-kep" />
+        <img src="/img/fejlesztes/gergo.webp" alt="Nagy Gergő képe" decoding="async" class="rolunk-kep" />
         <h2>Nagy Gergő</h2>
         <p>Dizájner</p>
       </div>

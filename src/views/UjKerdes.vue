@@ -95,7 +95,7 @@ export default {
           canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
           canvas.toBlob((blob) => {
             const resizedFile = new File([blob], file.name, {
-              type: file.type,
+              type: 'image/webp',
               lastModified: Date.now(),
             });
             this.kep = resizedFile;
@@ -110,7 +110,6 @@ export default {
     async createQuestion() {
       try {
         const formData = new FormData();
-
         formData.append('tema', this.valasztottTema);
         formData.append('nehezseg', this.valasztottNehezseg);
         formData.append('kerdes', this.kerdes);
@@ -158,7 +157,7 @@ export default {
       placeholder="Kérdés">
     <input v-if="kepMegjelenit === false" type="file" id="kep" name="kep" @change="kepCsere" accept="image/*"
       class="form-control text-light border-secondary w-100" aria-label="Kép Input">
-    <img v-else id="kep" :src="kepUrl" alt="Kérdés képe" decoding="async" />
+    <img v-else id="kep" :src="kepUrl" alt="Kérdés képe" decoding="async">
     <button v-if="kep !== null" class="btn mb-3" :class="kepMegjelenit ? 'btn-secondary' : 'btn-light'"
       @click="kepMegjelenit = !kepMegjelenit">Kép {{ kepMegjelenit ? 'Elrejtése' : 'Megjelenítése' }}</button>
     <div id="gombTarolo">

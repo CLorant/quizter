@@ -1,6 +1,7 @@
 <script>
-import axios from 'axios';
+import { mapWritableState } from 'pinia';
 import { useFelhasznaloStore } from '../stores/felhasznalo'
+import axios from 'axios';
 
 export default {
   data() {
@@ -11,21 +12,37 @@ export default {
     };
   },
   computed: {
-
+    ...mapWritableState(useFelhasznaloStore, ['felhasznalo'])
   },
   methods: {
     async bejelentkezes() {
-      try {
-        const res = await axios.post("/api/login", {
-          felhasznalonev: this.felhasznalonev,
-          jelszo: this.jelszo
+      await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
+        username: this.felhasznalonev,
+        password: this.jelszo
+      }, {withCredentials: true, credentials: 'include'})
+        .then(response => {
+          if(response.data === "Unauthorized") {
+            this.helytelen = true;
+          }
+          else {
+            console.log(response);
+            console.log(response.headers['set-cookie']);
+            //console.log(response.headers['set-cookie'][0].split(';')[0]);
+            document.cookie = `${response.headers['set-cookie']}`;
+            //document.cookie = response.headers['set-cookie'][0].split(';')[0];
+            for (const prop in this.felhasznalo) {
+              if (response.data.hasOwnProperty(prop)) {
+                this.felhasznalo[prop] = response.data[prop];
+              }
+              this.felhasznalo.bejelentkezett = true;
+            }
+            this.$router.push("/");
+          }
+        })
+        .catch(error => {
+          this.helytelen = true;
+          console.log(error);
         });
-        useFelhasznaloStore().$patch(res.data);
-        this.$router.push("/");
-      } catch (error) {
-        console.log(error);
-        this.helytelen = true
-      }
     }
   }
 }
@@ -35,7 +52,7 @@ export default {
   <div id="tartalom" class="my-5 d-flex flex-column justify-content-center align-items-center">
     <form @submit.prevent="bejelentkezes" class="needs-validation rounded bg-dark p-4" id="form">
       <div class="d-flex justify-content-center mb-5">
-        <img src="/img/ikon/quizterlogo.webp" alt="Logo" decoding="async" class="w-75">
+        <img src="/img/ikon/quizterlogo.webp" alt="Logo" decoding="async">
       </div>
 
       <div class="mb-1">
@@ -88,6 +105,11 @@ export default {
 #form {
   max-width: 350px;
   width: 95%;
+}
+
+img {
+  width: 75%;
+  height: 100%;
 }
 
 label, p {
