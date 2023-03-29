@@ -80,19 +80,14 @@ export default {
       this.$router.push("/");
     },
 
-    getUsersByName() {
-      /*
+    async getUsersByName() {
       try {
-        const res = axios.get('/api/getUsersByName', {
-          params: {
-            felhasznalo: this.keresett
-          }
-        });
+        const res = await axios.get(`/api/getUsersByName/${this.keresett}`);
         this.keresesEredmeny = res.data;
       } catch (error) {
         console.log(error)
       }
-      */
+
       this.keresesEredmeny = ranglistaJSON; // átmeneti
     },
 
@@ -118,7 +113,7 @@ export default {
         <span></span>
       </button>
       <RouterLink to="/">
-        <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" class="navbar-brand">
+        <img src="/img/ikon/quizterlogo_kicsi.webp" alt="Quizter Logó" decoding="async" class="navbar-brand">
       </RouterLink>
       <div v-if="felhasznalo.bejelentkezett">
         <div class="collapse navbar-collapse jobb-nav" style="top:6px;">
@@ -129,7 +124,7 @@ export default {
         </div>
         <div class="dropdown jobb-nav">
           <div class="dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img :src="felhasznalo.jellemzok.kep" alt="Felhasználókép" decoding="async" class="felhasznalo-kep">
+            <img :src="felhasznalo.jellemzok.kep" alt="Kép" decoding="async" class="felhasznalo-kep">
           </div>
           <div class="dropdown-menu dropdown-menu-dark" id="felhasznaloDropdownMenu">
             <RouterLink :to="{ name: 'profil', params: { felhasznaloId: felhasznalo.felhasznalonev } }" class="dropdown-item">Profil
@@ -141,7 +136,7 @@ export default {
       <div v-else>
         <div class="dropdown jobb-nav">
           <div class="dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="/img/ikon/login.webp" alt="Felhasználókép" decoding="async" class="felhasznalo-kep">
+            <img src="/img/ikon/login.webp" alt="Kép" decoding="async" class="felhasznalo-kep">
           </div>
           <div class="dropdown-menu dropdown-menu-dark" id="felhasznaloDropdownMenu">
             <RouterLink to="/bejelentkezes" class="dropdown-item">Bejelentkezés</RouterLink>
@@ -348,7 +343,9 @@ export default {
 }
 
 #kereses-eredmeny {
+  height: 350px;
   width: 220px;
+  overflow-y: scroll;
 }
 
 #keresett-felhasznalo {

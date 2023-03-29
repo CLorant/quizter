@@ -14,7 +14,7 @@ export default {
   </RouterLink>
 </template>
 
-<style>
+<style scoped>
 .temaGomb {
   display: flex;
   align-items: center;

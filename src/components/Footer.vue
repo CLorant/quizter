@@ -16,7 +16,7 @@ export default {
       <div class="row">
         <div class="col-md-3 col-sm-12 text-center text-md-start my-3">
           <RouterLink to="/">
-            <img src="/img/ikon/quizterlogo.webp" alt="Logo" decoding="async" id="logo">
+            <img src="/img/ikon/quizterlogo_kicsi.webp" alt="Logo" decoding="async" id="logo">
           </RouterLink>
         </div>
         <div id="oldalak" class="col-md-6 col-sm-12 d-flex flex-wrap justify-content-center">
@@ -34,8 +34,9 @@ export default {
           </RouterLink>
         </div>
         <div class="col-md-3 col-sm-12 text-center text-md-end">
-          <a href="https://github.com/CLorant/quizter" target="_blank" rel="noreferrer"><img
-              src="/img/ikon/github_icon.webp" alt="Github Ikon" decoding="async" class="kozossegi-gomb m-2"></a>
+          <a href="https://github.com/CLorant/quizter" target="_blank" rel="noreferrer">
+            <img src="/img/ikon/github_icon.webp" alt="Github Ikon" decoding="async" class="kozossegi-gomb m-2">
+          </a>
           <div class="mt-3">
             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com" target="_blank" rel=”noreferrer”
               class="text-decoration-none text-light">quizterhelp@gmail.com</a>
