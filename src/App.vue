@@ -16,9 +16,10 @@
       ...mapWritableState(useFelhasznaloStore, ['felhasznalo'])
     },
 
-    beforeMount() {
+    created() {
+      this.getUserByName();
       // this.getUserByName();
-
+      /*
       const res = felhasznaloJSON // átmeneti
       for (const prop in this.felhasznalo) { 
         if (res.hasOwnProperty(prop)) {
@@ -27,25 +28,24 @@
       }
       this.felhasznalo.bejelentkezett = true // átmeneti
       this.felhasznalo.jogosultsag = "admin" // átmeneti
+      */
     },
 
     methods: {
       async getUserByName() {
         // automatikus bejelentkezést ide majd valahogy
-        try {
-          const res = await axios.get('/api/getUserByName', {
-            params: {
-              username: "asd" 
+         await axios.get(`${import.meta.env.VITE_API_URL}/getUserByName/${'asd'}`)
+          .then(response => {
+            for (const prop in this.felhasznalo) { 
+              if (response.data.hasOwnProperty(prop)) {
+                this.felhasznalo[prop] = response.data[prop];
+              }
             }
+            this.felhasznalo.bejelentkezett = true
+            })
+          .catch(error => {
+            console.log(error);
           });
-          for (const prop in this.felhasznalo) { 
-            if (res.data.hasOwnProperty(prop)) {
-              this.felhasznalo[prop] = res.data[prop];
-            }
-          }
-        } catch (error) {
-          console.log(error)
-        }
       }
     }
   }
