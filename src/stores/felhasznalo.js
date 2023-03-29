@@ -5,9 +5,9 @@ import { defineStore } from 'pinia'
 export const useFelhasznaloStore = defineStore('felhasznalo', {
   state: () => ({
     felhasznalo: {
-      felhasznalonev: "nem-meghatarozott-felhasznalo",
+      felhasznalonev: "nem-meghatarozott",
       csatlakozas: Date,
-      jogosultsag: "user",
+      jogosultsag: "",
       jellemzok: {
         kep: "/img/ikon/default-user.webp",
         nev: "Quizter Felhasználó",
