@@ -81,13 +81,15 @@ export default {
     },
 
     async getUsersByName() {
-      try {
-        const res = await axios.get(`/api/getUsersByName/${this.keresett}`);
-        this.keresesEredmeny = res.data;
-      } catch (error) {
-        console.log(error)
-      }
-
+      /*
+      await axios.get(`${import.meta.env.VITE_API_URL}/getUsersByName/${this.keresett}`)
+        .then(response => {
+          this.keresesEredmeny = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      */
       this.keresesEredmeny = ranglistaJSON; // átmeneti
     },
 
