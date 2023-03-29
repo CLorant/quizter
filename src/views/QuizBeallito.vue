@@ -220,6 +220,7 @@ export default {
 
 #temaMagyarazat {
   padding-top: 15px;
+  font-size: 14pt;
   text-align: center;
   display: block;
   margin-left: auto;
@@ -284,6 +285,10 @@ export default {
 }
 
 @media screen and (max-width: 1479px) {
+  #temaKepSzoveg {
+    font-size: 6vw;
+  }
+  
   .beallitas {
     padding: 0px;
     padding-top: 20px;
@@ -307,6 +312,10 @@ export default {
 
   #temaKepSzoveg {
     font-size: 12vw;
+  }
+
+  #temaMagyarazat {
+    font-size: 10pt;
   }
 
   .beallitasNev {

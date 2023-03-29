@@ -26,26 +26,31 @@ export default {
       }
 
       if(!this.helytelenIsmeteltJelszo) {
-        try {
-          const regRes = await axios.post("/api/register", {
-            username: this.felhasznalonev,
-            email: this.email,
-            password: this.jelszo,
+        await axios.post(`${import.meta.env.VITE_API_URL}/register`, {
+          username: this.felhasznalonev,
+          email: this.email,
+          password: this.jelszo,
+        })
+          .catch(error => {
+            this.regisztracioHiba = true;
+            console.log(error);
           });
-          const loginRes = await axios.post("/api/login", {
-            username: this.felhasznalonev,
-            password: this.jelszo
-          });
-          for (const prop in this.felhasznalo) { 
-            if (loginRes.data.hasOwnProperty(prop)) {
-              this.felhasznalo[prop] = loginRes.data[prop];
+        
+        await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
+          username: this.felhasznalonev,
+          password: this.jelszo
+        })
+          .then(response => {
+            for (const prop in this.felhasznalo) { 
+              if (response.data.hasOwnProperty(prop)) {
+                this.felhasznalo[prop] = response.data[prop];
+              }
             }
-          }
-          this.$router.push("/");
-        } catch (error) {
-          this.regisztracioHiba = true
-          console.log(error);
-        }
+            this.$router.push("/");
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
     }
   }

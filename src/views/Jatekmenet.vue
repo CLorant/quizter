@@ -1,4 +1,5 @@
 <script>
+import Toltes from '../components/Toltes.vue';
 import { mapState, mapWritableState } from 'pinia';
 import { useTemaStore } from '../stores/tema';
 import { useQuizBeallitoStore } from '../stores/quizbeallito';
@@ -7,9 +8,13 @@ import { useFelhasznaloStore } from '../stores/felhasznalo';
 import axios from 'axios';
 
 export default {
+  components: {
+    Toltes
+  },
+
   data() {
     return {
-      pending: false,
+      pending: true,
       hiba: false,
       kerdesvalaszok: {},
       interval: null,
@@ -40,25 +45,18 @@ export default {
       'atlagosValaszIdo'
     ])
   },
-
+  
   created() {
-    this.pending = true;
-    const tStore = useTemaStore();
-
-    if(tStore.tema === "") {
+    if(this.tema === "") {
       this.$router.push("/");
     }
 
-    const qStore = useQuizBeallitoStore();
-    const jStore = useJatekmenetStore();
-    let igazE;
-
-    axios.get(`${import.meta.env.VITE_API_URL}/getGameQuestions/${tStore.tema}/${qStore.nehezseg}/${qStore.kerdesSzam}/${qStore.valaszSzam}`,
-    {withCredentials: true})
+    axios.get(`${import.meta.env.VITE_API_URL}/getGameQuestions/${this.tema}/${this.nehezseg}/${this.kerdesSzam}/${this.valaszSzam}`)
       .then(response => {
-        for (let i = 0; i < qStore.kerdesSzam; i++) {
+        let igazE;
+        for (let i = 0; i < this.kerdesSzam; i++) {
           let kerdesvalasz = Object.values(response.data)[i];
-          for (let j = 0; j < qStore.valaszSzam; j++) {
+          for (let j = 0; j < this.valaszSzam; j++) {
             if (j === 0) {
               igazE = true;
             }
@@ -69,18 +67,18 @@ export default {
           }
           this.kerdesvalaszok[`kerdesvalasz${i + 1}`] = kerdesvalasz;
         }
-        jStore.kerdes = this.kerdesvalaszok.kerdesvalasz1.kerdes;
-        jStore.valaszok = this.valaszKevero(Object.values(this.kerdesvalaszok.kerdesvalasz1.valaszok));
-        jStore.maradtIdo = qStore.ido;
-        this.valaszFigyelo();
+        this.kerdes = this.kerdesvalaszok.kerdesvalasz1.kerdes;
+        this.valaszok = this.valaszKevero(Object.values(this.kerdesvalaszok.kerdesvalasz1.valaszok));
+        this.maradtIdo = this.ido;
         this.pending = false;
+        this.valaszFigyelo();
       })
       .catch(error => {
         this.hiba = true;
         console.log(error);
       });
   },
-
+  
   methods: {
     //Fisher-Yates keverés
     valaszKevero(valaszokObj) {
@@ -189,7 +187,7 @@ export default {
           this.felhasznalo.rekord.valaszSzam = this.valaszSzam;
 
           // updateUserRecord
-          await axios.patch('/api/updateUserRecord', {
+          await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserRecord`, {
             pontszam: this.felhasznalo.rekord.pontszam,
             helyesHelytelen: this.felhasznalo.rekord.helyesHelytelen,
             tema: this.felhasznalo.rekord.tema,
@@ -280,11 +278,14 @@ export default {
       <button id="folytatasGomb" class="my-4 fs-6" @click="$router.push('/')">Kilépés</button>
     </div>
   </div>
-  <div v-else-if="hiba" class="d-flex justify-content-center pt-5 mt-5">
-    Fak man
+  <div v-else-if="hiba" class="text-center py-5 my-5">
+    <h3 class="pt-5 m-5">Hiba a játékmenet beállításakor</h3>
+    <div id="folytatasGombDiv">
+      <button id=folytatasGomb @click="$router.push('/')">Vissza</button>
+    </div>
   </div>
-  <div v-else class="d-flex justify-content-center pt-5 mt-5">
-    <div class="spinner-border text-warning" />
+  <div v-else class="pt-5 mt-5">
+    <Toltes/>
   </div>
 </template>
 
@@ -383,7 +384,7 @@ export default {
   font-weight: 500;
   border: none;
   border-radius: 12px;
-  background-color: #333333;
+  background-color: #4C4C4C;
   color: whitesmoke;
   font-size: 14pt;
   height: 60px;

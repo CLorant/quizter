@@ -3,9 +3,7 @@
     <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo" />
     <h2>A keresett oldal nem található</h2>
     <RouterLink to="/">
-      <button id="visszaGomb">
-        Vissza a főoldalra
-      </button>
+      <button id="visszaGomb">Vissza</button>
     </RouterLink>
   </div>
 </template>
@@ -14,7 +12,7 @@
 #tartalom {
   color: whitesmoke;
   text-align: center;
-  margin-top: 150px;
+  margin-top: 120px;
 }
 
 #cim-logo {
@@ -27,6 +25,7 @@
 #visszaGomb {
   margin-top: 80px;
   margin-bottom: 80px;
+  font-weight: 500;
   border: none;
   border-radius: 12px;
   background-color: #4C4C4C;

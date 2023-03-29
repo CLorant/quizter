@@ -15,7 +15,7 @@ export default {
     }
   },
 
-  mounted() {
+  created() {
     this.getQuestions();
   },
 
@@ -25,13 +25,15 @@ export default {
 
   methods: {
     async getQuestions() {
-      try {
-        const res = await axios.get(`api/getQuestions/${this.valasztottTema}/${this.valasztottNehezseg}`);
-        this.kerdesvalaszok = res.data;
-      } catch (error) {
-        console.log(error);
-      }
-      
+      /*
+      await axios.get(`${import.meta.env.VITE_API_URL}/getQuestions/${this.valasztottTema}/${this.valasztottNehezseg}`)
+        .then(response => {
+          this.kerdesvalaszok = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      */
       this.kerdesvalaszok = kerdesvalaszokJSON // átmeneti
     },
 

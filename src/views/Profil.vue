@@ -166,46 +166,44 @@ export default {
 
     async updateUserPage() {
       try {
-      this.szerkesztes = false;
-      
-      // statek beállítása
-      this.felhasznalo.jellemzok.kep = this.szerkesztettKepUrl;
-      this.felhasznalo.jellemzok.nev = this.szerkesztettNev;
-      this.felhasznalo.jellemzok.bio = this.szerkesztettBio;
-      this.felhasznalo.jellemzok.tema1 = this.szerkesztettTema1;
-      this.felhasznalo.jellemzok.tema2 = this.szerkesztettTema2;
-      this.felhasznalo.jellemzok.tema3 = this.szerkesztettTema3;
+        this.szerkesztes = false;
+        
+        // statek beállítása
+        this.felhasznalo.jellemzok.kep = this.szerkesztettKepUrl;
+        this.felhasznalo.jellemzok.nev = this.szerkesztettNev;
+        this.felhasznalo.jellemzok.bio = this.szerkesztettBio;
+        this.felhasznalo.jellemzok.tema1 = this.szerkesztettTema1;
+        this.felhasznalo.jellemzok.tema2 = this.szerkesztettTema2;
+        this.felhasznalo.jellemzok.tema3 = this.szerkesztettTema3;
 
-      const formData = new FormData();
-      formData.append('nev', this.szerkesztettNev);
-      formData.append('bio', this.szerkesztettBio);
-      formData.append('tema1', this.szerkesztettTema1);
-      formData.append('tema2', this.szerkesztettTema2);
-      formData.append('tema3', this.szerkesztettTema3);
-      
-      if (this.szerkesztettKep) {
-        formData.append('kep', this.szerkesztettKep);
-      }
+        const formData = new FormData();
+        formData.append('nev', this.szerkesztettNev);
+        formData.append('bio', this.szerkesztettBio);
+        formData.append('tema1', this.szerkesztettTema1);
+        formData.append('tema2', this.szerkesztettTema2);
+        formData.append('tema3', this.szerkesztettTema3);
+        
+        if (this.szerkesztettKep) {
+          formData.append('kep', this.szerkesztettKep);
+        }
 
-      // updateUserPage
-        await axios.patch("api/updateUserPage", formData);
+        await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserPage`, formData);
       } catch (error) {
         console.log(error);
       }
     },
 
     async deleteUser() {
-      // deleteUser
-      try {
-        await axios.delete("api/deleteUserPage", {
-          felhasznalonev: this.felhasznalo.felhasznalonev
-        });
-      } catch (error) {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/deleteUserPage`, {
+        felhasznalonev: this.felhasznalo.felhasznalonev
+      })
+      .then(() => {
+        useFelhasznaloStore().$reset();
+        this.$router.push("/");
+      })
+      .catch(error => {
         console.log(error);
-      }
-
-      useFelhasznaloStore().$reset();
-      this.$router.push("/");
+      });
     }
   }
 }

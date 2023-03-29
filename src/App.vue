@@ -17,18 +17,18 @@
     },
 
     created() {
-      this.getUserByName();
       // this.getUserByName();
-      /*
+      
       const res = felhasznaloJSON // átmeneti
       for (const prop in this.felhasznalo) { 
         if (res.hasOwnProperty(prop)) {
           this.felhasznalo[prop] = res[prop];
         }
       }
-      this.felhasznalo.bejelentkezett = true // átmeneti
-      this.felhasznalo.jogosultsag = "admin" // átmeneti
-      */
+      this.felhasznalo.bejelentkezett = true; // átmeneti
+      this.felhasznalo.jogosultsag = "admin"; // átmeneti
+      this.felhasznalo.statisztika.exp = 260; // átmeneti
+      this.felhasznalo.rekord.pontszam = 0; // átmeneti
     },
 
     methods: {

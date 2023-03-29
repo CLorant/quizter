@@ -25,7 +25,6 @@ export default {
             this.helytelen = true;
           }
           else {
-            console.log(response);
             console.log(response.headers['set-cookie']);
             //console.log(response.headers['set-cookie'][0].split(';')[0]);
             document.cookie = `${response.headers['set-cookie']}`;

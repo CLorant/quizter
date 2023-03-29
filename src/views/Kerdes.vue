@@ -152,19 +152,24 @@ export default {
           formData.append('kep', this.modKep);
         }
 
-        await axios.patch('api/updateQuestion', formData);
+        await axios.patch(`${import.meta.env.VITE_API_URL}/updateQuestion`, formData)
+          .then(response => {
+            console.log(response.data);
+          });
       } catch (error) {
         console.log(error);
       }
     },
 
     async deleteQuestion() {
-      try {
-        this.$router.push("/kerdesek");
-        await axios.delete(`api/deleteQuestion/${this.$route.params.kerdesId}`);
-      } catch (error) {
-        console.log(error);
-      }
+      await axios.delete(`${import.meta.env.VITE_API_URL}/deleteQuestion/${this.$route.params.kerdesId}`)
+        .then(response => {
+          console.log(response);
+          this.$router.push("/kerdesek");
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
 
     modositasKezelo() {

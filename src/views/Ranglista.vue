@@ -31,7 +31,7 @@ export default {
     }
   },
 
-  beforeMount() {
+  created() {
     this.getUsersByRecord();
   },
 
@@ -119,29 +119,35 @@ export default {
     },
 
     async getUsersByRecord() {
-      try {
-        const res = await axios.get(`/api/getUsersByRecord/${this.valasztottTema}/${this.valasztottNehezseg}/${this.valasztottIdo}/${this.valasztottKerdesSzam}/${this.valasztottValaszSzam}`,);
-        if (this.ranglistaAdatok.length === 0) {
-          this.ranglistaAdatok = res.data;
-        }
-        else {
-          this.ranglistaAdatok += res.data;
-        }
-      } catch (error) {
-        console.log(error)
-      }
-
+      /*
+      await axios.get(`${import.meta.env.VITE_API_URL}/getUsersByRecord/${this.valasztottTema}/${this.valasztottNehezseg}/${this.valasztottIdo}/${this.valasztottKerdesSzam}/${this.valasztottValaszSzam}`)
+        .then(response => {
+          // nem végleges
+          if (this.ranglistaAdatok.length === 0) {
+            this.ranglistaAdatok = response.data;
+          }
+          else {
+            this.ranglistaAdatok += response.data;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+        */
       // ha this.ranglistaAdatok.length === 0 akkor '=', más esetben '+=' WIP
       this.ranglistaAdatok = ranglistaJSON; // átmeneti
     },
 
     async getUsersByName() {
-      try {
-        const res = await axios.get(`/api/getUsersByName/${this.keresett}`);
-        this.keresesEredmeny = res.data;
-      } catch (error) {
-        console.log(error)
-      }
+      /*
+      await axios.get(`${import.meta.env.VITE_API_URL}/getUsersByName/${this.keresett}`)
+        .then(response => {
+          this.keresesEredmeny = response.data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      */
       this.keresesEredmeny = ranglistaJSON; // átmeneti
     },
 

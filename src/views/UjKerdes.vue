@@ -124,7 +124,10 @@ export default {
           formData.append('kep', this.kep);
         }
 
-        await axios.post('api/createQuestion', formData);
+        await axios.post(`${import.meta.env.VITE_API_URL}/createQuestion`, formData)
+          .then(response => {
+            console.log(response.data);
+          });
       } catch (error) {
         console.log(error);
       }
