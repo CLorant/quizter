@@ -19,16 +19,20 @@ export default {
       await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
         username: this.felhasznalonev,
         password: this.jelszo
-      }, {withCredentials: true, credentials: 'include'})
+      }, {withCredentials: true})
         .then(response => {
+          console.log(response.headers['set-cookie']);
+          console.log(document.cookie);
           if(response.data === "Unauthorized") {
             this.helytelen = true;
           }
           else {
-            console.log(response.headers['set-cookie']);
-            //console.log(response.headers['set-cookie'][0].split(';')[0]);
-            document.cookie = `${response.headers['set-cookie']}`;
-            //document.cookie = response.headers['set-cookie'][0].split(';')[0];
+            /*
+            const cookies = response.headers['set-cookie'];
+            cookies.forEach(cookie => {
+              document.cookie = cookie.split(';')[0];
+            });
+            */
             for (const prop in this.felhasznalo) {
               if (response.data.hasOwnProperty(prop)) {
                 this.felhasznalo[prop] = response.data[prop];

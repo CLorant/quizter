@@ -95,7 +95,7 @@ export default {
 
         // Helytelen "tema" paraméterkor
         default:
-          return "Autók";
+          return "Téma";
       }
     },
 
@@ -112,7 +112,7 @@ export default {
 
         // Helytelen "nehezseg" paraméterkor
         default:
-          return "Könnyű";
+          return "Nehézség";
       }
     },
 
@@ -226,7 +226,7 @@ export default {
           <h2 v-else>{{ profil.jellemzok.nev }}</h2>
           <h3>@{{ profil.felhasznalonev }}</h3>
           <Szint :exp="profil.statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
-          <p>Csatlakozott: <b>{{ profil.csatlakozas }}</b></p>
+          <p>Csatlakozott: <b>{{ (profil.csatlakozas).substring(0, 10) }}</b></p>
           <button v-if="bejelentkezettFelh && !szerkesztes" id="szerkesztesGomb" class="btn btn-dark"
             @click="szerkesztesLenyomva" style="width: 200px;">
             Profil Módosítása
@@ -296,7 +296,7 @@ export default {
         <div class="rekord-tablazat">
           <h3>Statisztika</h3><br>
           <p>Játszmák: <b>{{ profil.statisztika.jatszmaSzam }}</b></p>
-          <p>Átlagos válaszidő: <b>{{ (profil.statisztika.valaszIdo / profil.statisztika.jatszmaSzam).toFixed(2) }}</b> mp
+          <p>Átlagos válaszidő: <b>{{ profil.statisztika.jatszmaSzam > 0 ? (profil.statisztika.valaszIdo / profil.statisztika.jatszmaSzam).toFixed(2) : 0}}</b> mp
           </p>
         </div>
         <div class="rekord-tablazat">

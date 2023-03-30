@@ -14,7 +14,9 @@ export default {
 
   watch: {
     '$route.params.temaId'() {
-      this.temaAllito();
+      if(this.$router.currentRoute.value.name == 'quizbeallito') {
+        this.temaAllito();
+      }
     }
   },
 
