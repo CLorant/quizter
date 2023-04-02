@@ -1,6 +1,6 @@
 <template>
   <div id="tartalom">
-    <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo" />
+    <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo" width="600" height="150">
     <h2>A keresett oldal nem található</h2>
     <RouterLink to="/">
       <button id="visszaGomb">Vissza</button>
@@ -38,4 +38,5 @@
 
 #visszaGomb:hover {
   opacity: 0.8;
-}</style>
+}
+</style>

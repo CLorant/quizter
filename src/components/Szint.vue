@@ -1,3 +1,12 @@
+<template>
+  <div id="szint-tarolo" :style="{ height: magassag, width: szelesseg }">
+    <div class="d-flex justify-content-center">
+      <span id="szint" :style="{ fontSize: betumeret }">{{ szint }}.&nbsp;szint</span>
+    </div>
+    <div id="szint-haladas" :style="{ width: szintHaladas + '%' }"></div>
+  </div>
+</template>
+
 <script>
 export default {
   props: {
@@ -50,15 +59,6 @@ export default {
   }
 }
 </script>
-
-<template>
-  <div id="szint-tarolo" :style="{ height: magassag, width: szelesseg }">
-    <div class="d-flex justify-content-center">
-      <span id="szint" :style="{ fontSize: betumeret }">{{ szint }}.&nbsp;szint</span>
-    </div>
-    <div id="szint-haladas" :style="{ width: szintHaladas + '%' }"></div>
-  </div>
-</template>
 
 <style scoped>
 #szint-tarolo {

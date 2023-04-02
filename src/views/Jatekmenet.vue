@@ -1,5 +1,66 @@
+<template>
+  <Hiba v-if="hiba"/>
+  <Toltes v-else-if="toltes" />
+  <div v-else id="tartalom">
+    <div v-if="!jatekVege">
+      <p id="korSzamlalo">{{ kor + 1 }} / {{ kerdesSzam }}</p>
+      <h4 id="kerdes">{{ kerdes.szoveg }}</h4>
+      <img id="kep" :src="kerdes.kep" alt="Kérdés képe" decoding="async" height="300">
+      <div id="gombTarolo">
+        <div id="gombDiv">
+          <button v-for="(value, key) in valaszok" :key="key" class="valaszGomb" :disabled="leNyomottValaszGomb"
+            @click="leNyomottValaszGomb ? '' : valaszVizsgalat(value.helyes)" :style="{
+              //ha a gomb megnyomott akkor a válasz helyessége szerint színezi, ha nem akkor az alapszínt használja
+              backgroundColor: leNyomottValaszGomb ? (value.helyes ? 'green' : 'firebrick') : ('#4C4C4C')
+            }">
+            <span class="valaszSzoveg">{{ value.szoveg }}</span>
+          </button>
+        </div>
+      </div>
+      <div id="visszaSzamoloDiv">
+        <div :style="{
+          width: maradtIdo / ido * 100 + '%'
+        }">{{ maradtIdo }}</div>
+      </div>
+      <div id="folytatasGombDiv">
+        <button v-if="kor < kerdesSzam - 1" id=folytatasGomb :disabled="folytatasGombKikapcsol" @click="folytatasGombKikapcsol ? '' : folytat()"
+          :style="{
+            backgroundColor: folytatasGombKikapcsol ? '#333333' : '#4C4C4C'
+          }">
+          Folytatás
+        </button>
+        <button v-else id=folytatasGomb @click="folytatasGombKikapcsol ? '' : vege()"
+        :style="{
+          backgroundColor: folytatasGombKikapcsol ? '#333333' : '#4C4C4C'
+        }">
+          Befejezés
+        </button>
+      </div>
+    </div>
+    <div v-else class="d-flex align-items-center justify-content-center flex-column pt-3">
+      <div v-if="pont > felhasznalo.rekord.pontszam" class="rekord-tablazat mb-0">
+        <h2 class="mb-0">Új Személyes Rekord!</h2>
+      </div>
+      <div class="rekord-tablazat">
+        <h2>Játszma adatai</h2>
+        <p>Pontszám: <b>{{ pont }}</b> pont</p>
+        <p>Helyes: <b>{{ helyesValasz }}</b></p>
+        <p>Helytelen: <b>{{ helytelenValasz }}</b></p>
+        <p>Téma: <b>{{ temaNev }}</b></p>
+        <p>Nehézség: <b>{{ nehezsegSzoveg(nehezseg) }}</b></p>
+        <p>Idő kérdésenként: <b>{{ ido }}</b> mp</p>
+        <p>Kérdésszám: <b>{{ kerdesSzam }}</b></p>
+        <p>Válaszszám: <b>{{ valaszSzam }}</b></p>
+        <p>Átlagos válaszidő: <b>{{ (atlagosValaszIdo / kerdesSzam).toFixed(2) }}</b> mp</p>
+      </div>
+      <button id="folytatasGomb" class="my-4 fs-6" @click="$router.push('/')">Kilépés</button>
+    </div>
+  </div>
+</template>
+
 <script>
 import Toltes from '../components/Toltes.vue';
+import Hiba from '../components/Hiba.vue';
 import { mapState, mapWritableState } from 'pinia';
 import { useTemaStore } from '../stores/tema';
 import { useQuizBeallitoStore } from '../stores/quizbeallito';
@@ -9,12 +70,13 @@ import axios from 'axios';
 
 export default {
   components: {
-    Toltes
+    Toltes,
+    Hiba
   },
 
   data() {
     return {
-      pending: true,
+      toltes: true,
       hiba: false,
       kerdesvalaszok: {},
       interval: null,
@@ -47,39 +109,77 @@ export default {
   },
   
   created() {
+    // hibás téma paraméterkor vagy oldal frissítéskor visszanavigál a főoldalra
     if(this.tema === "") {
       this.$router.push("/");
     }
 
-    axios.get(`${import.meta.env.VITE_API_URL}/getGameQuestions/${this.tema}/${this.nehezseg}/${this.kerdesSzam}/${this.valaszSzam}`)
-      .then(response => {
-        let igazE;
-        for (let i = 0; i < this.kerdesSzam; i++) {
-          let kerdesvalasz = Object.values(response.data)[i];
-          for (let j = 0; j < this.valaszSzam; j++) {
-            if (j === 0) {
-              igazE = true;
-            }
-            else {
-              igazE = false;
-            }
-            kerdesvalasz.valaszok[`valasz${j + 1}`].helyes = igazE;
-          }
-          this.kerdesvalaszok[`kerdesvalasz${i + 1}`] = kerdesvalasz;
-        }
-        this.kerdes = this.kerdesvalaszok.kerdesvalasz1.kerdes;
-        this.valaszok = this.valaszKevero(Object.values(this.kerdesvalaszok.kerdesvalasz1.valaszok));
-        this.maradtIdo = this.ido;
-        this.pending = false;
-        this.valaszFigyelo();
-      })
-      .catch(error => {
-        this.hiba = true;
-        console.log(error);
-      });
+    this.getGameQuestions();
   },
   
   methods: {
+    async getGameQuestions() {
+      axios.get(`${import.meta.env.VITE_API_URL}/getGameQuestions/${this.tema}/${this.nehezseg}/${this.kerdesSzam}/${this.valaszSzam}`)
+        .then(response => {
+          let igazE;
+          for (let i = 0; i < this.kerdesSzam; i++) {
+            let kerdesvalasz = Object.values(response.data)[i];
+            for (let j = 0; j < this.valaszSzam; j++) {
+              if (j === 0) {
+                igazE = true;
+              }
+              else {
+                igazE = false;
+              }
+              kerdesvalasz.valaszok[`valasz${j + 1}`].helyes = igazE;
+            }
+            this.kerdesvalaszok[`kerdesvalasz${i + 1}`] = kerdesvalasz;
+          }
+          this.kerdes = this.kerdesvalaszok.kerdesvalasz1.kerdes;
+          this.valaszok = this.valaszKevero(Object.values(this.kerdesvalaszok.kerdesvalasz1.valaszok));
+          this.maradtIdo = this.ido;
+          this.toltes = false;
+          this.valaszFigyelo();
+        })
+        .catch(error => {
+          this.hiba = true;
+          console.log(error);
+        });
+    },
+
+    async updateUser() {
+      try {
+        await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserStats`, {
+          exp: this.felhasznalo.statisztika.exp,
+          jatszmaSzam: this.felhasznalo.statisztika.jatszmaSzam,
+          valaszIdo: this.felhasznalo.statisztika.valaszIdo
+        });
+
+        if (this.pont > this.felhasznalo.rekord.pontszam) {
+          this.felhasznalo.rekord.pontszam = this.pont;
+          this.felhasznalo.rekord.helyesHelytelen = this.helyesValasz + " / " + this.helytelenValasz;
+          this.felhasznalo.rekord.tema = this.tema;
+          this.felhasznalo.rekord.nehezseg = this.nehezseg;
+          this.felhasznalo.rekord.ido = this.ido;
+          this.felhasznalo.rekord.kerdesSzam = this.kerdesSzam;
+          this.felhasznalo.rekord.valaszSzam = this.valaszSzam;
+
+          // updateUserRecord
+          await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserRecord`, {
+            pontszam: this.felhasznalo.rekord.pontszam,
+            helyesHelytelen: this.felhasznalo.rekord.helyesHelytelen,
+            tema: this.felhasznalo.rekord.tema,
+            nehezseg: this.felhasznalo.rekord.nehezseg,
+            ido: this.felhasznalo.rekord.ido,
+            kerdesSzam: this.felhasznalo.rekord.kerdesSzam,
+            valaszSzam: this.felhasznalo.rekord.valaszSzam
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     //Fisher-Yates keverés
     valaszKevero(valaszokObj) {
       for (let i = valaszokObj.length - 1; i > 0; i--) {
@@ -169,39 +269,6 @@ export default {
       }
     },
 
-    async updateUser() {
-      try {
-        await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserStats`, {
-          exp: this.felhasznalo.statisztika.exp,
-          jatszmaSzam: this.felhasznalo.statisztika.jatszmaSzam,
-          valaszIdo: this.felhasznalo.statisztika.valaszIdo
-        });
-
-        if (this.pont > this.felhasznalo.rekord.pontszam) {
-          this.felhasznalo.rekord.pontszam = this.pont;
-          this.felhasznalo.rekord.helyesHelytelen = this.helyesValasz + " / " + this.helytelenValasz;
-          this.felhasznalo.rekord.tema = this.tema;
-          this.felhasznalo.rekord.nehezseg = this.nehezseg;
-          this.felhasznalo.rekord.ido = this.ido;
-          this.felhasznalo.rekord.kerdesSzam = this.kerdesSzam;
-          this.felhasznalo.rekord.valaszSzam = this.valaszSzam;
-
-          // updateUserRecord
-          await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserRecord`, {
-            pontszam: this.felhasznalo.rekord.pontszam,
-            helyesHelytelen: this.felhasznalo.rekord.helyesHelytelen,
-            tema: this.felhasznalo.rekord.tema,
-            nehezseg: this.felhasznalo.rekord.nehezseg,
-            ido: this.felhasznalo.rekord.ido,
-            kerdesSzam: this.felhasznalo.rekord.kerdesSzam,
-            valaszSzam: this.felhasznalo.rekord.valaszSzam
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
     nehezsegSzoveg(nehezseg) {
       switch (nehezseg) {
         case "konnyu":
@@ -221,73 +288,6 @@ export default {
   }
 }
 </script>
-
-<template>
-  <div id="tartalom" v-if="!pending">
-    <div v-if="!jatekVege">
-      <p id="korSzamlalo">{{ kor + 1 }} / {{ kerdesSzam }}</p>
-      <h4 id="kerdes">{{ kerdes.szoveg }}</h4>
-      <img id="kep" :src="kerdes.kep" alt="Kérdés képe" decoding="async">
-      <div id="gombTarolo">
-        <div id="gombDiv">
-          <button v-for="(value, key) in valaszok" :key="key" class="valaszGomb" :disabled="leNyomottValaszGomb"
-            @click="leNyomottValaszGomb ? '' : valaszVizsgalat(value.helyes)" :style="{
-              //ha a gomb megnyomott akkor a válasz helyessége szerint színezi, ha nem akkor az alapszínt használja
-              backgroundColor: leNyomottValaszGomb ? (value.helyes ? 'green' : 'firebrick') : ('#4C4C4C')
-            }">
-            {{ value.szoveg }}
-          </button>
-        </div>
-      </div>
-      <div id="visszaSzamoloDiv">
-        <div :style="{
-          width: maradtIdo / ido * 100 + '%'
-        }">{{ maradtIdo }}</div>
-      </div>
-      <div id="folytatasGombDiv">
-        <button v-if="kor < kerdesSzam - 1" id=folytatasGomb :disabled="folytatasGombKikapcsol" @click="folytatasGombKikapcsol ? '' : folytat()"
-          :style="{
-            backgroundColor: folytatasGombKikapcsol ? '#333333' : '#4C4C4C'
-          }">
-          Folytatás
-        </button>
-        <button v-else id=folytatasGomb @click="folytatasGombKikapcsol ? '' : vege()"
-        :style="{
-          backgroundColor: folytatasGombKikapcsol ? '#333333' : '#4C4C4C'
-        }">
-          Befejezés
-        </button>
-      </div>
-    </div>
-    <div v-else class="d-flex align-items-center justify-content-center flex-column pt-3">
-      <div v-if="pont > felhasznalo.rekord.pontszam" class="rekord-tablazat mb-0">
-        <h2 class="mb-0">Új Személyes Rekord!</h2>
-      </div>
-      <div class="rekord-tablazat">
-        <h2>Játszma adatai</h2>
-        <p>Pontszám: <b>{{ pont }}</b> pont</p>
-        <p>Helyes: <b>{{ helyesValasz }}</b></p>
-        <p>Helytelen: <b>{{ helytelenValasz }}</b></p>
-        <p>Téma: <b>{{ temaNev }}</b></p>
-        <p>Nehézség: <b>{{ nehezsegSzoveg(nehezseg) }}</b></p>
-        <p>Idő kérdésenként: <b>{{ ido }}</b> mp</p>
-        <p>Kérdésszám: <b>{{ kerdesSzam }}</b></p>
-        <p>Válaszszám: <b>{{ valaszSzam }}</b></p>
-        <p>Átlagos válaszidő: <b>{{ (atlagosValaszIdo / kerdesSzam).toFixed(2) }}</b> mp</p>
-      </div>
-      <button id="folytatasGomb" class="my-4 fs-6" @click="$router.push('/')">Kilépés</button>
-    </div>
-  </div>
-  <div v-else-if="hiba" class="text-center py-5 my-5">
-    <h3 class="pt-5 m-5">Hiba a játékmenet beállításakor</h3>
-    <div id="folytatasGombDiv">
-      <button id=folytatasGomb @click="$router.push('/')">Vissza</button>
-    </div>
-  </div>
-  <div v-else class="pt-5 mt-5">
-    <Toltes/>
-  </div>
-</template>
 
 <style scoped>
 #tartalom {
@@ -334,6 +334,32 @@ export default {
   margin-right: auto;
 }
 
+.valaszGomb {
+  font-weight: 500;
+  border: none;
+  border-radius: 15px;
+  font-size: 14pt;
+  color: whitesmoke;
+  height: 80px;
+  max-width: 246px;
+  width: 42%;
+  margin: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  position: relative;
+}
+
+.valaszSzoveg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+
 #visszaSzamoloDiv {
   border-radius: 15px;
   width: 90%;
@@ -353,25 +379,10 @@ export default {
   background-color: rgb(255, 200, 0);
   box-sizing: border-box;
   font-size: 24pt;
-  box-shadow: 10px 0 8px -2px rgba(0, 0, 0, 0.1);
   -webkit-transition: .5s ease-in-out;
   -moz-transition: .5s ease-in-out;
   -o-transition: .5s ease-in-out;
   transition: .5s ease-in-out;
-}
-
-.valaszGomb {
-  font-weight: 500;
-  border: none;
-  border-radius: 15px;
-  font-size: 14pt;
-  color: whitesmoke;
-  height: 80px;
-  max-width: 246px;
-  width: 42%;
-  margin: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  white-space: pre-wrap;
 }
 
 #folytatasGombDiv {

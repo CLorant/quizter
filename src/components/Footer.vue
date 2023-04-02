@@ -1,22 +1,10 @@
-<script>
-import { mapWritableState } from 'pinia'
-import { useFelhasznaloStore } from '../stores/felhasznalo';
-
-export default {
-  computed: {
-    ...mapWritableState(useFelhasznaloStore, ['felhasznalo'])
-  }
-}
-</script>
-
-
 <template>
   <footer class="pt-4">
     <div class="mx-4">
       <div class="row">
         <div class="col-md-3 col-sm-12 text-center text-md-start my-3">
           <RouterLink to="/">
-            <img src="/img/ikon/quizterlogo_kicsi.webp" alt="Logo" decoding="async" id="logo">
+            <img src="/img/ikon/quizterlogo_kicsi.webp" alt="Logo" decoding="async" id="logo" width="151" height="38">
           </RouterLink>
         </div>
         <div id="oldalak" class="col-md-6 col-sm-12 d-flex flex-wrap justify-content-center">
@@ -35,7 +23,7 @@ export default {
         </div>
         <div class="col-md-3 col-sm-12 text-center text-md-end">
           <a href="https://github.com/CLorant/quizter" target="_blank" rel="noreferrer">
-            <img src="/img/ikon/github_icon.webp" alt="Github Ikon" decoding="async" class="kozossegi-gomb m-2">
+            <img src="/img/ikon/github_icon.webp" alt="Github Ikon" decoding="async" class="m-2" width="30" height="30">
           </a>
           <div class="mt-3">
             <a href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com" target="_blank" rel=”noreferrer”
@@ -51,19 +39,20 @@ export default {
   </footer>
 </template>
 
+<script>
+import { mapWritableState } from 'pinia'
+import { useFelhasznaloStore } from '../stores/felhasznalo';
+
+export default {
+  computed: {
+    ...mapWritableState(useFelhasznaloStore, ['felhasznalo'])
+  }
+}
+</script>
+
 <style scoped>
 footer {
   background-color: #0b0c0e;
-}
-
-#logo {
-  height: 39px;
-  width: 150px;
-}
-
-.kozossegi-gomb {
-  height: 30px;
-  width: 30px;
 }
 
 .kozossegi-gomb:hover,

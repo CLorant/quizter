@@ -1,3 +1,10 @@
+<template>
+  <RouterLink :to="{ name: 'quizbeallito', params: { temaId: tema } }" class="temaGomb">
+    <img :src="`/img/tema/kicsi/${tema}.webp`" :alt="{ tema } + ' képe'" decoding="async" class="temaImg" width="360" height="120">
+    <span class="temaNev">{{ temaNev }}</span>
+  </RouterLink>
+</template>
+
 <script>
 export default {
   props: {
@@ -7,27 +14,16 @@ export default {
 }
 </script>
 
-<template>
-  <RouterLink :to="{ name: 'quizbeallito', params: { temaId: tema } }" class="temaGomb">
-    <img :src="`/img/tema/kicsi/${tema}.webp`" :alt="{ tema } + ' képe'" decoding="async" class="temaImg" />
-    <span class="temaNev">{{ temaNev }}</span>
-  </RouterLink>
-</template>
-
 <style scoped>
 .temaGomb {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 120px;
-  width: 360px;
   margin: 16pt;
 }
 
 .temaImg {
-  height: 100%;
-  width: 100%;
   border-radius: 25px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }

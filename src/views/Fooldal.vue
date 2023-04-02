@@ -1,3 +1,17 @@
+<template>
+  <div id="tartalom">
+    <div id="cim">
+      <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo" width="600" height="150">
+      <h2>Teszteld a tudásod</h2>
+    </div>
+    <div id="temaGombTarolo">
+      <div id="temaValasztoGombok">
+        <TemaGomb v-for="t in temak" :key="t.id" :tema="t.id" :temaNev="t.szoveg" />
+      </div>
+    </div>
+  </div>
+</template>
+
 <script>
 import TemaGomb from '../components/TemaGomb.vue'
 
@@ -5,6 +19,7 @@ export default {
   components: {
     TemaGomb
   },
+
   data() {
     return {
       temak: [
@@ -26,20 +41,6 @@ export default {
 }
 </script>
 
-<template>
-  <div id="tartalom">
-    <div id="cim">
-      <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo">
-      <h2>Teszteld a tudásod</h2>
-    </div>
-    <div id="temaGombTarolo">
-      <div id="temaValasztoGombok">
-        <TemaGomb v-for="t in temak" :key="t.id" :tema="t.id" :temaNev="t.szoveg" />
-      </div>
-    </div>
-  </div>
-</template>
-
 <style scoped>
 #tartalom {
   margin-top: 120px;
@@ -48,12 +49,6 @@ export default {
 #cim {
   color: rgb(255, 200, 0);
   text-align: center;
-}
-
-#cim-logo {
-  height: 90%;
-  width: 90%;
-  max-width: 600px;
 }
 
 #temaGombTarolo {
@@ -69,6 +64,13 @@ export default {
   margin-top: 64pt;
   margin-bottom: 64pt;
   max-width: 2000px;
+}
+
+@media screen and (max-width: 670px) {
+  #cim-logo {
+    height: 90%;
+    width: 90%;
+  }
 }
 
 @media screen and (max-width: 420px) {

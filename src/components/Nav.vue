@@ -1,3 +1,95 @@
+<template>
+  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container-fluid">
+      <button class="navbar-toggler" :id="this.navIkonKattint ? 'open' : 'closed'" type="button" data-bs-toggle="collapse"
+        data-bs-target=".navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false"
+        aria-label="Hamburger menü" @click="keresett = ''; navIkonKattint = !navIkonKattint">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <RouterLink to="/">
+        <img src="/img/ikon/quizterlogo_kicsi.webp" alt="Quizter Logó" decoding="async" class="navbar-brand" width="119" height="40">
+      </RouterLink>
+      <div v-if="felhasznalo.bejelentkezett">
+        <div class="collapse navbar-collapse jobb-nav" style="top:6px;">
+          <div id="felhasznalo-tarolo">
+            <span id="felhasznalo-nev">{{ felhasznalo.felhasznalonev }}</span>
+            <Szint :exp="felhasznalo.statisztika.exp" magassag="16px" szelesseg="100px" betumeret="10pt" />
+          </div>
+        </div>
+        <div class="dropdown jobb-nav">
+          <div class="dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img :src="felhasznalo.jellemzok.kep" alt="Kép" decoding="async" class="felhasznalo-kep" width="40" height="40">
+          </div>
+          <div class="dropdown-menu dropdown-menu-dark" id="felhasznaloDropdownMenu">
+            <RouterLink :to="{ name: 'profil', params: { felhasznaloId: felhasznalo.felhasznalonev } }" class="dropdown-item">Profil
+            </RouterLink>
+            <button class="dropdown-item" @click="kijelentkezes()">Kijelentkezés</button>
+          </div>
+        </div>
+      </div>
+      <div v-else>
+        <div class="dropdown jobb-nav">
+          <div class="dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="/img/ikon/login.webp" alt="Kép" decoding="async" class="felhasznalo-kep" width="40" height="40">
+          </div>
+          <div class="dropdown-menu dropdown-menu-dark" id="felhasznaloDropdownMenu">
+            <RouterLink to="/bejelentkezes" class="dropdown-item">Bejelentkezés</RouterLink>
+            <RouterLink to="/regisztracio" class="dropdown-item">Regisztráció</RouterLink>
+          </div>
+        </div>
+      </div>
+      <div class="collapse navbar-collapse">
+        <div class="navbar-nav">
+          <RouterLink to="/" class="nav-item nav-link" :class="aktiv('fooldal')">Főoldal</RouterLink>
+          <RouterLink :to="{ name: 'profil', params: { felhasznaloId: felhasznalo.felhasznalonev } }" class="nav-item nav-link"
+            :class="aktiv('profil')">Profil</RouterLink>
+          <RouterLink to="/ranglista" class="nav-item nav-link" :class="aktiv('ranglista')">Ranglista</RouterLink>
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" :class="aktiv('quizbeallito')" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Témák
+            </a>
+            <div class="dropdown-menu dropdown-menu-dark">
+              <RouterLink v-for="t in temak" :key="t.id" :to="{ name: 'quizbeallito', params: { temaId: t.id } }"
+                class="dropdown-item">{{ t.szoveg }}</RouterLink>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="kereso-tarolo navbar-collapse collapse">
+        <div class="input-group">
+          <input class="form-control" id="nav-kereses-szoveg" v-model="keresett" type="search" placeholder="Felhasználó"
+            aria-label="Kereső Mező">
+          <button class="btn btn-warning" id="nav-kereses-gomb" @click="keresoGomb" aria-label="Keresés Gomb">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+              viewBox="0 0 16 16">
+              <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="fixed-top" id="kereses-eredmeny-tarolo">
+    <div class="bg-dark rounded" :class="keres ? '' : 'd-none'" id="kereses-eredmeny">
+      <RouterLink v-for="(item, index) in keresesEredmeny" :to="{ name: 'profil', params: { felhasznaloId: item.felhasznalonev } }"
+        :key="item.felhasznalonev" class="m-1 text-light text-decoration-none row" @click="profil = keresesEredmeny[index]">
+        <div class="col-3">
+          <img :src="item.jellemzok.kep" :alt="`${item.felhasznalonev} képe`" decoding="async" class="felhasznalo-kep" width="40" height="40">
+        </div>
+        <div class="col">
+          <p id="keresett-felhasznalo">{{ item.felhasznalonev }}</p>
+        </div>
+      </RouterLink>
+    </div>
+  </div>
+</template>
+
 <script>
 import axios from 'axios'
 import Szint from './Szint.vue'
@@ -103,98 +195,6 @@ export default {
 }
 </script>
 
-<template>
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    <div class="container-fluid">
-      <button class="navbar-toggler" :id="this.navIkonKattint ? 'open' : 'closed'" type="button" data-bs-toggle="collapse"
-        data-bs-target=".navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false"
-        aria-label="Toggle navigation" @click="keresett = ''; navIkonKattint = !navIkonKattint">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <RouterLink to="/">
-        <img src="/img/ikon/quizterlogo_kicsi.webp" alt="Quizter Logó" decoding="async" class="navbar-brand">
-      </RouterLink>
-      <div v-if="felhasznalo.bejelentkezett">
-        <div class="collapse navbar-collapse jobb-nav" style="top:6px;">
-          <div id="felhasznalo-tarolo">
-            <span id="felhasznalo-nev">{{ felhasznalo.felhasznalonev }}</span>
-            <Szint :exp="felhasznalo.statisztika.exp" magassag="16px" szelesseg="100px" betumeret="10pt" />
-          </div>
-        </div>
-        <div class="dropdown jobb-nav">
-          <div class="dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img :src="felhasznalo.jellemzok.kep" alt="Kép" decoding="async" class="felhasznalo-kep">
-          </div>
-          <div class="dropdown-menu dropdown-menu-dark" id="felhasznaloDropdownMenu">
-            <RouterLink :to="{ name: 'profil', params: { felhasznaloId: felhasznalo.felhasznalonev } }" class="dropdown-item">Profil
-            </RouterLink>
-            <button class="dropdown-item" @click="kijelentkezes()">Kijelentkezés</button>
-          </div>
-        </div>
-      </div>
-      <div v-else>
-        <div class="dropdown jobb-nav">
-          <div class="dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="/img/ikon/login.webp" alt="Kép" decoding="async" class="felhasznalo-kep">
-          </div>
-          <div class="dropdown-menu dropdown-menu-dark" id="felhasznaloDropdownMenu">
-            <RouterLink to="/bejelentkezes" class="dropdown-item">Bejelentkezés</RouterLink>
-            <RouterLink to="/regisztracio" class="dropdown-item">Regisztráció</RouterLink>
-          </div>
-        </div>
-      </div>
-      <div class="collapse navbar-collapse">
-        <div class="navbar-nav">
-          <RouterLink to="/" class="nav-item nav-link" :class="aktiv('fooldal')">Főoldal</RouterLink>
-          <RouterLink :to="{ name: 'profil', params: { felhasznaloId: felhasznalo.felhasznalonev } }" class="nav-item nav-link"
-            :class="aktiv('profil')">Profil</RouterLink>
-          <RouterLink to="/ranglista" class="nav-item nav-link" :class="aktiv('ranglista')">Ranglista</RouterLink>
-          <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" :class="aktiv('quizbeallito')" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Témák
-            </a>
-            <div class="dropdown-menu dropdown-menu-dark">
-              <RouterLink v-for="t in temak" :key="t.id" :to="{ name: 'quizbeallito', params: { temaId: t.id } }"
-                class="dropdown-item">{{ t.szoveg }}</RouterLink>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="kereso-tarolo navbar-collapse collapse">
-        <div class="input-group">
-          <input class="form-control" id="nav-kereses-szoveg" v-model="keresett" type="search" placeholder="Felhasználó"
-            aria-label="Search">
-          <button class="btn btn-warning" id="nav-kereses-gomb" @click="keresoGomb" aria-label="Search Button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
-              viewBox="0 0 16 16">
-              <path
-                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
-
-  <div class="fixed-top" id="kereses-eredmeny-tarolo">
-    <div class="bg-dark rounded" :class="keres ? '' : 'd-none'" id="kereses-eredmeny">
-      <RouterLink v-for="(item, index) in keresesEredmeny" :to="{ name: 'profil', params: { felhasznaloId: item.felhasznalonev } }"
-        :key="item.felhasznalonev" class="m-1 text-light text-decoration-none row" @click="profil = keresesEredmeny[index]">
-        <div class="col-3">
-          <img :src="item.jellemzok.kep" :alt="`${item.felhasznalonev} képe`" decoding="async" class="felhasznalo-kep">
-        </div>
-        <div class="col">
-          <p id="keresett-felhasznalo">{{ item.felhasznalonev }}</p>
-        </div>
-      </RouterLink>
-    </div>
-  </div>
-</template>
-
 <style scoped>
 .navbar-toggler {
   border: none;
@@ -280,8 +280,6 @@ export default {
 }
 
 .navbar-brand {
-  height: 40px;
-  width: 116px;
   margin-right: 40px;
 }
 
@@ -323,8 +321,6 @@ export default {
 }
 
 .felhasznalo-kep {
-  height: 40px;
-  width: 40px;
   border-radius: 20px;
 }
 
