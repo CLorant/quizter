@@ -3,8 +3,8 @@ import Nav from './components/Nav.vue';
 import Footer from './components/Footer.vue';
 import { mapWritableState } from 'pinia';
 import { useFelhasznaloStore } from './stores/felhasznalo';
-import felhasznaloJSON from './felhasznalo.json'; // átmeneti
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default {
   components: {
@@ -17,33 +17,35 @@ export default {
   },
   
   created() {
-    // this.getUserByName();
-    
-    const res = felhasznaloJSON // átmeneti
-    for (const prop in this.felhasznalo) {
-      if (res.hasOwnProperty(prop)) {
-        this.felhasznalo[prop] = res[prop];
-      }
+    if (Cookies.get('auth_token')) {
+      this.tokenLogin();
     }
-    this.felhasznalo.bejelentkezett = true; // átmeneti
-    this.felhasznalo.jogosultsag = "admin"; // átmeneti
   },
 
   methods: {
-    async getUserByName() {
-      // automatikus bejelentkezést ide majd valahogy
-      await axios.get(`${import.meta.env.VITE_API_URL}/getUserByName/${'asd'}`)
+    tokenLogin() {
+      axios.get(`${import.meta.env.VITE_API_URL}/tokenlogin`, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${Cookies.get('auth_token')}`
+        }
+        })
         .then(response => {
-          for (const prop in this.felhasznalo) {
-            if (response.data.hasOwnProperty(prop)) {
-              this.felhasznalo[prop] = response.data[prop];
-            }
+          if(response.data === "Unauthorized") {
+            this.$router.push("/bejelentkezes");
           }
-          this.felhasznalo.bejelentkezett = true
+          else {
+            for (const prop in this.felhasznalo) {
+              if (response.data.hasOwnProperty(prop)) {
+                this.felhasznalo[prop] = response.data[prop];
+              }
+            }
+            this.felhasznalo.bejelentkezett = true;
+          }
         })
         .catch(error => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     }
   }
 }

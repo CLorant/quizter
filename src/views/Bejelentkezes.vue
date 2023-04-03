@@ -9,7 +9,7 @@
         <input type="text" minlength="3" maxlength="12" pattern="[a-zA-Z0-9]+" v-model="felhasznalonev" @click="helytelen = false" id="felhasznalonevInput" class="form-control form-control-md text-light" :class="helytelen ? 'border-danger' : 'border-dark'" placeholder="Felhasználónév" required>
           <div class="mt-1" style="height: 24px">
           <div class="text-danger" :class="helytelen ? 'd-block' : 'd-none'">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-exclamation-diamond mb-1" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="mb-1" viewBox="0 0 16 16">
               <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/>
               <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
             </svg>
@@ -29,7 +29,7 @@
         <input type="password" minlength="8" v-model="jelszo" @click="helytelen = false" id="jelszoInput" class="form-control form-control-md text-light" :class="helytelen ? 'border-danger' : 'border-dark'" placeholder="Jelszó" required>
         <div class="mt-2" style="height: 24px">
           <div class="text-danger" :class="helytelen ? 'd-block' : 'd-none'">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-exclamation-diamond mb-1" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="mb-1" viewBox="0 0 16 16">
               <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/>
               <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
             </svg>
@@ -69,26 +69,19 @@ export default {
         password: this.jelszo
       }, {withCredentials: true})
         .then(response => {
-          console.log(response.headers['set-cookie']);
-          console.log(document.cookie);
           if(response.data === "Unauthorized") {
             this.helytelen = true;
+            return
           }
-          else {
-            /*
-            const cookies = response.headers['set-cookie'];
-            cookies.forEach(cookie => {
-              document.cookie = cookie.split(';')[0];
-            });
-            */
-            for (const prop in this.felhasznalo) {
-              if (response.data.hasOwnProperty(prop)) {
-                this.felhasznalo[prop] = response.data[prop];
-              }
-              this.felhasznalo.bejelentkezett = true;
+          for (const prop in this.felhasznalo) {
+            if (response.data.hasOwnProperty(prop)) {
+              this.felhasznalo[prop] = response.data[prop];
             }
-            this.$router.push("/");
           }
+          document.cookie = `auth_token=${response.data.auth_token} SameSite=Lax; Secure`;
+          // document.cookie = `auth_token=${response.data.auth_token} HttpOnly; Secure`;
+          this.felhasznalo.bejelentkezett = true;
+          this.$router.push("/");
         })
         .catch(error => {
           this.helytelen = true;
