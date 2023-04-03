@@ -80,7 +80,12 @@ export default {
 
   methods: {
     async getQuestions() {
-      await axios.get(`${import.meta.env.VITE_API_URL}/getQuestions/${this.valasztottTema}/${this.valasztottNehezseg}`)
+      await axios.get(`${import.meta.env.VITE_API_URL}/getQuestions/${this.valasztottTema}/${this.valasztottNehezseg}`,{
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${Cookies.get('auth_token')}`
+          }
+        })
         .then(response => {
           this.kerdesvalaszok = response.data;
           this.toltes = false;
@@ -131,7 +136,7 @@ export default {
 
         // Helytelen "tema" paraméterkor
         default:
-          return "Autók";
+          return "Téma";
       }
     },
     
@@ -148,7 +153,7 @@ export default {
 
         // Helytelen "nehezseg" paraméterkor
         default:
-          return "Könnyű";
+          return "Nehézség";
       }
     },
 

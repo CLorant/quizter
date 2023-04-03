@@ -110,7 +110,7 @@ export default {
   
   created() {
     // hibás téma paraméterkor vagy oldal frissítéskor visszanavigál a főoldalra
-    if(this.tema === "") {
+    if(this.tema === "default") {
       this.$router.push("/");
     }
 
@@ -119,7 +119,7 @@ export default {
   
   methods: {
     async getGameQuestions() {
-      axios.get(`${import.meta.env.VITE_API_URL}/getGameQuestions/${this.tema}/${this.nehezseg}/${this.kerdesSzam}/${this.valaszSzam}`)
+      await axios.get(`${import.meta.env.VITE_API_URL}/getGameQuestions/${this.tema}/${this.nehezseg}/${this.kerdesSzam}/${this.valaszSzam}`)
         .then(response => {
           let igazE;
           for (let i = 0; i < this.kerdesSzam; i++) {
@@ -150,9 +150,14 @@ export default {
     async updateUser() {
       try {
         await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserStats`, {
-          exp: this.felhasznalo.statisztika.exp,
+          xp: this.felhasznalo.statisztika.exp,
           jatszmaSzam: this.felhasznalo.statisztika.jatszmaSzam,
           valaszIdo: this.felhasznalo.statisztika.valaszIdo
+        },{
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${Cookies.get('auth_token')}`
+          }
         });
 
         if (this.pont > this.felhasznalo.rekord.pontszam) {
@@ -164,7 +169,6 @@ export default {
           this.felhasznalo.rekord.kerdesSzam = this.kerdesSzam;
           this.felhasznalo.rekord.valaszSzam = this.valaszSzam;
 
-          // updateUserRecord
           await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserRecord`, {
             pontszam: this.felhasznalo.rekord.pontszam,
             helyesHelytelen: this.felhasznalo.rekord.helyesHelytelen,
@@ -173,6 +177,11 @@ export default {
             ido: this.felhasznalo.rekord.ido,
             kerdesSzam: this.felhasznalo.rekord.kerdesSzam,
             valaszSzam: this.felhasznalo.rekord.valaszSzam
+          },{
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${Cookies.get('auth_token')}`
+            }
           });
         }
       } catch (error) {
@@ -282,7 +291,7 @@ export default {
 
         // Helytelen "nehezseg" paraméterkor
         default:
-          return "Könnyű";
+          return "Nehézség";
       }
     },
   }

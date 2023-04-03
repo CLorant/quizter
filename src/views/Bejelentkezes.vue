@@ -37,9 +37,9 @@
           </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-md btn-warning w-100 mt-2">Bejelentkezés</button>
+      <button type="submit" class="btn btn-md btn-warning w-100 mt-2 fw-bold text-dark">Bejelentkezés</button>
       <div class="d-flex justify-content-center mt-4">
-        <p>Új a Quizteren? <RouterLink to="/regisztracio" class="link">Regisztráció</RouterLink>
+        <p>Új a Quizteren? <RouterLink to="/regisztracio" class="link fw-bold">Regisztráció</RouterLink>
         </p>
       </div>
     </form>
@@ -67,21 +67,21 @@ export default {
       await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
         username: this.felhasznalonev,
         password: this.jelszo
-      }, {withCredentials: true})
+      },{withCredentials: true})
         .then(response => {
           if(response.data === "Unauthorized") {
             this.helytelen = true;
-            return
           }
-          for (const prop in this.felhasznalo) {
-            if (response.data.hasOwnProperty(prop)) {
-              this.felhasznalo[prop] = response.data[prop];
+          else {
+            for (const prop in this.felhasznalo) {
+              if (response.data.hasOwnProperty(prop)) {
+                this.felhasznalo[prop] = response.data[prop];
+              }
             }
+            document.cookie = `auth_token=${response.data.auth_token} SameSite=Lax; Secure`;
+            this.felhasznalo.bejelentkezett = true;
+            this.$router.push("/");
           }
-          document.cookie = `auth_token=${response.data.auth_token} SameSite=Lax; Secure`;
-          // document.cookie = `auth_token=${response.data.auth_token} HttpOnly; Secure`;
-          this.felhasznalo.bejelentkezett = true;
-          this.$router.push("/");
         })
         .catch(error => {
           this.helytelen = true;

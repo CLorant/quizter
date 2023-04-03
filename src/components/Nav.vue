@@ -89,12 +89,11 @@
 </template>
 
 <script>
-import axios from 'axios'
-import Szint from './Szint.vue'
-import { mapWritableState } from 'pinia'
-import { useFelhasznaloStore } from '../stores/felhasznalo'
-import { useProfilStore } from '../stores/profil'
-import ranglistaJSON from '../ranglista.json' // átmeneti
+import Szint from './Szint.vue';
+import { mapWritableState } from 'pinia';
+import { useFelhasznaloStore } from '../stores/felhasznalo';
+import { useProfilStore } from '../stores/profil';
+import axios from 'axios';
 
 export default {
   components: {
@@ -171,7 +170,6 @@ export default {
     },
 
     async getUsersByName() {
-      /*
       await axios.get(`${import.meta.env.VITE_API_URL}/getUsersByName/${this.keresett}`)
         .then(response => {
           this.keresesEredmeny = response.data;
@@ -179,8 +177,6 @@ export default {
         .catch(error => {
           console.log(error);
         });
-      */
-      this.keresesEredmeny = ranglistaJSON; // átmeneti
     },
 
     keresoGomb() {

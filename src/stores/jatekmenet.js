@@ -1,17 +1,19 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
-// oldal: Jatekmenet.vue ( írás, olvasás )
+// A játékmenet adatai.
+// Körönként változik: kerdes, valaszok, maradtIdo, folytatasGombKikapcsol, leNyomottValaszGomb
+// Körönként növekedik: kor, pont, helyesValasz, helytelenValasz, atlagosValaszIdo
 export const useJatekmenetStore = defineStore('jatekmenet', {
   state: () => ({
     kor: 0,
-    kerdes: { szoveg: String, kep: String },
+    kerdes: { szoveg: "Nem meghatározott kérdés", kep: "/img/ikon/quizterlogo.webp" },
     valaszok: {
-      valasz1: { szoveg: String, helyes: Boolean },
-      valasz2: { szoveg: String, helyes: Boolean },
-      valasz3: { szoveg: String, helyes: Boolean },
-      valasz4: { szoveg: String, helyes: Boolean },
-      valasz5: { szoveg: String, helyes: Boolean },
-      valasz6: { szoveg: String, helyes: Boolean }
+      valasz1: { szoveg: "Válasz 1", helyes: false },
+      valasz2: { szoveg: "Válasz 2", helyes: false },
+      valasz3: { szoveg: "Válasz 3", helyes: false },
+      valasz4: { szoveg: "Válasz 4", helyes: false },
+      valasz5: { szoveg: "Válasz 5", helyes: false },
+      valasz6: { szoveg: "Válasz 6", helyes: false }
     },
     maradtIdo: 0,
     folytatasGombKikapcsol: true,

@@ -1,18 +1,18 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
-// oldal: Kerdesek.vue ( írás, olvasás ) - Kerdes.vue ( írás, olvasás )
+// A kérdés adatai, csakis a Kerdes oldalon használt
 export const useKerdesStore = defineStore('kerdes', {
   state: () => ({
-    tema: 'nem-meghatarozott',
-    nehezseg: '',
-    kerdes: { szoveg: String, kep: String },
+    tema: "default",
+    nehezseg: "",
+    kerdes: { szoveg: "Nem meghatározott kérdés", kep: "/img/ikon/quizterlogo.webp" },
     valaszok: {
-      valasz1: { szoveg: String },
-      valasz2: { szoveg: String },
-      valasz3: { szoveg: String },
-      valasz4: { szoveg: String },
-      valasz5: { szoveg: String },
-      valasz6: { szoveg: String }
+      valasz1: { szoveg: "Válasz 1" },
+      valasz2: { szoveg: "Válasz 2" },
+      valasz3: { szoveg: "Válasz 3" },
+      valasz4: { szoveg: "Válasz 4" },
+      valasz5: { szoveg: "Válasz 5" },
+      valasz6: { szoveg: "Válasz 6" }
     }
   })
 });

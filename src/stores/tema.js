@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 
-// oldal: Fooldal.vue ( írás ) - QuizBeallito.vue ( olvasás ) - Jatekmenet.vue ( olvasás )
+// A QuizBeallito előtti beállítási adatok. A temaNev és temaMagyarazat a QuizBeallito-ban vannak beállítva.
 export const useTemaStore = defineStore('tema', {
   state: () => ({
-    tema: "",
+    tema: "default",
     temaNev: "",
     temaMagyarazat: ""
   }),

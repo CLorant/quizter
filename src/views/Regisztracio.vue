@@ -45,19 +45,24 @@
           </div>
         </div>
       </div>
-
-      <button type="submit" class="btn btn-md btn-warning w-100 mt-4">Regisztráció</button>
+      <div class="d-flex align-items-center">
+        <input class="form-check-input mb-1" type="checkbox" id="acceptPrivacy" required>&nbsp;
+        <label class="form-check-label" for="acceptPrivacy">
+          Elfogadom az <RouterLink to="/adatvedelem" class="link">Adatvédelmi Nyilatkozatot</RouterLink>
+        </label>
+      </div>
+      <button type="submit" class="btn btn-md btn-warning w-100 fw-bold text-dark mt-3">Regisztráció</button>
       <div class="d-flex justify-content-center mt-4">
-        <p>Már regisztrált? <RouterLink to="/bejelentkezes" class="link">Bejelentkezés</RouterLink></p>
+        <p>Már regisztrált? <RouterLink to="/bejelentkezes" class="link fw-bold">Bejelentkezés</RouterLink></p>
       </div>
     </form>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
 import { mapWritableState } from 'pinia';
-import { useFelhasznaloStore } from '../stores/felhasznalo'
+import { useFelhasznaloStore } from '../stores/felhasznalo';
+import axios from 'axios';
 
 export default {
   data() {
@@ -115,6 +120,7 @@ export default {
 
 <style scoped>
 #tartalom{
+  padding-top: 120px;
   height: 720px;
 }
 
@@ -143,6 +149,10 @@ input, input:focus {
 .link{
   color: rgb(255,200,0);
   text-decoration: none;
+}
+
+.form-check-label {
+  font-size: 8pt;
 }
 
 .link:hover{

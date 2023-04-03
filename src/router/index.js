@@ -17,11 +17,6 @@ const routes = [
     component: Fooldal
   },
   {
-    path: '/rolunk',
-    name: 'rolunk',
-    component: () => import('../views/Rolunk.vue')
-  },
-  {
     path: '/profil/:felhasznaloId',
     name: 'profil',
     component: () => import('../views/Profil.vue')
@@ -50,6 +45,16 @@ const routes = [
     path: '/regisztracio',
     name: 'regisztracio',
     component: () => import('../views/Regisztracio.vue')
+  },
+  {
+    path: '/rolunk',
+    name: 'rolunk',
+    component: () => import('../views/Rolunk.vue')
+  },
+  {
+    path: '/adatvedelem',
+    name: 'adatvedelem',
+    component: () => import('../views/Adatvedelem.vue')
   },
   {
     path: '/kerdesek',

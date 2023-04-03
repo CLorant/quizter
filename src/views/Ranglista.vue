@@ -43,80 +43,76 @@
       </button>
     </div>
 
-    <div id="ranglista-tarolo">
-      <div class="col-auto justify-content-center">
-        <div class="row justify-content-center">
-          <div class="row justify-content-center col-lg-6 px-2">
-            <div class="table-responsive" style="cursor: pointer;">
-              <table class="table table-borderless table-sm text-light">
-                <tbody>
-                  <tr v-for="(item, index) in ranglistaAdatok" :key="index" @click="valasztottIndex = index">
-                    <td class="col-1">{{ index.substring(11) }}.</td>
-                    <td class="col-1"><img :src="item.jellemzok.kep" :alt="item.felhasznalonev + ' képe'" decoding="async" id="ranglista-felhasznalo-kep" width="45" height="45"></td>
-                    <td class="col-3" style="text-align: left;">{{ item.jellemzok.nev }}</td>
-                    <td class="col-2">@{{ item.felhasznalonev }}</td>
-                    <td class="col-3">{{ item.rekord.pontszam }} pont</td>
-                  </tr>
-                  <tr>
-                    <td colspan="5" @click="getUsersByRecord">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                      </svg>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="col-lg justify-content-center px-2" >
-            <div class="table-responsive">
-              <div id="seged-ranglista-felhasznalo-tarolo">
-                <RouterLink @click="profil = ranglistaAdatok[valasztottIndex]" :to="{ name: 'profil', params: { felhasznaloId: ranglistaAdatok[valasztottIndex].felhasznalonev } }">
-                  <img :src="ranglistaAdatok[valasztottIndex].jellemzok.kep" alt="Felhasználó kép" decoding="async" id="seged-ranglista-felhasznalo-kep" width="100" height="100">
-                </RouterLink>
-                <div>
-                  <div id="felhasznalo-tarolo">
-                    <span id="felhasznalo-nev">{{ranglistaAdatok[valasztottIndex].felhasznalonev}}</span>
-                    <div style="display: flex; justify-content: center;">
-                      <Szint :exp="ranglistaAdatok[valasztottIndex].statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
-                    </div>
-                  </div>
+    <div class="row justify-content-center">
+      <div class="row col-lg-8" ref="fo_ranglista">
+        <div class="table-responsive" style="cursor: pointer;">
+          <table class="table table-borderless table-sm text-light" id="fo-ranglista">
+            <tbody>
+              <tr v-for="(item, index) in ranglistaAdatok" :key="index" @click="indexAllit(index)">
+                <td class="col-auto helyezes">{{ index.substring(11) }}.</td>
+                <td class="col-1"><img :src="item.jellemzok.kep" :alt="item.felhasznalonev + ' képe'" decoding="async" id="ranglista-felhasznalo-kep" width="45" height="45"></td>
+                <td class="col-auto text-start">{{ item.jellemzok.nev }}</td>
+                <td class="col-auto handle">@{{ item.felhasznalonev }}</td>
+                <td class="col-auto">{{ item.rekord.pontszam }} pont</td>
+              </tr>
+              <tr>
+                <td colspan="5" @click="getUsersByRecord">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                  </svg>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-4 justify-content-center seged-ranglista" ref="seged_ranglista">
+        <div class="table-responsive">
+          <div id="seged-ranglista-felhasznalo-tarolo">
+            <RouterLink @click="profil = ranglistaAdatok[valasztottIndex]" :to="{ name: 'profil', params: { felhasznaloId: ranglistaAdatok[valasztottIndex].felhasznalonev } }">
+              <img :src="ranglistaAdatok[valasztottIndex].jellemzok.kep" alt="Felhasználó kép" decoding="async" id="seged-ranglista-felhasznalo-kep" width="100" height="100">
+            </RouterLink>
+            <div>
+              <div id="felhasznalo-tarolo">
+                <span id="felhasznalo-nev">{{ranglistaAdatok[valasztottIndex].felhasznalonev}}</span>
+                <div style="display: flex; justify-content: center;">
+                  <Szint :exp="ranglistaAdatok[valasztottIndex].statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
                 </div>
               </div>
-              <table class="table table-borderless table-sm text-light">
-                <thead>
-                  <tr class="szemelyes-rekord-sor">
-                    <td class="col-2">Pontszám</td>
-                    <td class="col-2">{{ ranglistaAdatok[valasztottIndex].rekord.pontszam }}</td>
-                  </tr>
-                  <tr class="szemelyes-rekord-sor">
-                    <td class="col-2">Helyes / Helytelen</td>
-                    <td class="col-2">{{ ranglistaAdatok[valasztottIndex].rekord.helyesHelytelen }}</td>
-                  </tr>
-                  <tr class="szemelyes-rekord-sor">
-                    <td class="col-2">Téma</td>
-                    <td class="col-2">{{ temaSzoveg(ranglistaAdatok[valasztottIndex].rekord.tema) }}</td>
-                  </tr>
-                  <tr class="szemelyes-rekord-sor">
-                    <td class="col-2">Nehézség</td>
-                    <td class="col-2">{{ nehezsegSzoveg(ranglistaAdatok[valasztottIndex].rekord.nehezseg) }}</td>
-                  </tr>
-                  <tr class="szemelyes-rekord-sor">
-                    <td class="col-2">Idő kérdésenként</td>
-                    <td class="col-2">{{ ranglistaAdatok[valasztottIndex].rekord.ido }} mp</td>
-                  </tr>
-                  <tr class="szemelyes-rekord-sor">
-                    <td class="col-2">Kérdésszám</td>
-                    <td class="col-2">{{ ranglistaAdatok[valasztottIndex].rekord.kerdesSzam }}</td>
-                  </tr>
-                  <tr class="szemelyes-rekord-sor">
-                    <td class="col-2">Válaszszám</td>
-                    <td class="col-2">{{ ranglistaAdatok[valasztottIndex].rekord.valaszSzam }}</td>
-                  </tr>
-                </thead>
-              </table>
             </div>
           </div>
+          <table class="table table-borderless table-sm text-light">
+            <tbody>
+              <tr class="szemelyes-rekord-sor">
+                <td>Pontszám</td>
+                <td>{{ ranglistaAdatok[valasztottIndex].rekord.pontszam }}</td>
+              </tr>
+              <tr class="szemelyes-rekord-sor">
+                <td>Helyes / Helytelen</td>
+                <td>{{ ranglistaAdatok[valasztottIndex].rekord.helyesHelytelen }}</td>
+              </tr>
+              <tr class="szemelyes-rekord-sor">
+                <td>Téma</td>
+                <td>{{ temaSzoveg(ranglistaAdatok[valasztottIndex].rekord.tema) }}</td>
+              </tr>
+              <tr class="szemelyes-rekord-sor">
+                <td>Nehézség</td>
+                <td>{{ nehezsegSzoveg(ranglistaAdatok[valasztottIndex].rekord.nehezseg) }}</td>
+              </tr>
+              <tr class="szemelyes-rekord-sor">
+                <td>Idő kérdésenként</td>
+                <td>{{ ranglistaAdatok[valasztottIndex].rekord.ido }} mp</td>
+              </tr>
+              <tr class="szemelyes-rekord-sor">
+                <td>Kérdésszám</td>
+                <td>{{ ranglistaAdatok[valasztottIndex].rekord.kerdesSzam }}</td>
+              </tr>
+              <tr class="szemelyes-rekord-sor">
+                <td>Válaszszám</td>
+                <td>{{ ranglistaAdatok[valasztottIndex].rekord.valaszSzam }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -163,11 +159,9 @@ export default {
   },
 
   created() {
-    this.getUsersByRecord();
-    /*
+    //this.getUsersByRecord();
     this.ranglistaAdatok = ranglistaJSON; // átmeneti
     this.toltes = false; // átmeneti
-    */
   },
 
   watch: {
@@ -211,6 +205,13 @@ export default {
       // ha this.ranglistaAdatok.length === 0 akkor '=', más esetben '+=' WIP
     },
 
+    indexAllit(index) {
+      this.valasztottIndex = index;
+      if(window.matchMedia('(max-width: 991px)').matches) {
+        this.$refs.seged_ranglista.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    },
+
     temaSzoveg(tema) {
       switch (tema) {
         case "autok":
@@ -251,7 +252,7 @@ export default {
 
         // Helytelen "tema" paraméterkor
         default:
-          return "Autók";
+          return "Téma";
       }
     },
 
@@ -268,7 +269,7 @@ export default {
 
         // Helytelen "nehezseg" paraméterkor
         default:
-          return "Könnyű";
+          return "Nehézség";
       }
     },
   }
@@ -285,6 +286,24 @@ export default {
 table {
   background: rgb(16, 16, 16);
   text-align: center;
+}
+
+#fo-ranglista tbody tr:nth-child(1) .helyezes {
+  background-color: rgb(155, 110, 0); /* sötét arany */
+  color: white;
+  font-weight: bold;
+}
+
+#fo-ranglista tbody tr:nth-child(2) .helyezes {
+  background-color: rgb(100, 100, 100); /* sötét ezüst */
+  color: white;
+  font-weight: bold;
+}
+
+#fo-ranglista tbody tr:nth-child(3) .helyezes {
+  background-color: rgb(150, 75, 30); /* sötét bronz */
+  color: white;
+  font-weight: bold;
 }
 
 #szuro-tarolo {
@@ -326,19 +345,21 @@ tr:hover {
   background-color: rgb(20, 20, 20);
 }
 
-.container ul {
-  width: 100%;
-  overflow: hidden;
-  list-style-position: inside;
-}
-
 td {
   line-height: 54px;
 }
 
+.szemelyes-rekord-sor {
+  text-align: left;
+}
+
 .szemelyes-rekord-sor td {
-  font-size: 15pt;
+  font-size: 14pt;
   line-height: 54px;
+}
+
+.szemelyes-rekord-sor td:nth-child(1) {
+  padding-left: 5%;
 }
 
 #seged-ranglista-felhasznalo-tarolo {
@@ -366,6 +387,17 @@ td {
   color: whitesmoke;
 }
 
+@media screen and (max-width: 991px) {
+  .seged-ranglista {
+    width: 500px;
+  }
+
+  .table-responsive {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
 @media screen and (max-width: 540px) {
   tr {
     font-size: 12px;
@@ -381,8 +413,17 @@ td {
   }
   
   .szemelyes-rekord-sor td {
-    font-size: 16px;
     line-height: 32pt;
   }
+}
+
+@media screen and (max-width: 400px) {
+  .text-start {
+    display: none;
+  }
+
+  .handle {
+    text-align: left;
+  } 
 }
 </style>

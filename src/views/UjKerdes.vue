@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
   data() {
@@ -177,7 +177,12 @@ export default {
           formData.append('kep', this.kep);
         }
 
-        await axios.post(`${import.meta.env.VITE_API_URL}/createQuestion`, formData)
+        await axios.post(`${import.meta.env.VITE_API_URL}/createQuestion`, formData,  {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${Cookies.get('auth_token')}`
+          }
+        })
           .then(response => {
             console.log(response.data);
           });

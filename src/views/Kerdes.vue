@@ -120,7 +120,7 @@ export default {
   },
 
   created() {
-    if (this.tema === "nem-meghatarozott") {
+    if (this.tema === "default") {
       this.$router.push("/kerdesek");
     }
   },
@@ -170,7 +170,7 @@ export default {
 
         // Helytelen "tema" paraméterkor
         default:
-          return "Autók";
+          return "Téma";
       }
     },
 
@@ -187,7 +187,7 @@ export default {
 
         // Helytelen "nehezseg" paraméterkor
         default:
-          return "Könnyű";
+          return "Nehézség";
       }
     },
 
@@ -247,7 +247,12 @@ export default {
           formData.append('kep', this.modKep);
         }
 
-        await axios.patch(`${import.meta.env.VITE_API_URL}/updateQuestion`, formData)
+        await axios.patch(`${import.meta.env.VITE_API_URL}/updateQuestion`, formData, {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${Cookies.get('auth_token')}`
+          }
+        })
           .then(response => {
             console.log(response.data);
           });
@@ -257,7 +262,12 @@ export default {
     },
 
     async deleteQuestion() {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/deleteQuestion/${this.$route.params.kerdesId}`)
+      await axios.delete(`${import.meta.env.VITE_API_URL}/deleteQuestion/${this.$route.params.kerdesId}`, {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${Cookies.get('auth_token')}`
+          }
+        })
         .then(response => {
           console.log(response);
           this.$router.push("/kerdesek");

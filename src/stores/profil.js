@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 
-// minden másik profil
-// oldalak: Profil.vue ( olvasás ) - Ranglista.vue ( olvasás )
+// Minden másik profil adatai - csak 1
 export const useProfilStore = defineStore('profil', {
   state: () => ({
     profil: {

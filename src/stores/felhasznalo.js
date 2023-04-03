@@ -1,7 +1,6 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
-// a bejelentkezett felhasználó
-// oldalak: Profil.vue ( írás, olvasás ) - Ranglista.vue ( olvasás ) - Nav.vue ( olvasás ) - Jatekmenet.vue ( írás )
+// A bejelentkezett felhasználó adatai.
 export const useFelhasznaloStore = defineStore('felhasznalo', {
   state: () => ({
     felhasznalo: {

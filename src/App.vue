@@ -23,13 +23,13 @@ export default {
   },
 
   methods: {
-    tokenLogin() {
-      axios.get(`${import.meta.env.VITE_API_URL}/tokenlogin`, {
+    async tokenLogin() {
+      await axios.get(`${import.meta.env.VITE_API_URL}/tokenlogin`, {
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${Cookies.get('auth_token')}`
         }
-        })
+      })
         .then(response => {
           if(response.data === "Unauthorized") {
             this.$router.push("/bejelentkezes");

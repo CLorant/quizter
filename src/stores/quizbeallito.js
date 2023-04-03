@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-// oldal: QuizBeallito.vue ( írás, olvasás )
+// A Jatekmenet előtti beállítási adatok.
 export const useQuizBeallitoStore = defineStore('quizBeallito', {
   state: () => ({
     nehezseg: "",

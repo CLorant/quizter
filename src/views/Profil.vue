@@ -168,11 +168,11 @@
 </template>
 
 <script>
-import Szint from '../components/Szint.vue'
-import { mapWritableState } from 'pinia'
-import { useProfilStore } from '../stores/profil'
-import { useFelhasznaloStore } from '../stores/felhasznalo'
-import axios from 'axios'
+import Szint from '../components/Szint.vue';
+import { mapWritableState } from 'pinia';
+import { useProfilStore } from '../stores/profil';
+import { useFelhasznaloStore } from '../stores/felhasznalo';
+import axios from 'axios';
 
 export default {
   components: {
@@ -356,7 +356,12 @@ export default {
           formData.append('kep', this.szerkesztettKep);
         }
 
-        await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserPage`, formData);
+        await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserPage`, formData, {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${Cookies.get('auth_token')}`
+          }
+        });
       } catch (error) {
         console.log(error);
       }
@@ -365,14 +370,19 @@ export default {
     async deleteUser() {
       await axios.delete(`${import.meta.env.VITE_API_URL}/deleteUserPage`, {
         felhasznalonev: this.felhasznalo.felhasznalonev
+      },{
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${Cookies.get('auth_token')}`
+        }
       })
-      .then(() => {
-        useFelhasznaloStore().$reset();
-        this.$router.push("/");
-      })
-      .catch(error => {
-        console.log(error);
-      });
+        .then(() => {
+          useFelhasznaloStore().$reset();
+          this.$router.push("/");
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 }

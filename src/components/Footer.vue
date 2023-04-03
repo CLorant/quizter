@@ -11,8 +11,8 @@
           <RouterLink to="/rolunk" class="text-decoration-none text-light m-3">
             Rólunk
           </RouterLink>
-          <RouterLink to="/sutik" class="text-decoration-none text-light m-3">
-            Sütik
+          <RouterLink to="/adatvedelem" class="text-decoration-none text-light m-3">
+            Adatvédelem
           </RouterLink>
           <RouterLink v-if="felhasznalo.jogosultsag === 'admin'" to="/kerdesek" class="text-decoration-none text-light m-3">
             Kérdések
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { mapWritableState } from 'pinia'
+import { mapWritableState } from 'pinia';
 import { useFelhasznaloStore } from '../stores/felhasznalo';
 
 export default {

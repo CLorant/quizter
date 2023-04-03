@@ -131,9 +131,9 @@ export default {
 
         // Helytelen "tema" paraméterkor
         default:
-          this.tema = "autok";
-          this.temaNev = "Autók";
-          this.temaMagyarazat = "Kérdések autókról, gyártókról, a legelső autótól a legutóbbiig.";
+          this.tema = "default";
+          this.temaNev = "Téma";
+          this.temaMagyarazat = "Nem meghatározott téma.";
           break;
       }
     },
