@@ -10,39 +10,43 @@
         </div>
         <img v-else :src="profil.jellemzok.kep" alt="Felhasználókép" decoding="async" id="profil-kep" width="150" height="150">
         <div id="profil-tarolo">
-          <input v-if="bejelentkezettFelh && szerkesztes" id="szerkesztettNev" type="text" maxlength="20"
-            v-model="szerkesztettNev" class="form-control text-light border-secondary w-100">
-          <h2 v-else>{{ profil.jellemzok.nev }}</h2>
-          <h3>@{{ profil.felhasznalonev }}</h3>
-          <Szint :exp="profil.statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
-          <p>Csatlakozott: <b>{{ (profil.csatlakozas).substring(0, 10) }}</b></p>
-          <button v-if="bejelentkezettFelh && !szerkesztes" id="szerkesztesGomb" class="btn btn-dark"
-            @click="szerkesztesLenyomva" style="width: 200px;">
-            Profil Módosítása
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="d-inline" viewBox="0 0 16 16">
-              <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
-            </svg>
-          </button>
-          <button v-if="bejelentkezettFelh && szerkesztes" class="btn btn-secondary m-1" @click="szerkesztes = false">
-            Mégse
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z" />
-              <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z" />
-            </svg>
-          </button>
-          <button v-if="bejelentkezettFelh && szerkesztes" class="btn btn-success m-1" @click="updateUserPage">
-            Mentés
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z" />
-              <path fill-rule="evenodd" d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z" />
-            </svg>
-          </button>
-          <button v-if="bejelentkezettFelh && szerkesztes" class="btn btn-danger m-1" @click="torlesPopup = true">
-            Törlés
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-            </svg>
-          </button>
+          <form @submit.prevent="updateUserPage">
+            <input v-if="bejelentkezettFelh && szerkesztes" id="szerkesztettNev" type="text" minlength="3" maxlength="20"
+              v-model="szerkesztettNev" class="form-control text-light border-secondary w-100" required>
+            <h2 v-else>{{ profil.jellemzok.nev }}</h2>
+            <h3>@{{ profil.felhasznalonev }}</h3>
+            <Szint :exp="profil.statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
+            <p>Csatlakozott: <b>{{ (profil.csatlakozas).substring(0, 10) }}</b></p>
+            <button v-if="bejelentkezettFelh && !szerkesztes" type="button" id="szerkesztesGomb" class="btn btn-dark"
+              @click="szerkesztesLenyomva" style="width: 200px;">
+              Profil Módosítása
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="d-inline" viewBox="0 0 16 16">
+                <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
+              </svg>
+            </button>
+            <div v-if="bejelentkezettFelh && szerkesztes">
+              <button type="button" class="btn btn-secondary m-1" @click="szerkesztes = false">
+                Mégse
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z" />
+                  <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z" />
+                </svg>
+              </button>
+              <button type="submit" class="btn btn-success m-1">
+                Mentés
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z" />
+                  <path fill-rule="evenodd" d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z" />
+                </svg>
+              </button>
+              <button type="button" class="btn btn-danger m-1" @click="torlesPopup = true">
+                Törlés
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
+                </svg>
+              </button>
+            </div>
+          </form>
         </div>
       </div>
       <div id="bio-tarolo">
@@ -53,27 +57,46 @@
       </div>
     </div>
 
-    <div class="popup" v-if="bejelentkezettFelh && szerkesztes && torlesPopup">
+    <form @submit.prevent="deleteUser" class="popup" v-if="bejelentkezettFelh && szerkesztes && torlesPopup">
       <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 100px;">
-        <h1>Biztosan törölni szeretnéd a profilod?</h1>
-        <div style="display: flex; width: 50%; justify-content: space-around; margin-top: 10%;">
-          <button class="btn btn-lg btn-secondary m-1" @click="torlesPopup = false">
+        <h2>Írja be a felhasználónevét és jelszavát a profilja törléséhez</h2>
+        <input type="text" pattern="[a-zA-Z0-9]+$" v-model="torlesFelhasznalonev" class="form-control text-light mt-5 torlesInput" :class="helytelen ? 'border-danger' : 'border-secondary'" placeholder="Felhasználónév" required>
+        <div style="height: 24px">
+          <div class="text-danger" :class="helytelen ? 'd-block' : 'd-none'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="mb-1" viewBox="0 0 16 16">
+              <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/>
+              <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+            </svg>
+            Helytelen felhasználónév
+          </div>
+        </div>
+        <input type="password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$" v-model="torlesJelszo" class="form-control text-light mt-3 torlesInput" :class="helytelen ? 'border-danger' : 'border-secondary'" placeholder="Jelszó" required>
+        <div style="height: 24px;">
+          <div class="text-danger" :class="helytelen ? 'd-block' : 'd-none'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="mb-1" viewBox="0 0 16 16">
+              <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/>
+              <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+            </svg>
+            Helytelen jelszó
+          </div>
+        </div>
+        <div style="display: flex; width: 50%; justify-content: center;">
+          <button type="button" class="btn btn-secondary m-3" @click="torlesPopup = false; helytelen = false; torlesFelhasznalonev = ''; torlesJelszo = ''">
             Mégse
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z" />
               <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z" />
             </svg>
           </button>
-          <button class="btn btn-lg btn-danger m-1" @click="deleteUser">
+          <button type="submit" class="btn btn-danger m-3">
             Törlés
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-              className="bi bi-trash3 text-danger" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
             </svg>
           </button>
         </div>
       </div>
-    </div>
+    </form>
 
     <div id="rekord-tema-tarolo">
       <div id="rekord-tarolo">
@@ -173,6 +196,7 @@ import { mapWritableState } from 'pinia';
 import { useProfilStore } from '../stores/profil';
 import { useFelhasznaloStore } from '../stores/felhasznalo';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default {
   components: {
@@ -184,6 +208,9 @@ export default {
       bejelentkezettFelh: false,
       szerkesztes: false,
       torlesPopup: false,
+      torlesFelhasznalonev: "",
+      torlesJelszo: "",
+      helytelen: false,
       szerkesztettNev: "",
       szerkesztettBio: "",
       szerkesztettKep: null,
@@ -214,6 +241,7 @@ export default {
       this.bejelentkezettFelh = false;
       this.szerkesztes = false;
       this.torlesPopup = false;
+      this.helytelen = false;
       this.getUserByName();
     }
   },
@@ -329,7 +357,7 @@ export default {
         }
       }
       if (this.profil.felhasznalonev === "nem-meghatarozott") {
-        this.$router.push("/nem-talalt");
+        this.$router.push("/");
       }
     },
 
@@ -378,9 +406,11 @@ export default {
       })
         .then(() => {
           useFelhasznaloStore().$reset();
+          Cookies.remove('auth_token');
           this.$router.push("/");
         })
         .catch(error => {
+          this.helytelen = true;
           console.log(error);
         });
     }
@@ -391,6 +421,7 @@ export default {
 <style scoped>
 #tartalom {
   margin-top: 55px;
+  color: rgb(230, 230, 230);
 }
 
 #profil-bio {
@@ -452,6 +483,10 @@ export default {
   padding-top: 10px;
   margin-left: 25px;
   margin-top: 25px;
+}
+
+#bio-tarolo {
+  min-height: 106px;
 }
 
 #bio-tarolo h3 {
@@ -562,6 +597,15 @@ input:focus {
 
 .dropdown-item:active {
   background-color: rgb(255, 200, 0);
+}
+
+.form-control::-webkit-input-placeholder {
+  color: gray;
+}
+
+.torlesInput {
+  width: 280px;
+  max-width: 95%
 }
 
 @media screen and (max-width: 855px) {

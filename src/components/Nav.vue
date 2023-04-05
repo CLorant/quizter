@@ -94,6 +94,8 @@ import { mapWritableState } from 'pinia';
 import { useFelhasznaloStore } from '../stores/felhasznalo';
 import { useProfilStore } from '../stores/profil';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import ranglistaJSON from '../ranglista.json' // átmeneti
 
 export default {
   components: {
@@ -165,11 +167,13 @@ export default {
 
     kijelentkezes() {
       this.felhasznalo.bejelentkezett = false;
+      Cookies.remove('auth_token');
       useFelhasznaloStore().$reset();
       this.$router.push("/");
     },
 
     async getUsersByName() {
+      /*
       await axios.get(`${import.meta.env.VITE_API_URL}/getUsersByName/${this.keresett}`)
         .then(response => {
           this.keresesEredmeny = response.data;
@@ -177,6 +181,8 @@ export default {
         .catch(error => {
           console.log(error);
         });
+      */
+     this.keresesEredmeny = ranglistaJSON
     },
 
     keresoGomb() {
