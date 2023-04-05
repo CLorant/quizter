@@ -1,7 +1,9 @@
 <template>
   <div id="tartalom">
-    <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo" width="600" height="150">
-    <h2>A keresett oldal nem található</h2>
+    <div id="cim">
+      <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo" width="600" height="150">
+      <h2>A keresett oldal nem található</h2>
+    </div>
     <RouterLink to="/">
       <button id="visszaGomb">Vissza</button>
     </RouterLink>
@@ -10,21 +12,20 @@
 
 <style scoped>
 #tartalom {
-  color: whitesmoke;
   text-align: center;
+}
+
+#cim {
   margin-top: 120px;
+  margin-bottom: 120px;
 }
 
 #cim-logo {
-  height: 90%;
-  width: 90%;
-  max-width: 600px;
-  margin-bottom: 25px;
+  max-width: 90%;
+  height: auto;
 }
 
 #visszaGomb {
-  margin-top: 80px;
-  margin-bottom: 80px;
   font-weight: 500;
   border: none;
   border-radius: 12px;
@@ -33,6 +34,7 @@
   font-size: 14pt;
   height: 60px;
   width: 160px;
+  margin: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 

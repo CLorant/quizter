@@ -42,13 +42,16 @@ export default {
 </script>
 
 <style scoped>
-#tartalom {
+#cim {
   margin-top: 120px;
+  margin-bottom: 120px;
+  text-align: center;
+  color: rgb(255, 200, 0);
 }
 
-#cim {
-  color: rgb(255, 200, 0);
-  text-align: center;
+#cim-logo {
+  max-width: 90%;
+  height: auto;
 }
 
 #temaGombTarolo {
@@ -61,25 +64,13 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   margin: 0;
-  margin-top: 64pt;
   margin-bottom: 64pt;
   max-width: 2000px;
-}
-
-@media screen and (max-width: 670px) {
-  #cim-logo {
-    height: 90%;
-    width: 90%;
-  }
 }
 
 @media screen and (max-width: 420px) {
   #cim h2 {
     font-size: 6vw;
-  }
-
-  #temaValasztoGombok {
-    justify-content: space-around;
   }
 }
 </style>

@@ -67,6 +67,8 @@ import { useQuizBeallitoStore } from '../stores/quizbeallito';
 import { useJatekmenetStore } from '../stores/jatekmenet';
 import { useFelhasznaloStore } from '../stores/felhasznalo';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { nehezsegSzoveg } from '../tema-nehezseg-szoveg'
 
 export default {
   components: {
@@ -148,7 +150,13 @@ export default {
     },
 
     async updateUser() {
+      //exp, jatszmaSzam, valaszido mindig frissül
+      //rekord frissül ha személyes rekord
       try {
+        this.felhasznalo.statisztika.exp += Math.round(this.pont / 100);
+        this.felhasznalo.statisztika.jatszmaSzam++;
+        this.felhasznalo.statisztika.valaszIdo += (this.atlagosValaszIdo / this.kerdesSzam).toFixed(2);
+
         await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserStats`, {
           xp: this.felhasznalo.statisztika.exp,
           jatszmaSzam: this.felhasznalo.statisztika.jatszmaSzam,
@@ -258,42 +266,20 @@ export default {
       else if (this.nehezseg == "nehez") {
         this.pont *= 1.5;
       }
+
       if (this.valaszSzam == 4) {
         this.pont *= 1.25;
       }
       else if (this.valaszSzam == 6) {
         this.pont *= 1.5;
       }
-      //exp, jatszmaSzam, valaszido mindig frissül
-      //rekord frissül ha személyes rekord
 
-      this.felhasznalo.exp += Math.round(this.pont / 100);
-      this.felhasznalo.jatszmaSzam++;
-      // globális válaszidő összeadva a játszmabeli válaszidővel, elosztva a játszmaszámmal majd 2 decimális pontra fixálva
-      this.felhasznalo.valaszIdo += (this.atlagosValaszIdo / this.kerdesSzam).toFixed(2);
-
-      // updateUserStats
       if(this.felhasznalo.bejelentkezett) {
         this.updateUser();
       }
     },
 
-    nehezsegSzoveg(nehezseg) {
-      switch (nehezseg) {
-        case "konnyu":
-          return "Könnyű";
-
-        case "kozepes":
-          return "Közepes";
-
-        case "nehez":
-          return "Nehéz";
-
-        // Helytelen "nehezseg" paraméterkor
-        default:
-          return "Nehézség";
-      }
-    },
+    nehezsegSzoveg
   }
 }
 </script>

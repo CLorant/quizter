@@ -1,5 +1,7 @@
 <template>
-  <div id="tartalom">
+  <Hiba v-if="hiba"/>
+  <Toltes v-else-if="toltes" />
+  <div v-else id="tartalom">
     <div v-if="modositas">
       <div id="szuro-tarolo">
         <div class="dropdown my-1">
@@ -93,13 +95,24 @@
 </template>
 
 <script>
+import Toltes from '../components/Toltes.vue';
+import Hiba from '../components/Hiba.vue';
 import { mapWritableState } from 'pinia';
 import { useKerdesStore } from '../stores/kerdes';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { temaSzoveg, nehezsegSzoveg } from '../tema-nehezseg-szoveg'
 
 export default {
+  components: {
+    Toltes,
+    Hiba
+  },
+
   data() {
     return {
+      toltes: true,
+      hiba: false,
       temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes'],
       valasztottTema: 'autok',
       nehezsegek: ['konnyu', 'kozepes', 'nehez'],
@@ -119,10 +132,30 @@ export default {
     }
   },
 
-  created() {
-    if (this.tema === "default") {
-      this.$router.push("/kerdesek");
+  watch: {
+    '$route.params.kerdesId'() {
+      this.toltes = true;
+      this.hiba = false;
+      this.valasztottTema = "autok";
+      this.valasztottNehezseg = "konnyu";
+      this.modKerdesSzoveg = "";
+      this.modKep = null,
+      this.modKepUrl = null,
+      this.modValasz1 = "",
+      this.modValasz2 = "",
+      this.modValasz3 = "",
+      this.modValasz4 = "",
+      this.modValasz5 = "",
+      this.modValasz6 = "",
+      this.kepMegjelenit = false,
+      this.modositas = false,
+      this.torles = false
+      this.getQuestion();
     }
+  },
+
+  created() {
+    this.getQuestion();
   },
 
   computed: {
@@ -130,65 +163,20 @@ export default {
   },
 
   methods: {
-    temaSzoveg(tema) {
-      switch (tema) {
-        case "autok":
-          return "Autók";
-
-        case "biologia":
-          return "Biológia";
-
-        case "fizika":
-          return "Fizika";
-
-        case "foldrajz":
-          return "Földrajz";
-
-        case "irodalom":
-          return "Irodalom";
-
-        case "kemia":
-          return "Kémia";
-
-        case "sport":
-          return "Sport";
-
-        case "szorakoztatas":
-          return "Szórakoztatás";
-
-        case "technologia":
-          return "Technológia";
-
-        case "tortenelem":
-          return "Történelem";
-
-        case "zene":
-          return "Zene";
-
-        case "vegyes":
-          return "Vegyes";
-
-        // Helytelen "tema" paraméterkor
-        default:
-          return "Téma";
-      }
-    },
-
-    nehezsegSzoveg(nehezseg) {
-      switch (nehezseg) {
-        case "konnyu":
-          return "Könnyű";
-
-        case "kozepes":
-          return "Közepes";
-
-        case "nehez":
-          return "Nehéz";
-
-        // Helytelen "nehezseg" paraméterkor
-        default:
-          return "Nehézség";
-      }
+    async getQuestion() {
+      await axios.get(`${import.meta.env.VITE_API_URL}/getQuestion/${this.$route.params.kerdesId}`)
+        .then(response => {
+          for (const prop in response.data) {
+            if (this.kerdes.hasOwnProperty(prop)) {
+              this.kerdes[prop] =  response.data[prop];
+            }
+          }
+          this.toltes = false;
+        })
+        .catch(error => {
+          console.log(error);
+          this.hiba = true;
+        });
     },
 
     kepCsere(event) {
@@ -290,7 +278,10 @@ export default {
       this.modValasz5 = this.valaszok.valasz5.szoveg;
       this.modValasz6 = this.valaszok.valasz6.szoveg;
       this.modositas = true;
-    }
+    },
+
+    temaSzoveg,
+    nehezsegSzoveg
   }
 }
 </script>
@@ -395,6 +386,38 @@ ul {
 input,
 input:focus {
   background-color: #0D1117;
+}
+
+.form-control::-webkit-input-placeholder {
+  color: gray;
+}
+
+.form-control::-moz-placeholder {
+  color: gray;
+}
+
+.form-control:-moz-placeholder {
+  color: gray;
+}
+
+.form-control::placeholder {
+  color: gray;
+}
+
+.valaszGomb::-webkit-input-placeholder {
+  color: rgb(200, 200, 200)
+}
+
+.valaszGomb::-moz-placeholder {
+  color: rgb(200, 200, 200)
+}
+
+.valaszGomb:-moz-placeholder {
+  color: rgb(200, 200, 200)
+}
+
+.valaszGomb::placeholder {
+  color: rgb(200, 200, 200)
 }
 
 .valaszGomb:hover,

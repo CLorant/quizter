@@ -75,35 +75,49 @@
 
   <div class="fixed-top" id="kereses-eredmeny-tarolo">
     <div class="bg-dark rounded" :class="keres ? '' : 'd-none'" id="kereses-eredmeny">
-      <RouterLink v-for="(item, index) in keresesEredmeny" :to="{ name: 'profil', params: { felhasznaloId: item.felhasznalonev } }"
-        :key="item.felhasznalonev" class="m-1 text-light text-decoration-none row" @click="profil = keresesEredmeny[index]">
-        <div class="col-3">
-          <img :src="item.jellemzok.kep" :alt="`${item.felhasznalonev} képe`" decoding="async" class="felhasznalo-kep" width="40" height="40">
-        </div>
-        <div class="col">
-          <p id="keresett-felhasznalo">{{ item.felhasznalonev }}</p>
-        </div>
-      </RouterLink>
+      <div v-if="hiba" class="d-flex justify-content-center pt-5 mt-5">
+        <button class="btn btn-dark" @click="toltes = true; hiba = false; getUsersByName(keresett)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+          </svg>
+        </button>
+      </div>
+      <Toltes v-else-if="toltes" />
+      <div v-else>
+        <RouterLink v-for="felh in keresesEredmeny" :to="{ name: 'profil', params: { felhasznaloId: felh.felhasznalonev } }"
+          :key="felh.felhasznalonev" class="m-1 text-light text-decoration-none row">
+          <div class="col-3">
+            <img :src="felh.jellemzok.kep" :alt="`${felh.felhasznalonev} képe`" decoding="async" class="felhasznalo-kep" width="40" height="40">
+          </div>
+          <div class="col">
+            <p id="keresett-felhasznalo">{{ felh.felhasznalonev }}</p>
+          </div>
+        </RouterLink>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import Toltes from './Toltes.vue';
 import Szint from './Szint.vue';
 import { mapWritableState } from 'pinia';
 import { useFelhasznaloStore } from '../stores/felhasznalo';
 import { useProfilStore } from '../stores/profil';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import ranglistaJSON from '../ranglista.json' // átmeneti
 
 export default {
   components: {
+    Toltes,
     Szint
   },
 
   data() {
     return {
+      toltes: true,
+      hiba: false,
       navIkonKattint: false,
       temak: [
         { id: 'autok', szoveg: 'Autók' },
@@ -173,16 +187,15 @@ export default {
     },
 
     async getUsersByName() {
-      /*
       await axios.get(`${import.meta.env.VITE_API_URL}/getUsersByName/${this.keresett}`)
         .then(response => {
           this.keresesEredmeny = response.data;
+          this.toltes = false;
         })
         .catch(error => {
+          this.hiba = true;
           console.log(error);
         });
-      */
-     this.keresesEredmeny = ranglistaJSON
     },
 
     keresoGomb() {
@@ -209,7 +222,6 @@ export default {
   -moz-transition: .5s ease-in-out;
   -o-transition: .5s ease-in-out;
   transition: .5s ease-in-out;
-  cursor: pointer;
 }
 
 .navbar-toggler span {
@@ -376,4 +388,5 @@ export default {
     margin-top: 274px;
     margin-right: 40px;
   }
-}</style>
+}
+</style>

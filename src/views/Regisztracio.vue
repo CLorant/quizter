@@ -151,4 +151,16 @@ input, input:focus {
 .form-control::-webkit-input-placeholder {
   color: gray;
 }
+
+.form-control::-moz-placeholder {
+  color: gray;
+}
+
+.form-control:-moz-placeholder {
+  color: gray;
+}
+
+.form-control::placeholder {
+  color: gray;
+}
 </style>

@@ -126,7 +126,7 @@ import Szint from '../components/Szint.vue';
 import { mapWritableState } from 'pinia';
 import { useProfilStore } from '../stores/profil';
 import axios from 'axios';
-import ranglistaJSON from '../ranglista.json'; // átmeneti
+import { temaSzoveg, nehezsegSzoveg } from '../tema-nehezseg-szoveg'
 
 export default {
   components: {
@@ -150,35 +150,12 @@ export default {
       valaszSzamok: [2, 4, 6],
       valasztottValaszSzam: 6,
       valasztottIndex: "felhasznalo1",
-      keresett: "",
-      keres: false,
-      throttle: null,
-      ranglistaAdatok: [],
-      keresesEredmeny: []
+      ranglistaAdatok: []
     }
   },
 
   created() {
-    //this.getUsersByRecord();
-    this.ranglistaAdatok = ranglistaJSON; // átmeneti
-    this.toltes = false; // átmeneti
-  },
-
-  watch: {
-    keresett(ujKeresett) {
-      if (ujKeresett !== "") {
-        this.keres = true;
-        if (this.throttle) {
-          clearTimeout(this.throttle);
-        }
-        this.throttle = setTimeout(() => {
-          this.getUsersByName();
-        }, 500)
-      }
-      else {
-        this.keres = false;
-      }
-    },
+    this.getUsersByRecord();
   },
 
   computed: {
@@ -211,67 +188,9 @@ export default {
         this.$refs.seged_ranglista.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     },
-
-    temaSzoveg(tema) {
-      switch (tema) {
-        case "autok":
-          return "Autók";
-
-        case "biologia":
-          return "Biológia";
-
-        case "fizika":
-          return "Fizika";
-
-        case "foldrajz":
-          return "Földrajz";
-
-        case "irodalom":
-          return "Irodalom";
-
-        case "kemia":
-          return "Kémia";
-
-        case "sport":
-          return "Sport";
-
-        case "szorakoztatas":
-          return "Szórakoztatás";
-
-        case "technologia":
-          return "Technológia";
-
-        case "tortenelem":
-          return "Történelem";
-
-        case "zene":
-          return "Zene";
-
-        case "vegyes":
-          return "Vegyes";
-
-        // Helytelen "tema" paraméterkor
-        default:
-          return "Téma";
-      }
-    },
-
-    nehezsegSzoveg(nehezseg) {
-      switch (nehezseg) {
-        case "konnyu":
-          return "Könnyű";
-
-        case "kozepes":
-          return "Közepes";
-
-        case "nehez":
-          return "Nehéz";
-
-        // Helytelen "nehezseg" paraméterkor
-        default:
-          return "Nehézség";
-      }
-    },
+    
+    temaSzoveg,
+    nehezsegSzoveg
   }
 }
 </script>

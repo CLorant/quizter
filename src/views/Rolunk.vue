@@ -4,13 +4,13 @@
       <h1>Rólunk</h1>
       <p>
         Helló, itt a Quizter csapata! Ezt a weboldalt 3 középiskolai tanuló
-        készítette egy iskolai projektnek 2022-ben. Viszont ezután is
+        készítette egy iskolai projektnek 2022 és 2023 között. Viszont ezután is
         karbantartjuk majd a weboldalt. A Quizteren 11 különböző témában érhető
         el nagyjából 1300 kérdés. Emellett van még egy véletlenszerű kérdésekből
         álló téma is, így összesen 12 téma van. A játszma a kérdések nehézsége,
         a körönkénti idő, a kérdések és válaszok száma szerint 3 nehézségen
         beállítható, szóval 12 kombinációja van. A ranglista megmászásához a
-        legnehezebb nehézségen és minél gyorsabban kell megoldanod a kvízeket.
+        legnehezebb nehézségen és minél gyorsabban kell megoldania a kvízeket.
         Sok szerencsét és jó játékot kívánunk!
       </p>
     </div>

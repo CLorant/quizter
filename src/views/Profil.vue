@@ -1,5 +1,7 @@
 <template>
-  <div id="tartalom">
+  <Hiba v-if="hiba" />
+  <Toltes v-else-if="toltes" />
+  <div v-else id="tartalom">
     <div id="profil-bio">
       <div class="tarolo">
         <div v-if="bejelentkezettFelh && szerkesztes">
@@ -15,9 +17,11 @@
               v-model="szerkesztettNev" class="form-control text-light border-secondary w-100" required>
             <h2 v-else>{{ profil.jellemzok.nev }}</h2>
             <h3>@{{ profil.felhasznalonev }}</h3>
-            <Szint :exp="profil.statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
+            <div id="szint-tarolo">
+              <Szint :exp="profil.statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
+            </div>
             <p>Csatlakozott: <b>{{ (profil.csatlakozas).substring(0, 10) }}</b></p>
-            <button v-if="bejelentkezettFelh && !szerkesztes" type="button" id="szerkesztesGomb" class="btn btn-dark"
+            <button v-if="bejelentkezettFelh && !szerkesztes" type="button" class="btn btn-dark szerkesztesGomb"
               @click="szerkesztesLenyomva" style="width: 200px;">
               Profil Módosítása
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="d-inline" viewBox="0 0 16 16">
@@ -25,21 +29,21 @@
               </svg>
             </button>
             <div v-if="bejelentkezettFelh && szerkesztes">
-              <button type="button" class="btn btn-secondary m-1" @click="szerkesztes = false">
+              <button type="button" class="btn btn-secondary mx-1 szerkesztesGomb" @click="szerkesztes = false">
                 Mégse
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                   <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z" />
                   <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z" />
                 </svg>
               </button>
-              <button type="submit" class="btn btn-success m-1">
+              <button type="submit" class="btn btn-success mx-1 szerkesztesGomb">
                 Mentés
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                   <path fill-rule="evenodd" d="M3.5 10a.5.5 0 0 1-.5-.5v-8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 0 0 1h2A1.5 1.5 0 0 0 14 9.5v-8A1.5 1.5 0 0 0 12.5 0h-9A1.5 1.5 0 0 0 2 1.5v8A1.5 1.5 0 0 0 3.5 11h2a.5.5 0 0 0 0-1h-2z" />
                   <path fill-rule="evenodd" d="M7.646 15.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 14.293V5.5a.5.5 0 0 0-1 0v8.793l-2.146-2.147a.5.5 0 0 0-.708.708l3 3z" />
                 </svg>
               </button>
-              <button type="button" class="btn btn-danger m-1" @click="torlesPopup = true">
+              <button type="button" class="btn btn-danger mx-1 szerkesztesGomb" @click="torlesPopup = true">
                 Törlés
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                   <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
@@ -58,7 +62,7 @@
     </div>
 
     <form @submit.prevent="deleteUser" class="popup" v-if="bejelentkezettFelh && szerkesztes && torlesPopup">
-      <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: 100px;">
+      <div class="popup-content">
         <h2>Írja be a felhasználónevét és jelszavát a profilja törléséhez</h2>
         <input type="text" pattern="[a-zA-Z0-9]+$" v-model="torlesFelhasznalonev" class="form-control text-light mt-5 torlesInput" :class="helytelen ? 'border-danger' : 'border-secondary'" placeholder="Felhasználónév" required>
         <div style="height: 24px">
@@ -80,7 +84,7 @@
             Helytelen jelszó
           </div>
         </div>
-        <div style="display: flex; width: 50%; justify-content: center;">
+        <div class="d-flex justify-content-center">
           <button type="button" class="btn btn-secondary m-3" @click="torlesPopup = false; helytelen = false; torlesFelhasznalonev = ''; torlesJelszo = ''">
             Mégse
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -191,20 +195,27 @@
 </template>
 
 <script>
+import Toltes from '../components/Toltes.vue';
+import Hiba from '../components/Hiba.vue';
 import Szint from '../components/Szint.vue';
 import { mapWritableState } from 'pinia';
 import { useProfilStore } from '../stores/profil';
 import { useFelhasznaloStore } from '../stores/felhasznalo';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { temaSzoveg, nehezsegSzoveg } from '../tema-nehezseg-szoveg'
 
 export default {
   components: {
+    Toltes,
+    Hiba,
     Szint
   },
 
   data() {
     return {
+      toltes: true,
+      hiba: false,
       bejelentkezettFelh: false,
       szerkesztes: false,
       torlesPopup: false,
@@ -218,7 +229,7 @@ export default {
       szerkesztettTema1: "",
       szerkesztettTema2: "",
       szerkesztettTema3: "",
-      temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes'],
+      temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes']
     }
   },
   
@@ -232,7 +243,7 @@ export default {
     }
   },
 
-  beforeMount() {
+  created() {
     this.getUserByName();
   },
 
@@ -242,6 +253,8 @@ export default {
       this.szerkesztes = false;
       this.torlesPopup = false;
       this.helytelen = false;
+      this.toltes = true;
+      this.hiba = false;
       this.getUserByName();
     }
   },
@@ -252,67 +265,6 @@ export default {
   },
 
   methods: {
-    temaSzoveg(tema) {
-      switch (tema) {
-        case "autok":
-          return "Autók";
-
-        case "biologia":
-          return "Biológia";
-
-        case "fizika":
-          return "Fizika";
-
-        case "foldrajz":
-          return "Földrajz";
-
-        case "irodalom":
-          return "Irodalom";
-
-        case "kemia":
-          return "Kémia";
-
-        case "sport":
-          return "Sport";
-
-        case "szorakoztatas":
-          return "Szórakoztatás";
-
-        case "technologia":
-          return "Technológia";
-
-        case "tortenelem":
-          return "Történelem";
-
-        case "zene":
-          return "Zene";
-
-        case "vegyes":
-          return "Vegyes";
-
-        // Helytelen "tema" paraméterkor
-        default:
-          return "Téma";
-      }
-    },
-
-    nehezsegSzoveg(nehezseg) {
-      switch (nehezseg) {
-        case "konnyu":
-          return "Könnyű";
-
-        case "kozepes":
-          return "Közepes";
-
-        case "nehez":
-          return "Nehéz";
-
-        // Helytelen "nehezseg" paraméterkor
-        default:
-          return "Nehézség";
-      }
-    },
-
     szerkesztesLenyomva() {
       this.szerkesztes = true;
       this.szerkesztettKepUrl = this.profil.jellemzok.kep;
@@ -347,7 +299,7 @@ export default {
       reader.readAsDataURL(file);
     },
 
-    getUserByName() {
+    async getUserByName() {
       if (this.$route.params.felhasznaloId === this.felhasznalo.felhasznalonev) {
         this.bejelentkezettFelh = true;
         for (const prop in this.felhasznalo) {
@@ -355,9 +307,22 @@ export default {
             this.profil[prop] = this.felhasznalo[prop];
           }
         }
+        this.toltes = false;
       }
       if (this.profil.felhasznalonev === "nem-meghatarozott") {
-        this.$router.push("/");
+        await axios.get(`${import.meta.env.VITE_API_URL}/getUser/${this.$route.params.felhasznaloId}`)
+          .then(response => {
+            for (const prop in response.data) {
+              if (this.profil.hasOwnProperty(prop)) {
+                this.profil[prop] =  response.data[prop];
+              }
+            }
+            this.toltes = false;
+          })
+          .catch(error => {
+            console.log(error);
+            this.hiba = true;
+          });
       }
     },
 
@@ -397,7 +362,8 @@ export default {
 
     async deleteUser() {
       await axios.delete(`${import.meta.env.VITE_API_URL}/deleteUserPage`, {
-        felhasznalonev: this.felhasznalo.felhasznalonev
+        username: this.torlesFelhasznalonev,
+        password: this.torlesJelszo
       },{
         withCredentials: true,
         headers: {
@@ -413,7 +379,10 @@ export default {
           this.helytelen = true;
           console.log(error);
         });
-    }
+    },
+    
+    temaSzoveg,
+    nehezsegSzoveg
   }
 }
 </script>
@@ -562,18 +531,20 @@ input:focus {
 }
 
 #szerkesztettNev {
+  height: 40px;
+  margin-bottom:10px;
+  margin-left: -1px;
   font-size: 26pt;
   font-weight: bold;
   max-width: 400px;
-  height: 50px;
   padding: 0px;
 }
 
 #szerkesztettBio {
-  height: 50px;
+  height: 54px;
   padding: 0px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 29px;
+  padding-right: 29px;
   padding-top: 15px;
   padding-bottom: 15px;
   margin-bottom: 15px;
@@ -590,6 +561,14 @@ input:focus {
   z-index: 4;
 }
 
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 100px;
+}
+
 .dropdown-menu {
   overflow-y: scroll;
   height: 200px
@@ -600,6 +579,18 @@ input:focus {
 }
 
 .form-control::-webkit-input-placeholder {
+  color: gray;
+}
+
+.form-control::-moz-placeholder {
+  color: gray;
+}
+
+.form-control:-moz-placeholder {
+  color: gray;
+}
+
+.form-control::placeholder {
   color: gray;
 }
 
@@ -633,10 +624,15 @@ input:focus {
     margin-top: 10px;
   }
 
+  #szint-tarolo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   #profil-tarolo {
     margin: 0px;
     display: flex;
-    flex-direction: column;
     align-items: center;
   }
 

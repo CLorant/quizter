@@ -24,7 +24,7 @@
     <table id="kerdes-valasz-tarolo" class="my-5">
       <tbody>
         <br>
-        <tr v-for="(value, index) in kerdesvalaszok" :key="index" @click="kerdesOldalNavigacio(value, index)">
+        <tr v-for="(value, index) in kerdesvalaszok" :key="index" @click="$router.push(`kerdes/${index}`);">
           <td class="text-center"><img :src="value.kerdes.kep" alt="Kérdés Képe" id="kep" decoding="async" width="80" height="40"></td>
           <td class="fw-bold">{{ value.kerdes.szoveg }}</td>
           <td class="text-success">{{ value.valaszok.valasz1.szoveg }}</td>
@@ -46,7 +46,8 @@ import Hiba from '../components/Hiba.vue';
 import { mapWritableState } from 'pinia';
 import { useKerdesStore } from '../stores/kerdes';
 import axios from 'axios';
-import kerdesvalaszokJSON from '../kerdesvalasz.json'; // átmeneti
+import Cookies from 'js-cookie';
+import { temaSzoveg, nehezsegSzoveg } from '../tema-nehezseg-szoveg'
 
 export default {
   components: {
@@ -68,10 +69,6 @@ export default {
 
   created() {
     this.getQuestions();
-    /*
-    this.toltes = false; // átmeneti
-    this.kerdesvalaszok = kerdesvalaszokJSON // átmeneti
-    */
   },
 
   computed: {
@@ -95,75 +92,9 @@ export default {
           console.log(error);
         });
     },
-
-    temaSzoveg(tema) {
-      switch (tema) {
-        case "autok":
-          return "Autók";
-
-        case "biologia":
-          return "Biológia";
-
-        case "fizika":
-          return "Fizika";
-
-        case "foldrajz":
-          return "Földrajz";
-
-        case "irodalom":
-          return "Irodalom";
-
-        case "kemia":
-          return "Kémia";
-
-        case "sport":
-          return "Sport";
-
-        case "szorakoztatas":
-          return "Szórakoztatás";
-
-        case "technologia":
-          return "Technológia";
-
-        case "tortenelem":
-          return "Történelem";
-
-        case "zene":
-          return "Zene";
-
-        case "vegyes":
-          return "Vegyes";
-
-        // Helytelen "tema" paraméterkor
-        default:
-          return "Téma";
-      }
-    },
     
-    nehezsegSzoveg(nehezseg) {
-      switch (nehezseg) {
-        case "konnyu":
-          return "Könnyű";
-
-        case "kozepes":
-          return "Közepes";
-
-        case "nehez":
-          return "Nehéz";
-
-        // Helytelen "nehezseg" paraméterkor
-        default:
-          return "Nehézség";
-      }
-    },
-
-    kerdesOldalNavigacio(value, index) {
-      this.tema = this.valasztottTema;
-      this.nehezseg = this.valasztottNehezseg;
-      this.kerdes = value.kerdes;
-      this.valaszok = value.valaszok;
-      this.$router.push(`kerdes/${index}`);
-    }
+    temaSzoveg,
+    nehezsegSzoveg
   }
 }
 </script>
