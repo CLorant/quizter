@@ -14,7 +14,7 @@
         <li>Ha bármilyen kérdése vagy aggálya merül fel az adatvédelemmel kapcsolatban, kérjük, vegye fel velünk a kapcsolatot ezen az email címen: <b><a href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com" target="_blank" rel=”noreferrer” class="text-decoration-none">quizterhelp@gmail.com</a></b>.</li>
         <li>Az adatvédelmi nyilatkozatunkat időről időre módosíthatjuk, ezért javasoljuk, hogy <b>rendszeresen tájékozódjon az oldalunkon közzétett változtatásokról.</b></li>
       </ul>
-      <p class="text-center fw-bold text-warning bg-dark rounded mx-4 my-3 py-1 fs-5">A weboldalunk használatával elfogadja az adatvédelmi nyilatkozatunk feltételeit.</p>
+      <p class="text-center fw-bold text-warning bg-dark rounded mx-4 my-3 py-1">A weboldalunk használatával elfogadja az adatvédelmi nyilatkozatunk feltételeit.</p>
     </div>
   </div>
 </template>
@@ -49,11 +49,26 @@ p, li {
   color: rgb(230, 230, 230);
 }
 
+p {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 b, a {
   color: white;
 }
 
 a:hover {
   opacity: 0.8;
+}
+
+@media screen and (max-width: 420px) {
+  #cim h2 {
+    font-size: 6vw;
+  }
+
+  li, p {
+    font-size: 4.5vw;
+    line-height: 8vw;
+  }
 }
 </style>

@@ -4,11 +4,19 @@
       <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo" width="600" height="150">
       <h2>Hiba történt az oldal betöltésekor</h2>
     </div>
-    <RouterLink to="/">
-      <button id="visszaGomb">Vissza</button>
-    </RouterLink>
+    <button id="visszaGomb" @click="vissza">Vissza</button>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    vissza() {
+      this.$router.go(-1);
+    }
+  }
+}
+</script>
 
 <style scoped>
 #cim {
@@ -36,5 +44,11 @@
 
 #visszaGomb:hover {
   opacity: 0.8;
+}
+
+@media screen and (max-width: 420px) {
+  #cim h2 {
+    font-size: 6vw;
+  }
 }
 </style>

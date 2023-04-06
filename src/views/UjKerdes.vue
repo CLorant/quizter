@@ -207,7 +207,6 @@ ul {
   max-width: 246px;
   width: 42%;
   margin: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   white-space: pre-wrap;
   text-align: center;
 }
@@ -225,13 +224,11 @@ ul {
   margin: 10px;
 }
 
-input,
-input:focus {
+input, input:focus {
   background-color: #0D1117;
 }
 
-.valaszGomb:hover,
-#folytatasGomb:hover {
+.valaszGomb:hover {
   opacity: 0.8;
 }
 
@@ -265,6 +262,10 @@ input:focus {
 
 .valaszGomb::placeholder {
   color: rgb(200, 200, 200)
+}
+
+#kep, .valaszGomb, input, .dropdown-menu, .muveletGomb, .dropdown-toggle {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 @media screen and (max-height: 900px) {

@@ -6,7 +6,7 @@
       <div class="tarolo">
         <div v-if="bejelentkezettFelh && szerkesztes">
           <label for="file-input">
-            <img :src="szerkesztettKepUrl" alt="Felhasználókép" decoding="async" id="profil-kep" width="150" height="150">
+            <img :src="szerkesztettKepUrl" alt="Felhasználókép" decoding="async" id="profil-kep" class="szerkesztett-profil-kep" width="150" height="150">
           </label>
           <input type="file" accept="image/*" id="file-input" style="display: none;" v-on:change="kepCsere">
         </div>
@@ -17,12 +17,12 @@
               v-model="szerkesztettNev" class="form-control text-light border-secondary w-100" required>
             <h2 v-else>{{ profil.jellemzok.nev }}</h2>
             <h3>@{{ profil.felhasznalonev }}</h3>
-            <div id="szint-tarolo">
-              <Szint :exp="profil.statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
+            <div id="szintDiv">
+              <Szint  :exp="profil.statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
             </div>
             <p>Csatlakozott: <b>{{ (profil.csatlakozas).substring(0, 10) }}</b></p>
             <button v-if="bejelentkezettFelh && !szerkesztes" type="button" class="btn btn-dark szerkesztesGomb"
-              @click="szerkesztesLenyomva" style="width: 200px;">
+              @click="szerkesztesLenyomva">
               Profil Módosítása
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="d-inline" viewBox="0 0 16 16">
                 <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
@@ -125,7 +125,7 @@
       <div id="tema-tarolo">
         <h3>Kedvenc témakörei</h3>
         <div v-if="bejelentkezettFelh && szerkesztes" id="temaGomb-tarolo">
-          <div id="temaDiv" style="z-index: 3;">
+          <div id="temaDiv">
             <img :src="`/img/tema/nagy/${szerkesztettTema1}.webp`" alt="Téma képe" decoding="async" id="temaKep" width="360" height="120">
             <div id="temaKepSzoveg">
               <div class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown"
@@ -139,7 +139,7 @@
               </div>
             </div>
           </div>
-          <div id="temaDiv" style="z-index: 2;">
+          <div id="temaDiv">
             <img :src="`/img/tema/nagy/${szerkesztettTema2}.webp`" alt="Téma képe" decoding="async" id="temaKep" width="360" height="120">
             <div id="temaKepSzoveg">
               <div class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown"
@@ -153,7 +153,7 @@
               </div>
             </div>
           </div>
-          <div id="temaDiv" style="z-index: 1;">
+          <div id="temaDiv">
             <img :src="`/img/tema/nagy/${szerkesztettTema3}.webp`" alt="Téma képe" decoding="async" id="temaKep" width="360" height="120">
             <div id="temaKepSzoveg">
               <div class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown"
@@ -406,7 +406,6 @@ export default {
 #profil-kep {
   position: relative;
   border-radius: 50%;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.4);
 }
 
 #felhasznalo-tarolo {
@@ -446,6 +445,10 @@ export default {
 #profil-tarolo h3 {
   font-size: 16pt;
   font-weight: bold;
+}
+
+#profil-tarolo p {
+  margin-top: 10px;
 }
 
 #profil-tarolo {
@@ -507,6 +510,19 @@ td {
   margin-top: 20px;
 }
 
+/* hogy ne csússzanak a dropdown-ok a képek alá */
+#temaDiv:nth-child(1) {
+  z-index: 3;
+}
+
+#temaDiv:nth-child(2) {
+  z-index: 2;
+}
+
+#temaDiv:nth-child(3) {
+  z-index: 1;
+}
+
 #temaKep {
   display: block;
   margin-left: auto;
@@ -515,7 +531,6 @@ td {
   width: 60%;
   height: 60%;
   max-width: 490px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #temaKepSzoveg {
@@ -523,6 +538,7 @@ td {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-size: clamp(1rem, 2.5vw, 3rem);
 }
 
 input,
@@ -548,6 +564,14 @@ input:focus {
   padding-top: 15px;
   padding-bottom: 15px;
   margin-bottom: 15px;
+}
+
+.btn.btn-dark.szerkesztesGomb {
+  width: 200px;
+}
+
+form {
+  height: 191px;
 }
 
 .popup {
@@ -599,6 +623,15 @@ input:focus {
   max-width: 95%
 }
 
+.szerkesztett-profil-kep:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+#profil-bio, #profil-kep, .rekord-tablazat, #tema-tarolo, #temaKep, .szerkesztesGomb, input, .dropdown-menu {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 @media screen and (max-width: 855px) {
   #rekord-tarolo {
     width: 95%;
@@ -624,7 +657,7 @@ input:focus {
     margin-top: 10px;
   }
 
-  #szint-tarolo {
+  #szintDiv {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -634,6 +667,10 @@ input:focus {
     margin: 0px;
     display: flex;
     align-items: center;
+  }
+
+  form {
+    height: 250px;
   }
 
   #szerkesztesGomb {
@@ -662,6 +699,4 @@ input:focus {
     height: 90%;
   }
 }
-
-
 </style>

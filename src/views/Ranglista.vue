@@ -126,7 +126,7 @@ import Szint from '../components/Szint.vue';
 import { mapWritableState } from 'pinia';
 import { useProfilStore } from '../stores/profil';
 import axios from 'axios';
-import { temaSzoveg, nehezsegSzoveg } from '../tema-nehezseg-szoveg'
+import { temaSzoveg, nehezsegSzoveg } from '../tema-nehezseg-szoveg';
 
 export default {
   components: {
@@ -304,6 +304,10 @@ td {
   font-size: 22pt;
   font-weight: bold;
   color: whitesmoke;
+}
+
+table, button, .dropdown-menu {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 @media screen and (max-width: 991px) {

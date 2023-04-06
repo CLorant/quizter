@@ -7,7 +7,7 @@
       <div class="mb-1">
         <div class="d-flex justify-content-between">
           <label for="felhasznalonevInput" class="form-label">Felhasználónév</label>
-          <label class="link">Betű / szám</label>
+          <label for="felhasznalonevInput" class="sarga mt-1">Betű vagy szám</label>
         </div>
         <input type="text" minlength="3" maxlength="12" pattern="[a-zA-Z0-9]+$" v-model="felhasznalonev" id="felhasznalonevInput" class="form-control form-control-md text-light border-dark" placeholder="Felhasználónév" required>
         <div class="mt-1" />
@@ -20,7 +20,11 @@
       </div>
 
       <div class="mb-1">
-        <label for="jelszoInput" class="form-label">Jelszó</label>
+        <div class="d-flex justify-content-between">
+          <label for="jelszoInput" class="form-label">Jelszó</label>
+          <label for="jelszoInput" class="sarga mt-1">Betű, szám, speciális karakter</label>
+        </div>
+        
         <input type="password" minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$" v-model="jelszo" id="jelszoInput" class="form-control form-control-md text-light border-dark" placeholder="Jelszó" required>
         <div class="mt-1" />
       </div>
@@ -29,7 +33,7 @@
         <label for="ismeteltJelszoInput" class="form-label">Jelszó újra</label>
         <input type="password" minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$" v-model="ismeteltJelszo" @click="helytelenIsmeteltJelszo = false" id="ismeteltJelszoInput" class="form-control form-control-md text-light" :class="helytelenIsmeteltJelszo ? 'border-danger' : 'border-dark'" placeholder="Jelszó újra" required>
         <div class="mt-1">
-          <div class="text-danger" :class="helytelenIsmeteltJelszo && !regisztracioHiba ? 'd-block' : 'd-none'">
+          <div class="text-danger" :class="helytelenIsmeteltJelszo ? 'd-block' : 'd-none'">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="mb-1" viewBox="0 0 16 16">
               <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/>
               <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
@@ -46,14 +50,14 @@
         </div>
       </div>
       <div class="d-flex align-items-center">
-        <input class="form-check-input mb-1" type="checkbox" id="acceptPrivacy" required>&nbsp;
-        <label class="form-check-label" for="acceptPrivacy">
-          Elfogadom az <RouterLink to="/adatvedelem" class="link">Adatvédelmi Nyilatkozatot</RouterLink>
+        <input class="form-check-input mb-1" type="checkbox" id="adatvedelemElfogadas" required>&nbsp;
+        <label class="form-check-label" for="adatvedelemElfogadas">
+          Elfogadom az <RouterLink to="/adatvedelem" class="sarga link">Adatvédelmi Nyilatkozatot</RouterLink>
         </label>
       </div>
       <button type="submit" class="btn btn-md btn-warning w-100 fw-bold text-dark mt-3">Regisztráció</button>
-      <div class="d-flex justify-content-center mt-4">
-        <p>Már regisztrált? <RouterLink to="/bejelentkezes" class="link fw-bold">Bejelentkezés</RouterLink></p>
+      <div class="d-flex justify-content-center mt-4 navigal">
+        <p>Már regisztrált? <RouterLink to="/bejelentkezes" class="sarga link fw-bold">Bejelentkezés</RouterLink></p>
       </div>
     </form>
   </div>
@@ -108,9 +112,7 @@ export default {
 
 <style scoped>
 #tartalom{
-  padding-top: 120px;
-  padding-bottom: 120px;
-  height: 720px;
+  padding-top: 40px;
 }
 
 #form{
@@ -135,9 +137,20 @@ input, input:focus {
   background-color: #0D1117;
 }
 
-.link{
+.sarga {
   color: rgb(255,200,0);
+}
+
+.navigal {
+  font-size: 10pt;
+}
+
+.link{
   text-decoration: none;
+}
+
+.sarga.mt-1 {
+  font-size: 9pt;
 }
 
 .form-check-label {
@@ -160,7 +173,15 @@ input, input:focus {
   color: gray;
 }
 
+.form-control:-ms-placeholder {
+  color: gray;
+}
+
 .form-control::placeholder {
   color: gray;
+}
+
+#form, input, button {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 </style>

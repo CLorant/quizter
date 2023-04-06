@@ -1,18 +1,23 @@
 <template>
   <div id="tartalom">
     <div class="bemutatkozas-tarolo">
-      <h1>Rólunk</h1>
-      <p>
-        Helló, itt a Quizter csapata! Ezt a weboldalt 3 középiskolai tanuló
-        készítette egy iskolai projektnek 2022 és 2023 között. Viszont ezután is
-        karbantartjuk majd a weboldalt. A Quizteren 11 különböző témában érhető
-        el nagyjából 1300 kérdés. Emellett van még egy véletlenszerű kérdésekből
-        álló téma is, így összesen 12 téma van. A játszma a kérdések nehézsége,
-        a körönkénti idő, a kérdések és válaszok száma szerint 3 nehézségen
-        beállítható, szóval 12 kombinációja van. A ranglista megmászásához a
-        legnehezebb nehézségen és minél gyorsabban kell megoldania a kvízeket.
-        Sok szerencsét és jó játékot kívánunk!
-      </p>
+      <div id="cim">
+        <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo" width="600" height="150">
+        <h2>Rólunk</h2>
+      </div>
+      <div id="bemutatkozas-szoveg-tarolo">
+        <p>
+          Helló, itt a <b>Quizter</b> csapata! Ezt a weboldalt 3 középiskolai tanuló
+          készítette egy iskolai projektnek 2022 és 2023 között. Viszont ezután is
+          karbantartjuk majd a weboldalt. A Quizteren <b>11 különböző témában érhető
+          el nagyjából 1300 kérdés.</b> Emellett van még egy véletlenszerű kérdésekből
+          álló téma is, így <b>összesen 12 téma van.</b> A játszma a <b>kérdések nehézsége</b>,
+          a <b>körönkénti idő</b>, a <b>kérdések és válaszok száma szerint</b> 3 nehézségen
+          beállítható, szóval <b>12 kombinációja van.</b> A ranglista megmászásához a
+          <b>legnehezebb nehézségen</b> és minél <b>gyorsabban</b> kell megoldania a kvízeket.
+          Sok szerencsét és jó játékot kívánunk!
+        </p>
+      </div>
     </div>
     <div class="rolunk-kep-tarolo">
       <div class="rolunk-oszlop">
@@ -94,9 +99,28 @@
   padding-bottom: 50px;
 }
 
+#cim {
+  margin-top: 120px;
+  margin-bottom: 120px;
+  text-align: center;
+}
+
+#cim-logo {
+  max-width: 90%;
+  height: auto;
+}
+
 .bemutatkozas-tarolo {
-  padding-top: 100px;
   padding-bottom: 100px;
+}
+
+#bemutatkozas-szoveg-tarolo {
+  display: flex;
+  justify-content: center;
+}
+
+#bemutatkozas-szoveg-tarolo p {
+  width: 80%;
 }
 
 h1 {
@@ -108,6 +132,10 @@ h1 {
 p, a {
   font-size: 14pt;
   line-height: 32pt;
+}
+
+b, a {
+  color: white;
 }
 
 .rolunk-kep-tarolo {
@@ -125,6 +153,7 @@ p, a {
 
 .rolunk-oszlop h2 {
   font-size: 24pt;
+  font-weight: bold;
 }
 
 .rolunk-oszlop p {
@@ -134,7 +163,6 @@ p, a {
 .rolunk-kep {
   margin-bottom: 10px;
   border-radius: 50%;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .rolunk-szoveg {
@@ -151,7 +179,11 @@ p, a {
 }
 
 .rolunk-email:hover {
-  color: rgb(255, 200, 0);
+  opacity: 0.8;
+}
+
+.rolunk-kep, #carousel-container {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 @media screen and (max-width: 764px) {
@@ -177,6 +209,11 @@ p, a {
 
   h3 {
     font-size: 7vw;
+  }
+
+  p {
+    font-size: 4.5vw;
+    line-height: 8vw;
   }
 
   .fejlesztes-galeria-kep {

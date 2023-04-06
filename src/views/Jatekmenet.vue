@@ -339,7 +339,6 @@ export default {
   max-width: 246px;
   width: 42%;
   margin: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   position: relative;
 }
 
@@ -361,7 +360,6 @@ export default {
   margin: 10px auto;
   height: 50px;
   background-color: whitesmoke;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #visszaSzamoloDiv div {
@@ -396,7 +394,6 @@ export default {
   height: 60px;
   width: 160px;
   margin: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .rekord-tablazat {
@@ -419,6 +416,10 @@ export default {
 .valaszGomb:hover,
 #folytatasGomb:hover {
   opacity: 0.8;
+}
+
+#kep, .valaszGomb, #visszaSzamoloDiv, #folytatasGomb {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 @media screen and (max-height: 900px){

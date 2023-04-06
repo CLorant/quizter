@@ -1,5 +1,5 @@
 <template>
-  <Hiba v-if="hiba"/>
+  <Hiba v-if="hiba" />
   <Toltes v-else-if="toltes" />
   <div v-else id="tartalom">
     <div v-if="modositas">
@@ -317,6 +317,7 @@ ul {
   text-align: center;
   margin-bottom: 25px;
   font-size: 28pt;
+  height: 48px;
 }
 
 #kep {
@@ -353,7 +354,6 @@ ul {
   max-width: 246px;
   width: 42%;
   margin: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   position: relative;
   text-align: center;
 }
@@ -400,29 +400,40 @@ input:focus {
   color: gray;
 }
 
+.form-control:-ms-placeholder {
+  color: gray;
+}
+
 .form-control::placeholder {
   color: gray;
 }
 
 .valaszGomb::-webkit-input-placeholder {
-  color: rgb(200, 200, 200)
+  color: rgb(200, 200, 200);
 }
 
 .valaszGomb::-moz-placeholder {
-  color: rgb(200, 200, 200)
+  color: rgb(200, 200, 200);
 }
 
 .valaszGomb:-moz-placeholder {
-  color: rgb(200, 200, 200)
+  color: rgb(200, 200, 200);
+}
+
+.valaszGomb:-ms-placeholder {
+  color: rgb(200, 200, 200);
 }
 
 .valaszGomb::placeholder {
-  color: rgb(200, 200, 200)
+  color: rgb(200, 200, 200);
 }
 
-.valaszGomb:hover,
-#folytatasGomb:hover {
+.valaszGomb:hover {
   opacity: 0.8;
+}
+
+#kep, .valaszGomb, input, .dropdown-menu, .muveletGomb, .szuroGomb {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 @media screen and (max-height: 900px) {

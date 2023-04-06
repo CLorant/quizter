@@ -1,8 +1,10 @@
-body {
+html {
+  color-scheme: dark;
+}
+
+html body {
   padding: 0;
   height: auto;
-  color: white;
-  margin: auto;
-  font-family:Arial;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background: linear-gradient(0deg, rgba(16,16,16,1) 0%, rgba(48,48,48,1) 50%, rgba(16,16,16,1) 100%);
 }
