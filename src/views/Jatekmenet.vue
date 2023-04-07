@@ -145,7 +145,7 @@ export default {
         })
         .catch(error => {
           this.hiba = true;
-          console.log(error);
+          console.log('Hiba:', error.message);
         });
     },
 
@@ -193,7 +193,7 @@ export default {
           });
         }
       } catch (error) {
-        console.log(error);
+        console.log('Hiba:', error);
       }
     },
 
@@ -274,7 +274,7 @@ export default {
         this.pont *= 1.5;
       }
 
-      if(this.felhasznalo.bejelentkezett) {
+      if(this.felhasznalo.bejelentkezett && Cookies.get('auth_token')) {
         this.updateUser();
       }
     },

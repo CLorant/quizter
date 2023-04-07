@@ -4,14 +4,14 @@
       <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo" width="600" height="150">
       <h2>A keresett oldal nem található</h2>
     </div>
-    <button id="visszaGomb" @click="goBack">Vissza</button>
+    <button id="visszaGomb" @click="vissza">Vissza</button>
   </div>
 </template>
 
 <script>
 export default {
   methods: {
-    goBack() {
+    vissza() {
       this.$router.go(-1);
     }
   }

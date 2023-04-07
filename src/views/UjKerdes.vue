@@ -128,7 +128,7 @@ export default {
             console.log(response.data);
           });
       } catch (error) {
-        console.log(error);
+        console.log('Hiba:', error);
       }
     },
 

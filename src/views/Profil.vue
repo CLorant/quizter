@@ -320,7 +320,7 @@ export default {
             this.toltes = false;
           })
           .catch(error => {
-            console.log(error);
+            console.log('Hiba:', error.message);
             this.hiba = true;
           });
       }
@@ -356,7 +356,7 @@ export default {
           }
         });
       } catch (error) {
-        console.log(error);
+        console.log('Hiba:', error);
       }
     },
 
@@ -377,7 +377,7 @@ export default {
         })
         .catch(error => {
           this.helytelen = true;
-          console.log(error);
+          console.log('Hiba:', error.message);
         });
     },
     

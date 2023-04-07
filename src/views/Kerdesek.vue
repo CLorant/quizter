@@ -89,7 +89,7 @@ export default {
         })
         .catch(error => {
           this.hiba = true;
-          console.log(error);
+          console.log('Hiba:', error.message);
         });
     },
     

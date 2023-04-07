@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container-fluid">
-      <button class="navbar-toggler" :id="this.navIkonKattint ? 'open' : 'closed'" type="button" data-bs-toggle="collapse"
+      <button class="navbar-toggler" :id="navIkonKattint ? 'open' : 'closed'" ref="hamburger" type="button" data-bs-toggle="collapse"
         data-bs-target=".navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false"
         aria-label="Hamburger menü" @click="keresett = ''; navIkonKattint = !navIkonKattint">
         <span></span>
@@ -59,7 +59,7 @@
           </div>
         </div>
       </div>
-      <div class="kereso-tarolo navbar-collapse collapse">
+      <div class="kereso-tarolo collapse navbar-collapse">
         <div class="input-group">
           <input class="form-control" id="nav-kereses-szoveg" v-model="keresett" type="search" placeholder="Felhasználó"
             aria-label="Kereső Mező">
@@ -76,7 +76,7 @@
   <div class="fixed-top" id="kereses-eredmeny-tarolo">
     <div class="bg-dark rounded" :class="keres ? '' : 'd-none'" id="kereses-eredmeny">
       <div v-if="hiba" class="d-flex justify-content-center pt-5 mt-5">
-        <button class="btn btn-dark" @click="toltes = true; hiba = false; getUsersByName(keresett)">
+        <button class="btn btn-dark" @click="getUsersByName()">
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
             <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
@@ -104,7 +104,6 @@ import Toltes from './Toltes.vue';
 import Szint from './Szint.vue';
 import { mapWritableState } from 'pinia';
 import { useFelhasznaloStore } from '../stores/felhasznalo';
-import { useProfilStore } from '../stores/profil';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -133,45 +132,38 @@ export default {
         { id: 'zene', szoveg: 'Zene' },
         { id: 'vegyes', szoveg: 'Vegyes' }
       ],
+      keresesMegszakit: false,
       keresett: "",
       keres: false,
       keresesEredmeny: [],
-      throttle: null
+      debounce: null
     }
   },
 
   computed: {
     ...mapWritableState(useFelhasznaloStore, ['felhasznalo']),
-    ...mapWritableState(useProfilStore, ['profil'])
   },
 
-  // ha a route változik akkor visszaállítja a navbart
+  
   watch: {
     $route() {
-      this.navIkonKattint = false;
-      this.keresett = "";
-      let nav = $(".navbar-collapse");
-      if (nav.hasClass("show")) {
-        nav.removeClass("show");
+      // visszaállítja a navbart egy kattintással ha ki van nyitva
+      if(this.navIkonKattint) {
+        this.$refs.hamburger.dispatchEvent(new Event('click'));
       }
     },
 
     keresett(ujKeresett) {
       if (ujKeresett !== "") {
-        this.keres = true;
-        if (this.throttle) {
-          clearTimeout(this.throttle);
-        }
-        this.throttle = setTimeout(() => {
-          this.getUsersByName();
-        }, 500)
+        this.getUsersByName();
       }
       else {
         this.keres = false;
-        this.toltes = true;
-        this.hiba = false;
+        if (this.keresesMegszakit) {
+          this.keresesMegszakit.cancel();
+        }
       }
-    },
+    }
   },
 
   methods: {
@@ -189,20 +181,36 @@ export default {
     },
 
     async getUsersByName() {
-      await axios.get(`${import.meta.env.VITE_API_URL}/getUsersByName/${this.keresett}`)
-        .then(response => {
-          this.keresesEredmeny = response.data;
-          this.toltes = false;
-        })
-        .catch(error => {
-          this.hiba = true;
-          console.log(error);
-        });
+      if (this.keresesMegszakit) {
+        this.keresesMegszakit.cancel();
+      }
+
+      if (this.debounce) {
+        clearTimeout(this.debounce);
+      }
+
+      this.keres = true;
+      this.keresesMegszakit = axios.CancelToken.source();
+      this.hiba = false;
+      this.toltes = true;
+
+      this.debounce = setTimeout(async() => {
+        await axios.get(`${import.meta.env.VITE_API_URL}/getUsersByName/${this.keresett}`, {cancelToken: this.keresesMegszakit.token})
+          .then(response => {
+            this.keresesEredmeny = response.data;
+            this.toltes = false;
+          })
+          .catch(error => {
+            if (!axios.isCancel(error)) {
+              this.hiba = true;
+              console.log('Hiba:', error.message);
+            }
+          });
+      }, 500)
     },
 
     keresoGomb() {
       if(this.keresett !== "" && this.keresesEredmeny.length != 0) {
-        this.profil = this.keresesEredmeny.felhasznalo1;
         this.$router.push({ name: 'profil', params: { felhasznaloId: this.keresesEredmeny[`felhasznalo1`].felhasznalonev } });
       }
     }

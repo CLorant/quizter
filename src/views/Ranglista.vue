@@ -177,7 +177,7 @@ export default {
         })
         .catch(error => {
           this.hiba = true;
-          console.log(error);
+          console.log('Hiba:', error.message);
         });
       // ha this.ranglistaAdatok.length === 0 akkor '=', más esetben '+=' WIP
     },

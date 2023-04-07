@@ -174,7 +174,7 @@ export default {
           this.toltes = false;
         })
         .catch(error => {
-          console.log(error);
+          console.log('Hiba:', error.message);
           this.hiba = true;
         });
     },
@@ -261,7 +261,7 @@ export default {
           this.$router.push("/kerdesek");
         })
         .catch(error => {
-          console.log(error);
+          console.log('Hiba:', error.message);
         });
     },
 

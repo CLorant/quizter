@@ -102,7 +102,7 @@ export default {
           })
           .catch(error => {
             this.regisztracioHiba = true;
-            console.log(error);
+            console.log('Hiba:', error.message);
           });
       }
     }

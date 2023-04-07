@@ -5,7 +5,6 @@ import { mapWritableState } from 'pinia';
 import { useFelhasznaloStore } from './stores/felhasznalo';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import felhasznaloJSON from './felhasznalo.json'; // átmeneti
 
 export default {
   components: {
@@ -18,14 +17,6 @@ export default {
   },
   
   created() {
-    const res = felhasznaloJSON // átmeneti
-    for (const prop in this.felhasznalo) {
-      if (res.hasOwnProperty(prop)) {
-        this.felhasznalo[prop] = res[prop];
-      }
-    }
-    this.felhasznalo.bejelentkezett = true; // átmeneti
-    this.felhasznalo.jogosultsag = "admin"; // átmeneti
     if (Cookies.get('auth_token')) {
       this.tokenLogin();
     }
@@ -53,7 +44,7 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error)
+          console.log('Hiba:', error.message);
         })
     }
   }
