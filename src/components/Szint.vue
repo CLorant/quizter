@@ -31,18 +31,18 @@ export default {
 
   methods: {
     szintKezelo() {
+      if (this.exp >= this.szuksegesXp[this.szuksegesXp.length - 1]) {
+        return 30;
+      }
       for (let i = 0; i < this.szuksegesXp.length; i++) {
         if (this.exp < this.szuksegesXp[i]) {
           return i + 1;
-        }
-        if (this.exp >= 1200000) {
-          return 30;
         }
       }
     },
 
     szintHaladasKezelo() {
-      let szXpMax = this.szuksegesXp[this.szint - 1], szXpMin, slope, yIntercept
+      let szXpMax = this.szuksegesXp[this.szint - 1], szXpMin;
       if (this.szint === 30) {
         return 100;
       }
@@ -52,8 +52,8 @@ export default {
       else {
         szXpMin = this.szuksegesXp[this.szint - 2];
       }
-      slope = 100 / (szXpMax - szXpMin);
-      yIntercept = -1 * slope * szXpMin;
+      const slope = 100 / (szXpMax - szXpMin);
+      const yIntercept = -1 * slope * szXpMin;
       return Math.max(slope * this.exp + yIntercept, 0); //minimum 0 a szélesség
     }
   }
