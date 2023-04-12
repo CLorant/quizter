@@ -168,7 +168,7 @@ export default {
         .then(response => {
           for (const prop in response.data) {
             if (this.kerdes.hasOwnProperty(prop)) {
-              this.kerdes[prop] =  response.data[prop];
+              this.kerdes[prop] = response.data[prop];
             }
           }
           this.toltes = false;
@@ -432,7 +432,7 @@ input:focus {
   opacity: 0.8;
 }
 
-#kep, .valaszGomb, input, .dropdown-menu, .muveletGomb, .szuroGomb {
+.valaszGomb, input, .dropdown-menu, .muveletGomb, .szuroGomb {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 

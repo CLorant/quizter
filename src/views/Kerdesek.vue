@@ -69,6 +69,7 @@ export default {
 
   created() {
     this.getQuestions();
+    console.log(Object.keys(this.kerdesvalaszok).length);
   },
 
   computed: {
@@ -136,6 +137,7 @@ ul {
   border-collapse: collapse;
   background-color: rgb(16, 16, 16);
   border-radius: 15px;
+  min-height: 680px;
 }
 
 #kep {

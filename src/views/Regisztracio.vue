@@ -98,7 +98,7 @@ export default {
           password2: this.ismeteltJelszo
         })
           .then(response => {
-            
+            alert(response);
           })
           .catch(error => {
             this.regisztracioHiba = true;

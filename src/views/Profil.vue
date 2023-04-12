@@ -63,29 +63,9 @@
 
     <form @submit.prevent="deleteUser" class="popup" v-if="bejelentkezettFelh && szerkesztes && torlesPopup">
       <div class="popup-content">
-        <h2>Írja be a felhasználónevét és jelszavát a profilja törléséhez</h2>
-        <input type="text" pattern="[a-zA-Z0-9]+$" v-model="torlesFelhasznalonev" class="form-control text-light mt-5 torlesInput" :class="helytelen ? 'border-danger' : 'border-secondary'" placeholder="Felhasználónév" required>
-        <div style="height: 24px">
-          <div class="text-danger" :class="helytelen ? 'd-block' : 'd-none'">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="mb-1" viewBox="0 0 16 16">
-              <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/>
-              <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-            </svg>
-            Helytelen felhasználónév
-          </div>
-        </div>
-        <input type="password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$" v-model="torlesJelszo" class="form-control text-light mt-3 torlesInput" :class="helytelen ? 'border-danger' : 'border-secondary'" placeholder="Jelszó" required>
-        <div style="height: 24px;">
-          <div class="text-danger" :class="helytelen ? 'd-block' : 'd-none'">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="mb-1" viewBox="0 0 16 16">
-              <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/>
-              <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-            </svg>
-            Helytelen jelszó
-          </div>
-        </div>
+        <h2 class="mb-5">Biztos törli a profilját?</h2>
         <div class="d-flex justify-content-center">
-          <button type="button" class="btn btn-secondary m-3" @click="torlesPopup = false; helytelen = false; torlesFelhasznalonev = ''; torlesJelszo = ''">
+          <button type="button" class="btn btn-secondary m-3" @click="torlesPopup = false">
             Mégse
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z" />
@@ -219,9 +199,6 @@ export default {
       bejelentkezettFelh: false,
       szerkesztes: false,
       torlesPopup: false,
-      torlesFelhasznalonev: "",
-      torlesJelszo: "",
-      helytelen: false,
       szerkesztettNev: "",
       szerkesztettBio: "",
       szerkesztettKep: null,
@@ -252,7 +229,6 @@ export default {
       this.bejelentkezettFelh = false;
       this.szerkesztes = false;
       this.torlesPopup = false;
-      this.helytelen = false;
       this.toltes = true;
       this.hiba = false;
       this.getUserByName();
@@ -346,9 +322,9 @@ export default {
         formData.append('tema3', this.szerkesztettTema3);
         
         if (this.szerkesztettKep) {
-          formData.append('kep', this.szerkesztettKep);
+          formData.append('file', this.szerkesztettKep);
         }
-
+        
         await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserPage`, formData, {
           withCredentials: true,
           headers: {
@@ -361,10 +337,7 @@ export default {
     },
 
     async deleteUser() {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/deleteUserPage`, {
-        username: this.torlesFelhasznalonev,
-        password: this.torlesJelszo
-      },{
+      await axios.delete(`${import.meta.env.VITE_API_URL}/deleteUserPage`,{
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${Cookies.get('auth_token')}`
@@ -376,7 +349,6 @@ export default {
           this.$router.push("/");
         })
         .catch(error => {
-          this.helytelen = true;
           console.log('Hiba:', error.message);
         });
     },
@@ -531,6 +503,7 @@ td {
   width: 60%;
   height: 60%;
   max-width: 490px;
+  max-height: 163.32px;
 }
 
 #temaKepSzoveg {
@@ -614,13 +587,12 @@ form {
   color: gray;
 }
 
-.form-control::placeholder {
+.form-control::-ms-placeholder {
   color: gray;
 }
 
-.torlesInput {
-  width: 280px;
-  max-width: 95%
+.form-control::placeholder {
+  color: gray;
 }
 
 .szerkesztett-profil-kep:hover {

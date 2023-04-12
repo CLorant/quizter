@@ -44,17 +44,28 @@ import { useQuizBeallitoStore } from '../stores/quizbeallito'
 import { temaSzoveg, temaMagyarazatSzoveg } from '../tema-nehezseg-szoveg'
 
 export default {
+  data() {
+    return {
+      temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes']
+    }
+  },
+
   created() {
     useQuizBeallitoStore().$reset();
-    this.tema = this.$route.params.temaId
-    this.temaNev = temaSzoveg(this.tema);
-    this.temaMagyarazat = temaMagyarazatSzoveg(this.tema);
+    if(this.temak.includes(this.$route.params.temaId.toLowerCase())) {
+      this.tema = this.$route.params.temaId.toLowerCase();
+      this.temaNev = temaSzoveg(this.tema);
+      this.temaMagyarazat = temaMagyarazatSzoveg(this.tema);
+    }
+    else {
+      this.$router.push('/nem-talalt');
+    }
   },
 
   watch: {
     '$route.params.temaId'() {
       if(this.$router.currentRoute.value.name == 'quizbeallito') {
-        this.tema = this.$route.params.temaId
+        this.tema = this.$route.params.temaId.toLowerCase();
         this.temaNev = temaSzoveg(this.tema);
         this.temaMagyarazat = temaMagyarazatSzoveg(this.tema);
       }

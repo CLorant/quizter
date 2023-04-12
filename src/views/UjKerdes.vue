@@ -114,11 +114,11 @@ export default {
         formData.append('valasz5', this.valasz5);
         formData.append('valasz6', this.valasz6);
 
-        if (this.kep) {
+        if (this.kep !== "/img/ikon/quizterlogo.webp") {
           formData.append('kep', this.kep);
         }
 
-        await axios.post(`${import.meta.env.VITE_API_URL}/createQuestion`, formData,  {
+        await axios.post(`${import.meta.env.VITE_API_URL}/createQuestion`, formData, {
           withCredentials: true,
           headers: {
             Authorization: `Bearer ${Cookies.get('auth_token')}`
@@ -128,7 +128,7 @@ export default {
             console.log(response.data);
           });
       } catch (error) {
-        console.log('Hiba:', error);
+        console.log('Hiba:', error.message);
       }
     },
 
@@ -244,27 +244,35 @@ input, input:focus {
   color: gray;
 }
 
+.form-control:-ms-placeholder {
+  color: gray;
+}
+
 .form-control::placeholder {
   color: gray;
 }
 
 .valaszGomb::-webkit-input-placeholder {
-  color: rgb(200, 200, 200)
+  color: rgb(200, 200, 200);
 }
 
 .valaszGomb::-moz-placeholder {
-  color: rgb(200, 200, 200)
+  color: rgb(200, 200, 200);
 }
 
 .valaszGomb:-moz-placeholder {
-  color: rgb(200, 200, 200)
+  color: rgb(200, 200, 200);
+}
+
+.valaszGomb::-ms-placeholder {
+  color: rgb(200, 200, 200);
 }
 
 .valaszGomb::placeholder {
-  color: rgb(200, 200, 200)
+  color: rgb(200, 200, 200);
 }
 
-#kep, .valaszGomb, input, .dropdown-menu, .muveletGomb, .dropdown-toggle {
+.valaszGomb, input, .dropdown-menu, .muveletGomb, .dropdown-toggle {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
