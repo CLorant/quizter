@@ -44,7 +44,7 @@ export default {
 <style scoped>
 #cim {
   margin-top: 120px;
-  margin-bottom: 120px;
+  margin-bottom: 60px;
   text-align: center;
   color: rgb(255, 200, 0);
 }
@@ -55,6 +55,8 @@ export default {
 }
 
 #temaGombTarolo {
+  padding-top: 60px;
+  padding-bottom: 60px;
   display: flex;
   justify-content: center;
 }
@@ -64,8 +66,7 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   margin: 0;
-  margin-bottom: 64pt;
-  max-width: 2000px;
+  max-width: 1906px;
 }
 
 @media screen and (max-width: 420px) {

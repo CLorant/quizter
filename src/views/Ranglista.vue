@@ -33,7 +33,7 @@
       </div>
       <div class="dropdown my-1">
         <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false" value="2">{{ valasztottValaszSzam }} válasz</button>
+          aria-haspopup="true" aria-expanded="false" :value="valasztottValaszSzam">{{ valasztottValaszSzam }} válasz</button>
         <ul class="dropdown-menu dropdown-menu-dark">
           <li v-for="valaszSzam in valaszSzamok" :key="valaszSzam" class="dropdown-item" @click="valasztottValaszSzam = valaszSzam">{{ valaszSzam }} válasz</li>
         </ul>
@@ -45,22 +45,15 @@
 
     <div class="row justify-content-center">
       <div class="row col-lg-8" ref="fo_ranglista">
-        <div class="table-responsive" style="cursor: pointer;">
+        <div class="table-responsive">
           <table class="table table-borderless table-sm text-light" id="fo-ranglista">
             <tbody>
               <tr v-for="(item, index) in ranglistaAdatok" :key="index" @click="indexAllit(index)">
                 <td class="col-auto helyezes">{{ index.substring(11) }}.</td>
-                <td class="col-1"><img :src="item.jellemzok.kep" :alt="item.felhasznalonev + ' képe'" decoding="async" id="ranglista-felhasznalo-kep" width="45" height="45"></td>
-                <td class="col-auto text-start">{{ item.jellemzok.nev }}</td>
+                <td class="col-1"><img :src="item.kep" alt="kép" decoding="async" id="ranglista-felhasznalo-kep" width="45" height="45"></td>
+                <td class="col-auto text-start">{{ item.nev }}</td>
                 <td class="col-auto handle">@{{ item.felhasznalonev }}</td>
                 <td class="col-auto">{{ item.rekord.pontszam }} pont</td>
-              </tr>
-              <tr>
-                <td colspan="5" @click="getUsersByRecord">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-                  </svg>
-                </td>
               </tr>
             </tbody>
           </table>
@@ -69,14 +62,14 @@
       <div class="col-lg-4 justify-content-center seged-ranglista" ref="seged_ranglista">
         <div class="table-responsive">
           <div id="seged-ranglista-felhasznalo-tarolo">
-            <RouterLink @click="profil = ranglistaAdatok[valasztottIndex]" :to="{ name: 'profil', params: { felhasznaloId: ranglistaAdatok[valasztottIndex].felhasznalonev } }">
-              <img :src="ranglistaAdatok[valasztottIndex].jellemzok.kep" alt="Felhasználó kép" decoding="async" id="seged-ranglista-felhasznalo-kep" width="100" height="100">
+            <RouterLink :to="{ name: 'profil', params: { felhasznaloId: ranglistaAdatok[valasztottIndex].felhasznalonev } }">
+              <img :src="ranglistaAdatok[valasztottIndex].kep" alt="Felhasználó kép" decoding="async" id="seged-ranglista-felhasznalo-kep" width="100" height="100">
             </RouterLink>
             <div>
               <div id="felhasznalo-tarolo">
                 <span id="felhasznalo-nev">{{ranglistaAdatok[valasztottIndex].felhasznalonev}}</span>
-                <div style="display: flex; justify-content: center;">
-                  <Szint :exp="ranglistaAdatok[valasztottIndex].statisztika.exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
+                <div>
+                  <Szint :exp="ranglistaAdatok[valasztottIndex].exp" magassag="30px" szelesseg="200px" betumeret="18pt" />
                 </div>
               </div>
             </div>
@@ -166,20 +159,13 @@ export default {
     async getUsersByRecord() {
       await axios.get(`${import.meta.env.VITE_API_URL}/getUsersByRecord/${this.valasztottTema}/${this.valasztottNehezseg}/${this.valasztottIdo}/${this.valasztottKerdesSzam}/${this.valasztottValaszSzam}`)
         .then(response => {
-          // nem végleges
-          if (this.ranglistaAdatok.length === 0) {
-            this.ranglistaAdatok = response.data;
-          }
-          else {
-            this.ranglistaAdatok += response.data;
-          }
+          this.ranglistaAdatok = response.data;
           this.toltes = false;
         })
         .catch(error => {
           this.hiba = true;
           console.log('Hiba:', error.message);
         });
-      // ha this.ranglistaAdatok.length === 0 akkor '=', más esetben '+=' WIP
     },
 
     indexAllit(index) {
@@ -205,6 +191,10 @@ export default {
 table {
   background: rgb(16, 16, 16);
   text-align: center;
+}
+
+#fo-ranglista {
+  cursor: pointer;
 }
 
 #fo-ranglista tbody tr:nth-child(1) .helyezes {
@@ -300,6 +290,11 @@ td {
   display: inline-block;
 }
 
+#felhasznalo-tarolo div {
+  display: flex;
+  justify-content: center;
+}
+
 #felhasznalo-nev {
   font-size: 22pt;
   font-weight: bold;
@@ -337,6 +332,7 @@ table, button, .dropdown-menu {
   
   .szemelyes-rekord-sor td {
     line-height: 32pt;
+    font-size: 12pt;
   }
 }
 

@@ -24,7 +24,7 @@
     <table id="kerdes-valasz-tarolo" class="my-5">
       <tbody>
         <br>
-        <tr v-for="(value, index) in kerdesvalaszok" :key="index" @click="$router.push(`kerdes/${index}`);">
+        <tr v-if="Object.keys(this.kerdesvalaszok).length > 0" v-for="(value, index) in kerdesvalaszok" :key="index" @click="$router.push(`kerdes/${index}`);">
           <td class="text-center"><img :src="value.kerdes.kep" alt="Kérdés Képe" id="kep" decoding="async" width="80" height="40"></td>
           <td class="fw-bold">{{ value.kerdes.szoveg }}</td>
           <td class="text-success">{{ value.valaszok.valasz1.szoveg }}</td>
@@ -33,6 +33,9 @@
           <td class="text-danger">{{ value.valaszok.valasz4.szoveg }}</td>
           <td class="text-danger">{{ value.valaszok.valasz5.szoveg }}</td>
           <td class="text-danger">{{ value.valaszok.valasz6.szoveg }}</td>
+        </tr>
+        <tr v-else class="text-center fw-bold">
+          Nincsenek ilyen kérdések
         </tr>
         <br>
       </tbody>
@@ -47,7 +50,7 @@ import { mapWritableState } from 'pinia';
 import { useKerdesStore } from '../stores/kerdes';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { temaSzoveg, nehezsegSzoveg } from '../tema-nehezseg-szoveg'
+import { temaSzoveg, nehezsegSzoveg } from '../tema-nehezseg-szoveg';
 
 export default {
   components: {
@@ -69,7 +72,6 @@ export default {
 
   created() {
     this.getQuestions();
-    console.log(Object.keys(this.kerdesvalaszok).length);
   },
 
   computed: {
@@ -137,7 +139,6 @@ ul {
   border-collapse: collapse;
   background-color: rgb(16, 16, 16);
   border-radius: 15px;
-  min-height: 680px;
 }
 
 #kep {

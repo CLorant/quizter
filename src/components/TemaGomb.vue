@@ -20,7 +20,7 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin: 16pt;
+  margin: 8pt;
 }
 
 .temaImg {
@@ -36,7 +36,7 @@ export default {
   z-index: 1;
 }
 
-@media screen and (max-width: 820px) {
+@media screen and (max-width: 762px) {
   .temaGomb {
     width: 45%;
     margin: 5px;
