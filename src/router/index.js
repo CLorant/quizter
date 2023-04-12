@@ -59,7 +59,8 @@ const routes = [
   {
     path: '/kerdesek',
     name: 'kerdesek',
-    component: () => import('../views/Kerdesek.vue')
+    component: () => import('../views/Kerdesek.vue'),
+    beforeEnter: adminGuard
   },
   {
     path: '/kerdes/:kerdesId',
