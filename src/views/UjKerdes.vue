@@ -102,7 +102,17 @@ export default {
     },
 
     async createQuestion() {
+      if(this.valasztottTema === '' || this.valasztottNehezseg === '') {
+        alert("Nem választott témát vagy nehézséget!");
+        return
+      }
+      
       try {
+        if (!this.kep) {
+          alert("Nem választott képet!");
+          return
+        }
+
         const formData = new FormData();
         formData.append('tema', this.valasztottTema);
         formData.append('nehezseg', this.valasztottNehezseg);
@@ -113,10 +123,7 @@ export default {
         formData.append('valasz4', this.valasz4);
         formData.append('valasz5', this.valasz5);
         formData.append('valasz6', this.valasz6);
-
-        if (this.kep !== "/img/ikon/quizterlogo.webp") {
-          formData.append('kep', this.kep);
-        }
+        formData.append('file', this.kep);
 
         await axios.post(`${import.meta.env.VITE_API_URL}/createQuestion`, formData, {
           withCredentials: true,
@@ -126,6 +133,16 @@ export default {
         })
           .then(response => {
             console.log(response.data);
+            this.kerdes = "";
+            this.kep = null;
+            this.kepUrl = "";
+            this.valasz1 = "";
+            this.valasz2 = "";
+            this.valasz3 = "";
+            this.valasz4 = "";
+            this.valasz5 = "";
+            this.valasz6 = "";
+            this.kepMegjelenit = false;
           });
       } catch (error) {
         console.log('Hiba:', error.message);

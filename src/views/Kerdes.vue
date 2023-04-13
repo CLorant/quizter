@@ -22,7 +22,7 @@
         </div>
       </div>
       <input id="kerdes" type="text" v-model="modKerdesSzoveg" class="form-control text-light border-secondary w-100">
-      <input v-if="kepMegjelenit === false" type="file" id="kep" name="kep" @change="onFileChange" accept="image/*"
+      <input v-if="kepMegjelenit === false" type="file" id="kep" name="kep" @change="kepCsere" accept="image/*"
         class="form-control text-light border-secondary w-100" aria-label="Kép Input">
       <img v-else id="kep" :src="modKepUrl" alt="Kérdés képe" decoding="async" height="300">
       <div id="gombTarolo">
@@ -164,13 +164,16 @@ export default {
 
   methods: {
     async getQuestion() {
-      await axios.get(`${import.meta.env.VITE_API_URL}/getQuestion/${this.$route.params.kerdesId}`)
+      await axios.get(`${import.meta.env.VITE_API_URL}/getQuestion/${this.$route.params.kerdesId}`, {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${Cookies.get('auth_token')}`
+          }})
         .then(response => {
-          for (const prop in response.data) {
-            if (this.kerdes.hasOwnProperty(prop)) {
-              this.kerdes[prop] = response.data[prop];
-            }
-          }
+          this.tema = response.data.tema;
+          this.nehezseg = response.data.nehezseg;
+          this.kerdes = response.data.kerdes;
+          this.valaszok = response.data.valaszok;
           this.toltes = false;
         })
         .catch(error => {
@@ -221,6 +224,7 @@ export default {
         this.valaszok.valasz6.szoveg = this.modValasz6;
         
         const formData = new FormData();
+        formData.append('kerdes_id', this.$route.params.kerdesId);
         formData.append('tema', this.valasztottTema);
         formData.append('nehezseg', this.valasztottNehezseg);
         formData.append('kerdes', this.modKerdesSzoveg);
@@ -230,10 +234,7 @@ export default {
         formData.append('valasz4', this.modValasz4);
         formData.append('valasz5', this.modValasz5);
         formData.append('valasz6', this.modValasz6);
-
-        if (this.modKep) {
-          formData.append('kep', this.modKep);
-        }
+        formData.append('file', this.modKep);
 
         await axios.patch(`${import.meta.env.VITE_API_URL}/updateQuestion`, formData, {
           withCredentials: true,
@@ -256,13 +257,13 @@ export default {
             Authorization: `Bearer ${Cookies.get('auth_token')}`
           }
         })
-        .then(response => {
-          console.log(response);
-          this.$router.push("/kerdesek");
-        })
-        .catch(error => {
-          console.log('Hiba:', error.message);
-        });
+          .then(response => {
+            console.log(response);
+            this.$router.push("/kerdesek");
+          })
+          .catch(error => {
+            console.log('Hiba:', error.message);
+          });
     },
 
     modositasKezelo() {

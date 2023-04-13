@@ -22,9 +22,9 @@
       </button>
     </div>
     <table id="kerdes-valasz-tarolo" class="my-5">
-      <tbody>
+      <tbody v-if="Object.keys(this.kerdesvalaszok).length > 0">
         <br>
-        <tr v-if="Object.keys(this.kerdesvalaszok).length > 0" v-for="(value, index) in kerdesvalaszok" :key="index" @click="$router.push(`kerdes/${index}`);">
+        <tr v-for="(value, index) in kerdesvalaszok" :key="index" @click="$router.push(`kerdes/${index}`);">
           <td class="text-center"><img :src="value.kerdes.kep" alt="Kérdés Képe" id="kep" decoding="async" width="80" height="40"></td>
           <td class="fw-bold">{{ value.kerdes.szoveg }}</td>
           <td class="text-success">{{ value.valaszok.valasz1.szoveg }}</td>
@@ -34,7 +34,11 @@
           <td class="text-danger">{{ value.valaszok.valasz5.szoveg }}</td>
           <td class="text-danger">{{ value.valaszok.valasz6.szoveg }}</td>
         </tr>
-        <tr v-else class="text-center fw-bold">
+        <br>
+      </tbody>
+      <tbody v-else>
+        <br>
+        <tr class="text-center fw-bold">
           Nincsenek ilyen kérdések
         </tr>
         <br>

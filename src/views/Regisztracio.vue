@@ -98,7 +98,10 @@ export default {
           password2: this.ismeteltJelszo
         })
           .then(response => {
-            alert(response);
+            alert(response.data);
+            if (response.data === "Sikeres regisztráció, hitelesítse az email címét belépés előtt!") {
+              this.$router.push("/");
+            }
           })
           .catch(error => {
             this.regisztracioHiba = true;

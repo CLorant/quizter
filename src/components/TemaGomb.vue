@@ -36,7 +36,7 @@ export default {
   z-index: 1;
 }
 
-@media screen and (max-width: 762px) {
+@media screen and (max-width: 763px) {
   .temaGomb {
     width: 45%;
     margin: 5px;
