@@ -2,52 +2,27 @@
   <Hiba v-if="hiba" />
   <Toltes v-else-if="toltes" />
   <div v-else id="tartalom">
-    <div id="szuro-tarolo">
-      <div class="dropdown my-1">
-        <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false" :value="valasztottTema">{{ temaSzoveg(valasztottTema) }}</button>
-        <ul class="dropdown-menu dropdown-menu-dark">
-          <li v-for="tema in temak" :key="tema" class="dropdown-item" @click="valasztottTema = tema">{{ temaSzoveg(tema) }}</li>
-        </ul>
-      </div>
-      <div class="dropdown my-1">
-        <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false" :value="valasztottNehezseg"> {{ nehezsegSzoveg(valasztottNehezseg) }}</button>
-        <ul class="dropdown-menu dropdown-menu-dark">
-          <li v-for="nehezseg in nehezsegek" :key="nehezseg" class="dropdown-item" @click="valasztottNehezseg = nehezseg">{{ nehezsegSzoveg(nehezseg) }}</li>
-        </ul>
-      </div>
-      <div class="dropdown my-1">
-        <button type="button" class="btn btn-toggle btn-dark dropdown-toggle" data-bs-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false" :value="valasztottIdo">{{ valasztottIdo }} mp</button>
-        <ul class="dropdown-menu dropdown-menu-dark">
-          <li v-for="ido in idok" :key="ido" class="dropdown-item" @click="valasztottIdo = ido">{{ ido }} mp</li>
-        </ul>
-      </div>
-      <div class="dropdown my-1">
-        <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false" :value="valasztottKerdesSzam">{{ valasztottKerdesSzam }} kérdés</button>
-        <ul class="dropdown-menu dropdown-menu-dark">
-          <li v-for="kerdesSzam in kerdesSzamok" :key="kerdesSzam" class="dropdown-item" @click="valasztottKerdesSzam = kerdesSzam">{{ kerdesSzam }} kérdés</li>
-        </ul>
-      </div>
-      <div class="dropdown my-1">
-        <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false" :value="valasztottValaszSzam">{{ valasztottValaszSzam }} válasz</button>
-        <ul class="dropdown-menu dropdown-menu-dark">
-          <li v-for="valaszSzam in valaszSzamok" :key="valaszSzam" class="dropdown-item" @click="valasztottValaszSzam = valaszSzam">{{ valaszSzam }} válasz</li>
-        </ul>
-      </div>
-      <button class="btn btn-warning fw-semibold my-auto szuroGomb" @click="getUsersByRecord">
-        Szűrés
-      </button>
-    </div>
-
     <div class="row justify-content-center">
       <div class="row col-lg-8" ref="fo_ranglista">
         <div class="table-responsive">
           <table class="table table-borderless table-sm text-light" id="fo-ranglista">
             <tbody>
+              <tr>
+                <td colspan="5">
+                  <div id="temaDiv">
+                    <img :src="`/img/tema/nagy/${valasztottTema}.webp`" alt="Téma képe" decoding="async" id="temaKep" width="360" height="80">
+                    <div id="temaKepSzoveg">
+                      <div class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown">
+                        {{ temaSzoveg(valasztottTema) }}
+                        <div class="dropdown-menu dropdown-menu-dark">
+                          <p v-for="t in temak" :key="t" class="dropdown-item" :class="valasztottTema == t ? 'd-none' : ''"
+                            @click="valasztottTema = t; getUsersByRecord()">{{ temaSzoveg(t) }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
               <tr v-for="(item, index) in ranglistaAdatok" :key="index" @click="indexAllit(index)">
                 <td class="col-auto helyezes">{{ index.substring(11) }}.</td>
                 <td class="col-1"><img :src="item.kep" alt="kép" decoding="async" id="ranglista-felhasznalo-kep" width="45" height="45"></td>
@@ -116,8 +91,6 @@
 import Toltes from '../components/Toltes.vue';
 import Hiba from '../components/Hiba.vue';
 import Szint from '../components/Szint.vue';
-import { mapWritableState } from 'pinia';
-import { useProfilStore } from '../stores/profil';
 import axios from 'axios';
 import { temaSzoveg, nehezsegSzoveg } from '../tema-nehezseg-szoveg';
 
@@ -134,14 +107,6 @@ export default {
       hiba: false,
       temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes'],
       valasztottTema: 'autok',
-      nehezsegek: ['konnyu', 'kozepes', 'nehez'],
-      valasztottNehezseg: 'nehez',
-      idok: [30, 20, 10],
-      valasztottIdo: 10,
-      kerdesSzamok: [10, 15, 20],
-      valasztottKerdesSzam: 20,
-      valaszSzamok: [2, 4, 6],
-      valasztottValaszSzam: 6,
       valasztottIndex: "felhasznalo1",
       ranglistaAdatok: []
     }
@@ -151,13 +116,9 @@ export default {
     this.getUsersByRecord();
   },
 
-  computed: {
-    ...mapWritableState(useProfilStore, ['profil'])
-  },
-
   methods: {
     async getUsersByRecord() {
-      await axios.get(`${import.meta.env.VITE_API_URL}/getUsersByRecord/${this.valasztottTema}/${this.valasztottNehezseg}/${this.valasztottIdo}/${this.valasztottKerdesSzam}/${this.valasztottValaszSzam}`)
+      await axios.get(`${import.meta.env.VITE_API_URL}/getUsersByRecord/${this.valasztottTema}`)
         .then(response => {
           this.ranglistaAdatok = response.data;
           this.toltes = false;
@@ -188,6 +149,33 @@ export default {
   width: 100%;
 }
 
+#temaDiv {
+  position: relative;
+  margin-top: 20px;
+}
+
+#temaKep {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 15px;
+  width: 70%;
+  object-fit: cover;
+}
+
+#temaKepSzoveg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(1rem, 2.5vw, 3rem);
+}
+
+.dropdown-item {
+  line-height: 24px;
+  margin: 0;
+}
+
 table {
   background: rgb(16, 16, 16);
   text-align: center;
@@ -197,39 +185,22 @@ table {
   cursor: pointer;
 }
 
-#fo-ranglista tbody tr:nth-child(1) .helyezes {
+#fo-ranglista tbody tr:nth-child(2) .helyezes {
   background-color: rgb(155, 110, 0); /* sötét arany */
   color: white;
   font-weight: bold;
 }
 
-#fo-ranglista tbody tr:nth-child(2) .helyezes {
+#fo-ranglista tbody tr:nth-child(3) .helyezes {
   background-color: rgb(100, 100, 100); /* sötét ezüst */
   color: white;
   font-weight: bold;
 }
 
-#fo-ranglista tbody tr:nth-child(3) .helyezes {
+#fo-ranglista tbody tr:nth-child(4) .helyezes {
   background-color: rgb(150, 75, 30); /* sötét bronz */
   color: white;
   font-weight: bold;
-}
-
-#szuro-tarolo {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-.szuroGomb {
-  width: 130px;
-  margin: 5px;
-}
-
-.dropdown-toggle {
-  margin: 5px;
-  width: 130px;
 }
 
 ul {
@@ -250,7 +221,11 @@ ul {
   border-radius: 50%;
 }
 
-tr:hover {
+#fo-ranglista tbody tr:nth-child(1) {
+  cursor: default;
+}
+
+#fo-ranglista tbody tr:not(:nth-child(1)):hover {
   background-color: rgb(20, 20, 20);
 }
 
@@ -306,6 +281,10 @@ table, button, .dropdown-menu {
 }
 
 @media screen and (max-width: 991px) {
+  #temaKepSzoveg {
+    font-size: 5vw;
+  }
+
   .seged-ranglista {
     width: 500px;
   }
@@ -317,6 +296,15 @@ table, button, .dropdown-menu {
 }
 
 @media screen and (max-width: 540px) {
+  #temaKepSzoveg {
+    font-size: 7vw;
+  }
+
+  #temaKep {
+    height: 60px;
+    width: 90%;
+  }
+
   tr {
     font-size: 12px;
   }
