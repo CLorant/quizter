@@ -4,19 +4,33 @@
   <div v-else id="tartalom">
     <div class="row justify-content-center">
       <div class="row col-lg-8" ref="fo_ranglista">
-        <div class="table-responsive">
+        <div class="table-responsive fo-ranglista-tarolo">
           <table class="table table-borderless table-sm text-light" id="fo-ranglista">
             <tbody>
               <tr>
                 <td colspan="5">
-                  <div id="temaDiv">
-                    <img :src="`/img/tema/nagy/${valasztottTema}.webp`" alt="Téma képe" decoding="async" id="temaKep" width="360" height="80">
-                    <div id="temaKepSzoveg">
-                      <div class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown">
-                        {{ temaSzoveg(valasztottTema) }}
-                        <div class="dropdown-menu dropdown-menu-dark">
-                          <p v-for="t in temak" :key="t" class="dropdown-item" :class="valasztottTema == t ? 'd-none' : ''"
-                            @click="valasztottTema = t; getUsersByRecord()">{{ temaSzoveg(t) }}</p>
+                  <div class="d-flex justify-content-around flex-row mb-3">
+                    <div id="temaDiv">
+                      <img :src="`/img/tema/kicsi/${valasztottTema}.webp`" alt="Téma képe" decoding="async" id="temaKep" width="360" height="80">
+                      <div id="temaKepSzoveg">
+                        <div class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown">
+                          {{ temaSzoveg(valasztottTema) }}
+                          <div class="dropdown-menu dropdown-menu-dark">
+                            <p v-for="t in temak" :key="t" class="dropdown-item" :class="valasztottTema == t ? 'disabled' : ''"
+                              @click="valasztottTema = t; getLeaderboard()">{{ temaSzoveg(t) }}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="temaDiv">
+                      <div id="temaKep" :class="valasztottNehezseg"/>
+                      <div id="temaKepSzoveg">
+                        <div class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown">
+                          {{ nehezsegSzoveg(valasztottNehezseg) }}
+                          <div class="dropdown-menu dropdown-menu-dark">
+                            <p v-for="n in nehezsegek" :key="n" class="dropdown-item" :class="valasztottNehezseg == n ? 'disabled' : ''"
+                              @click="valasztottNehezseg = n; getLeaderboard()">{{ nehezsegSzoveg(n) }}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -105,27 +119,38 @@ export default {
     return {
       toltes: true,
       hiba: false,
+      lekerdezesMegszakit: false,
       temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes'],
-      valasztottTema: 'autok',
-      valasztottIndex: "felhasznalo1",
+      valasztottTema: 'foldrajz',
+      nehezsegek: ['konnyu', 'kozepes', 'nehez'],
+      valasztottNehezseg: 'konnyu',
+      valasztottIndex: 'felhasznalo1',
       ranglistaAdatok: []
     }
   },
 
   created() {
-    this.getUsersByRecord();
+    this.getLeaderboard();
   },
 
   methods: {
-    async getUsersByRecord() {
-      await axios.get(`${import.meta.env.VITE_API_URL}/getUsersByRecord/${this.valasztottTema}`)
+    async getLeaderboard() {
+      if (this.keresesMegszakit) {
+        this.keresesMegszakit.cancel();
+      }
+
+      this.keresesMegszakit = axios.CancelToken.source();
+      
+      await axios.get(`${import.meta.env.VITE_API_URL}/getLeaderboard/${this.valasztottTema}/${this.valasztottNehezseg}`, {cancelToken: this.lekerdezesMegszakit.token})
         .then(response => {
           this.ranglistaAdatok = response.data;
           this.toltes = false;
         })
         .catch(error => {
-          this.hiba = true;
-          console.log('Hiba:', error.message);
+          if (!axios.isCancel(error)) {
+              this.hiba = true;
+              console.log('Hiba:', error.message);
+            }
         });
     },
 
@@ -149,9 +174,16 @@ export default {
   width: 100%;
 }
 
+.fo-ranglista-tarolo {
+  background: rgb(16, 16, 16);
+  min-height: 600px;
+  margin-bottom: 10px;
+}
+
 #temaDiv {
   position: relative;
   margin-top: 20px;
+  width: 90%;
 }
 
 #temaKep {
@@ -159,7 +191,9 @@ export default {
   margin-left: auto;
   margin-right: auto;
   border-radius: 15px;
-  width: 70%;
+  height: 80px;
+  width: 100%;
+  max-width: 360px;
   object-fit: cover;
 }
 
@@ -168,7 +202,19 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: clamp(1rem, 2.5vw, 3rem);
+  font-size: clamp(1rem, 2.5vw, 2rem);
+}
+
+.konnyu {
+  background-color: green;
+}
+
+.kozepes {
+  background-color: rgb(180, 120, 0);
+}
+
+.nehez {
+  background-color: firebrick;
 }
 
 .dropdown-item {
@@ -282,7 +328,7 @@ table, button, .dropdown-menu {
 
 @media screen and (max-width: 991px) {
   #temaKepSzoveg {
-    font-size: 5vw;
+    font-size: 4vw;
   }
 
   .seged-ranglista {
@@ -297,12 +343,16 @@ table, button, .dropdown-menu {
 
 @media screen and (max-width: 540px) {
   #temaKepSzoveg {
-    font-size: 7vw;
+    font-size: 5vw;
   }
 
   #temaKep {
     height: 60px;
     width: 90%;
+  }
+
+  .fo-ranglista-tarolo {
+    min-height: 500px;
   }
 
   tr {

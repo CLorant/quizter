@@ -332,7 +332,7 @@ export default {
           }
         });
       } catch (error) {
-        console.log('Hiba:', error);
+        console.log('Hiba:', error.message);
       }
     },
 

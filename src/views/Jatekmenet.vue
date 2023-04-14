@@ -167,30 +167,32 @@ export default {
           }
         });
 
-        if (this.pont > this.felhasznalo.rekord.pontszam) {
-          this.felhasznalo.rekord.pontszam = this.pont;
-          this.felhasznalo.rekord.helyesHelytelen = this.helyesValasz + " / " + this.helytelenValasz;
-          this.felhasznalo.rekord.tema = this.tema;
-          this.felhasznalo.rekord.nehezseg = this.nehezseg;
-          this.felhasznalo.rekord.ido = this.ido;
-          this.felhasznalo.rekord.kerdesSzam = this.kerdesSzam;
-          this.felhasznalo.rekord.valaszSzam = this.valaszSzam;
-
-          await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserRecord`, {
-            pontszam: this.felhasznalo.rekord.pontszam,
-            helyesHelytelen: this.felhasznalo.rekord.helyesHelytelen,
-            tema: this.felhasznalo.rekord.tema,
-            nehezseg: this.felhasznalo.rekord.nehezseg,
-            ido: this.felhasznalo.rekord.ido,
-            kerdesSzam: this.felhasznalo.rekord.kerdesSzam,
-            valaszSzam: this.felhasznalo.rekord.valaszSzam
-          },{
-            withCredentials: true,
-            headers: {
-              Authorization: `Bearer ${Cookies.get('auth_token')}`
+        await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserRecord`, {
+          username: this.felhasznalo.felhasznalonev,
+          pontszam: this.pont,
+          helyesHelytelen: this.helyesValasz + " / " + this.helytelenValasz,
+          tema: this.tema,
+          nehezseg: this.nehezseg,
+          ido: this.ido,
+          kerdesSzam: this.kerdesSzam,
+          valaszSzam: this.valaszSzam
+        },{
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${Cookies.get('auth_token')}`
+          }
+        })
+          .then(() => {
+            if (this.pont > this.felhasznalo.rekord.pontszam) {
+              this.felhasznalo.rekord.pontszam = this.pont;
+              this.felhasznalo.rekord.helyesHelytelen = this.helyesValasz + " / " + this.helytelenValasz;
+              this.felhasznalo.rekord.tema = this.tema;
+              this.felhasznalo.rekord.nehezseg = this.nehezseg;
+              this.felhasznalo.rekord.ido = this.ido;
+              this.felhasznalo.rekord.kerdesSzam = this.kerdesSzam;
+              this.felhasznalo.rekord.valaszSzam = this.valaszSzam;
             }
-          });
-        }
+        });
       } catch (error) {
         console.log('Hiba:', error);
       }
