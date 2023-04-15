@@ -88,7 +88,7 @@
         <RouterLink v-for="felh in keresesEredmeny" :to="{ name: 'profil', params: { felhasznaloId: felh.felhasznalonev } }"
           :key="felh.felhasznalonev" class="m-1 text-light text-decoration-none row">
           <div class="col-3">
-            <img :src="felh.jellemzok.kep" :alt="`${felh.felhasznalonev} képe`" decoding="async" class="felhasznalo-kep" width="40" height="40">
+            <img :src="felh.jellemzok.kep" alt="kép" decoding="async" class="felhasznalo-kep" width="40" height="40">
           </div>
           <div class="col">
             <p id="keresett-felhasznalo">{{ felh.felhasznalonev }}</p>

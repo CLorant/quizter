@@ -9,8 +9,8 @@
         <p>
           Helló, itt a <b>Quizter</b> csapata! Ezt a weboldalt 3 középiskolai tanuló
           készítette egy iskolai projektnek 2022 és 2023 között. Viszont ezután is
-          karbantartjuk majd a weboldalt. A Quizteren <b>11 különböző témában érhető
-          el nagyjából 1300 kérdés.</b> Emellett van még egy véletlenszerű kérdésekből
+          karbantartjuk majd a weboldalt. A Quizter-en <b>11 különböző témában érhető
+          el nagyjából 1000 kérdés.</b> Emellett van még egy véletlenszerű kérdésekből
           álló téma is, így <b>összesen 12 téma van.</b> A játszma a <b>kérdések nehézsége</b>,
           a <b>körönkénti idő</b>, a <b>kérdések és válaszok száma szerint</b> 3 nehézségen
           beállítható, szóval <b>12 kombinációja van.</b> A ranglista megmászásához a

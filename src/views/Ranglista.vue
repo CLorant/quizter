@@ -10,24 +10,24 @@
               <tr>
                 <td colspan="5">
                   <div class="d-flex justify-content-around flex-row mb-3">
-                    <div id="temaDiv">
-                      <img :src="`/img/tema/kicsi/${valasztottTema}.webp`" alt="Téma képe" decoding="async" id="temaKep" width="360" height="80">
-                      <div id="temaKepSzoveg">
+                    <div id="szuresDiv">
+                      <img :src="`/img/tema/kicsi/${valasztottTema}.webp`" alt="Téma képe" decoding="async" id="szuresKep" width="360" height="80">
+                      <div id="szuresKepSzoveg">
                         <div class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown">
                           {{ temaSzoveg(valasztottTema) }}
-                          <div class="dropdown-menu dropdown-menu-dark">
+                          <div class="dropdown-menu dropdown-menu-dark mt-3">
                             <p v-for="t in temak" :key="t" class="dropdown-item" :class="valasztottTema == t ? 'disabled' : ''"
                               @click="valasztottTema = t; getLeaderboard()">{{ temaSzoveg(t) }}</p>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div id="temaDiv">
-                      <div id="temaKep" :class="valasztottNehezseg"/>
-                      <div id="temaKepSzoveg">
+                    <div id="szuresDiv">
+                      <div id="szuresKep" :class="valasztottNehezseg"></div>
+                      <div id="szuresKepSzoveg">
                         <div class="dropdown-toggle" role="button" aria-expanded="false" data-bs-toggle="dropdown">
                           {{ nehezsegSzoveg(valasztottNehezseg) }}
-                          <div class="dropdown-menu dropdown-menu-dark">
+                          <div class="dropdown-menu dropdown-menu-dark mt-3">
                             <p v-for="n in nehezsegek" :key="n" class="dropdown-item" :class="valasztottNehezseg == n ? 'disabled' : ''"
                               @click="valasztottNehezseg = n; getLeaderboard()">{{ nehezsegSzoveg(n) }}</p>
                           </div>
@@ -138,7 +138,6 @@ export default {
       if (this.keresesMegszakit) {
         this.keresesMegszakit.cancel();
       }
-
       this.keresesMegszakit = axios.CancelToken.source();
       
       await axios.get(`${import.meta.env.VITE_API_URL}/getLeaderboard/${this.valasztottTema}/${this.valasztottNehezseg}`, {cancelToken: this.lekerdezesMegszakit.token})
@@ -148,9 +147,9 @@ export default {
         })
         .catch(error => {
           if (!axios.isCancel(error)) {
-              this.hiba = true;
-              console.log('Hiba:', error.message);
-            }
+            this.hiba = true;
+            console.log('Hiba:', error.message);
+          }
         });
     },
 
@@ -180,13 +179,13 @@ export default {
   margin-bottom: 10px;
 }
 
-#temaDiv {
+#szuresDiv {
   position: relative;
   margin-top: 20px;
   width: 90%;
 }
 
-#temaKep {
+#szuresKep {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -197,7 +196,7 @@ export default {
   object-fit: cover;
 }
 
-#temaKepSzoveg {
+#szuresKepSzoveg {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -322,12 +321,12 @@ td {
   color: whitesmoke;
 }
 
-table, button, .dropdown-menu {
+button, table:nth-child(2), .dropdown-menu, .fo-ranglista-tarolo {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 @media screen and (max-width: 991px) {
-  #temaKepSzoveg {
+  #szuresKepSzoveg {
     font-size: 4vw;
   }
 
@@ -342,11 +341,11 @@ table, button, .dropdown-menu {
 }
 
 @media screen and (max-width: 540px) {
-  #temaKepSzoveg {
+  #szuresKepSzoveg {
     font-size: 5vw;
   }
 
-  #temaKep {
+  #szuresKep {
     height: 60px;
     width: 90%;
   }
