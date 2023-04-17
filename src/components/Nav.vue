@@ -85,15 +85,20 @@
       </div>
       <Toltes v-else-if="toltes" />
       <div v-else>
-        <RouterLink v-for="felh in keresesEredmeny" :to="{ name: 'profil', params: { felhasznaloId: felh.felhasznalonev } }"
+        <div v-if="Object.keys(keresesEredmeny).length > 0">
+          <RouterLink v-for="felh in keresesEredmeny" :to="{ name: 'profil', params: { felhasznaloId: felh.felhasznalonev } }"
           :key="felh.felhasznalonev" class="m-1 text-light text-decoration-none row">
           <div class="col-3">
-            <img :src="felh.jellemzok.kep" alt="kép" decoding="async" class="felhasznalo-kep" width="40" height="40">
+            <img :src="felh.kep" alt="kép" decoding="async" class="felhasznalo-kep" width="40" height="40">
           </div>
           <div class="col">
             <p id="keresett-felhasznalo">{{ felh.felhasznalonev }}</p>
           </div>
         </RouterLink>
+        </div>
+        <div v-else class="d-flex justify-content-center text-light pt-5 mt-5">
+          Nem talált
+        </div>
       </div>
     </div>
   </div>
@@ -151,6 +156,7 @@ export default {
       if(this.navIkonKattint) {
         this.$refs.hamburger.dispatchEvent(new Event('click'));
       }
+      this.keresett = "";
     },
 
     keresett(ujKeresett) {
@@ -195,7 +201,7 @@ export default {
       this.toltes = true;
 
       this.debounce = setTimeout(async() => {
-        await axios.get(`${import.meta.env.VITE_API_URL}/getUsersByName/${this.keresett}`, {cancelToken: this.keresesMegszakit.token})
+        await axios.get(`${import.meta.env.VITE_API_URL}/getUsers/${this.keresett}`, {cancelToken: this.keresesMegszakit.token})
           .then(response => {
             this.keresesEredmeny = response.data;
             this.toltes = false;

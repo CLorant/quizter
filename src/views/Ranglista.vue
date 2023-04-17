@@ -135,10 +135,10 @@ export default {
 
   methods: {
     async getLeaderboard() {
-      if (this.keresesMegszakit) {
-        this.keresesMegszakit.cancel();
+      if (this.lekerdezesMegszakit) {
+        this.lekerdezesMegszakit.cancel();
       }
-      this.keresesMegszakit = axios.CancelToken.source();
+      this.lekerdezesMegszakit = axios.CancelToken.source();
       
       await axios.get(`${import.meta.env.VITE_API_URL}/getLeaderboard/${this.valasztottTema}/${this.valasztottNehezseg}`, {cancelToken: this.lekerdezesMegszakit.token})
         .then(response => {
@@ -311,8 +311,9 @@ td {
 }
 
 #felhasznalo-tarolo div {
-  display: flex;
-  justify-content: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #felhasznalo-nev {

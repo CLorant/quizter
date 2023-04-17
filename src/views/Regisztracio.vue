@@ -9,14 +9,30 @@
           <label for="felhasznalonevInput" class="form-label">Felhasználónév</label>
           <label for="felhasznalonevInput" class="sarga mt-1">Betű vagy szám</label>
         </div>
-        <input type="text" minlength="3" maxlength="12" pattern="[a-zA-Z0-9]+$" v-model="felhasznalonev" id="felhasznalonevInput" class="form-control form-control-md text-light border-dark" placeholder="Felhasználónév" required>
-        <div class="mt-1"></div>
+        <input type="text" minlength="3" maxlength="12" pattern="[a-zA-Z0-9]+$" v-model="felhasznalonev" @click="helytelenFelhasznalonev = false" id="felhasznalonevInput" class="form-control form-control-md text-light" :class="helytelenFelhasznalonev ? 'border-danger' : 'border-dark'" placeholder="Felhasználónév" required>
+        <div class="mt-1">
+          <div class="text-danger" :class="helytelenFelhasznalonev ? 'd-block' : 'd-none'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="mb-1" viewBox="0 0 16 16">
+              <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/>
+              <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+            </svg>
+            {{ this.uzenet.felhasznalo }}
+          </div>
+        </div>
       </div>
 
       <div class="mb-1">
         <label for="emailInput" class="form-label">Email</label>
-        <input type="email" v-model="email" id="emailInput" class="form-control form-control-md text-light border-dark" placeholder="Email" required>
-        <div class="mt-1"></div>
+        <input type="email" v-model="email" @click="helytelenEmail = false" id="emailInput" class="form-control form-control-md text-light" :class="helytelenEmail ? 'border-danger' : 'border-dark'" placeholder="Email" required>
+        <div class="mt-1">
+          <div class="text-danger" :class="helytelenEmail ? 'd-block' : 'd-none'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="mb-1" viewBox="0 0 16 16">
+              <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/>
+              <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+            </svg>
+            {{ this.uzenet.email }}
+          </div>
+        </div>
       </div>
 
       <div class="mb-1">
@@ -101,6 +117,9 @@ export default {
       jelszo: '',
       ismeteltJelszo: '',
       jelszoMegjelenit: false,
+      helytelenFelhasznalonev: false,
+      helytelenEmail: false,
+      uzenet: {felhasznalonev:"", email:""},
       helytelenIsmeteltJelszo: false,
       regisztracioHiba: false
     };
@@ -112,31 +131,39 @@ export default {
   
   methods: {
     async regisztralas() {
-      if (this.ismeteltJelszo !== this.jelszo) {
-        this.helytelenIsmeteltJelszo = true;
-      }
+      await axios.post(`${import.meta.env.VITE_API_URL}/register`, {
+        username: this.felhasznalonev,
+        email: this.email,
+        password: this.jelszo,
+        password2: this.ismeteltJelszo
+      })
+        .then(response => {
+          if (response.data.hasOwnProperty("felhasznalo")) {
+            this.helytelenFelhasznalonev = true;
+            this.uzenet.felhasznalo = response.data.felhasznalo;
+          }
 
-      if(!this.helytelenIsmeteltJelszo) {
-        await axios.post(`${import.meta.env.VITE_API_URL}/register`, {
-          username: this.felhasznalonev,
-          email: this.email,
-          password: this.jelszo,
-          password2: this.ismeteltJelszo
+          if(response.data.hasOwnProperty("email")){
+            this.helytelenEmail = true;
+            this.uzenet.email = response.data.email;
+          }
+
+          if (this.ismeteltJelszo !== this.jelszo) {
+            this.helytelenIsmeteltJelszo = true;
+          }
+
+          if(!this.helytelenEmail && !this.helytelenFelhasznalonev && !this.helytelenIsmeteltJelszo) {
+            alert(response.data)
+            this.$router.push("/");
+          }
         })
-          .then(response => {
-            alert(response.data);
-            if (response.data === "Sikeres regisztráció, hitelesítse az email címét belépés előtt!") {
-              this.$router.push("/");
-            }
-          })
-          .catch(error => {
-            this.regisztracioHiba = true;
-            console.log('Hiba:', error.message);
-          });
-      }
+        .catch(error => {
+          this.regisztracioHiba = true;
+          console.log('Hiba:', error.message);
+        });
     }
   }
-};
+}
 </script>
 
 <style scoped>

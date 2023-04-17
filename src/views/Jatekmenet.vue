@@ -38,7 +38,7 @@
       </div>
     </div>
     <div v-else class="d-flex align-items-center justify-content-center flex-column pt-3">
-      <div v-if="pont > felhasznalo.rekord.pontszam" class="rekord-tablazat mb-0">
+      <div v-if="szemrekord" class="rekord-tablazat mb-0">
         <h2 class="mb-0">Új Személyes Rekord!</h2>
       </div>
       <div class="rekord-tablazat">
@@ -83,6 +83,7 @@ export default {
       kerdesvalaszok: {},
       interval: null,
       jatekVege: false,
+      szemrekord: false
     }
   },
 
@@ -148,27 +149,10 @@ export default {
         });
     },
 
-    async updateUser() {
-      //exp, jatszmaSzam, valaszido mindig frissül
-      //rekord frissül ha személyes rekord
-      try {
-        this.felhasznalo.statisztika.exp += Math.round(this.pont / 100);
-        this.felhasznalo.statisztika.jatszmaSzam++;
-        this.felhasznalo.statisztika.valaszIdo += (this.atlagosValaszIdo / this.kerdesSzam).toFixed(2);
-
-        await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserStats`, {
-          xp: this.felhasznalo.statisztika.exp,
-          jatszmaSzam: this.felhasznalo.statisztika.jatszmaSzam,
-          valaszIdo: this.felhasznalo.statisztika.valaszIdo
-        },{
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${Cookies.get('auth_token')}`
-          }
-        });
-
-        await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserRecord`, {
-          username: this.felhasznalo.felhasznalonev,
+    async updateUserRecord() {
+      await axios.patch(`${import.meta.env.VITE_API_URL}/updateUserRecord`, {
+        valaszIdo: this.atlagosValaszIdo,
+        rekord: {
           pontszam: this.pont,
           helyesHelytelen: this.helyesValasz + " / " + this.helytelenValasz,
           tema: this.tema,
@@ -176,26 +160,20 @@ export default {
           ido: this.ido,
           kerdesSzam: this.kerdesSzam,
           valaszSzam: this.valaszSzam
-        },{
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${Cookies.get('auth_token')}`
-          }
+        }
+      },{
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${Cookies.get('auth_token')}`
+        }
+      })
+        .then(response => {
+          this.felhasznalo.statisztika.exp = response.data.exp;
+          this.szemrekord = response.data.szemrekord;
         })
-          .then(() => {
-            if (this.pont > this.felhasznalo.rekord.pontszam) {
-              this.felhasznalo.rekord.pontszam = this.pont;
-              this.felhasznalo.rekord.helyesHelytelen = this.helyesValasz + " / " + this.helytelenValasz;
-              this.felhasznalo.rekord.tema = this.tema;
-              this.felhasznalo.rekord.nehezseg = this.nehezseg;
-              this.felhasznalo.rekord.ido = this.ido;
-              this.felhasznalo.rekord.kerdesSzam = this.kerdesSzam;
-              this.felhasznalo.rekord.valaszSzam = this.valaszSzam;
-            }
+        .catch(error =>{
+          console.log('Hiba:', error.message);
         });
-      } catch (error) {
-        console.log('Hiba:', error);
-      }
     },
 
     //Fisher-Yates keverés
@@ -276,7 +254,7 @@ export default {
       }
 
       if(this.felhasznalo.bejelentkezett && Cookies.get('auth_token')) {
-        this.updateUser();
+        this.updateUserRecord();
       }
     },
 

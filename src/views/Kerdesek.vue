@@ -22,7 +22,7 @@
       </button>
     </div>
     <table id="kerdes-valasz-tarolo" class="my-5">
-      <tbody v-if="Object.keys(this.kerdesvalaszok).length > 0">
+      <tbody v-if="Object.keys(kerdesvalaszok).length > 0">
         <br>
         <tr v-for="(value, index) in kerdesvalaszok" :key="index" @click="$router.push(`kerdes/${index}`);">
           <td class="text-center"><img :src="value.kerdes.kep" alt="Kérdés Képe" id="kep" decoding="async" width="80" height="40"></td>

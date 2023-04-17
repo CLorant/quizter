@@ -221,17 +221,19 @@ export default {
   },
 
   created() {
-    this.getUserByName();
+    this.getUser();
   },
 
   watch: {
     '$route.params.felhasznaloId'() {
-      this.bejelentkezettFelh = false;
-      this.szerkesztes = false;
-      this.torlesPopup = false;
-      this.toltes = true;
-      this.hiba = false;
-      this.getUserByName();
+      if(this.$router.currentRoute.value.name == 'profil') {
+        this.bejelentkezettFelh = false;
+        this.szerkesztes = false;
+        this.torlesPopup = false;
+        this.toltes = true;
+        this.hiba = false;
+        this.getUser();
+      }
     }
   },
 
@@ -275,31 +277,28 @@ export default {
       reader.readAsDataURL(file);
     },
 
-    async getUserByName() {
+    async getUser() {
       if (this.$route.params.felhasznaloId === this.felhasznalo.felhasznalonev) {
         this.bejelentkezettFelh = true;
-        for (const prop in this.felhasznalo) {
-          if (this.profil.hasOwnProperty(prop)) {
-            this.profil[prop] = this.felhasznalo[prop];
+      }
+      
+      await axios.get(`${import.meta.env.VITE_API_URL}/getUser/${this.$route.params.felhasznaloId}`)
+        .then(response => {
+          if (response.data === "Nem létező user!") {
+            this.$router.push("/nem-talalt");
+            return;
           }
-        }
-        this.toltes = false;
-      }
-      if (this.profil.felhasznalonev === "nem-meghatarozott") {
-        await axios.get(`${import.meta.env.VITE_API_URL}/getUser/${this.$route.params.felhasznaloId}`)
-          .then(response => {
-            for (const prop in response.data) {
-              if (this.profil.hasOwnProperty(prop)) {
-                this.profil[prop] =  response.data[prop];
-              }
+          for (const prop in response.data) {
+            if (this.profil.hasOwnProperty(prop)) {
+              this.profil[prop] =  response.data[prop];
             }
-            this.toltes = false;
-          })
-          .catch(error => {
-            console.log('Hiba:', error.message);
-            this.hiba = true;
-          });
-      }
+          }
+          this.toltes = false;
+        })
+        .catch(error => {
+          console.log('Hiba:', error.message);
+          this.hiba = true;
+        });
     },
 
     async updateUserPage() {
@@ -313,6 +312,13 @@ export default {
         this.felhasznalo.jellemzok.tema1 = this.szerkesztettTema1;
         this.felhasznalo.jellemzok.tema2 = this.szerkesztettTema2;
         this.felhasznalo.jellemzok.tema3 = this.szerkesztettTema3;
+
+        // a megjelenítés miatt
+        for (const prop in this.felhasznalo) {
+          if (this.profil.hasOwnProperty(prop)) {
+            this.profil[prop] =  this.felhasznalo[prop];
+          }
+        }
 
         const formData = new FormData();
         formData.append('nev', this.szerkesztettNev);
