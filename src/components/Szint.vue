@@ -16,6 +16,13 @@ export default {
     betumeret: '10pt'
   },
 
+  watch: {
+    exp() {
+      this.szint = this.szintKezelo();
+      this.szintHaladas = this.szintHaladasKezelo();
+    }
+  },
+
   data() {
     return {
       szint: 0,
@@ -74,5 +81,9 @@ export default {
 #szint-haladas {
   background-color: rgb(255, 200, 0);
   height: 100%;
+  -webkit-transition: .5s ease-in-out;
+  -moz-transition: .5s ease-in-out;
+  -o-transition: .5s ease-in-out;
+  transition: .5s ease-in-out;
 }
 </style>
