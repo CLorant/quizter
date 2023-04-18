@@ -280,7 +280,7 @@ export default {
 
 #kerdes {
   text-align: center;
-  margin-bottom: 35px;
+  margin-bottom: 55px;
   font-size: 28pt;
   max-height: 28pt;
 }

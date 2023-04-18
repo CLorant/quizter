@@ -316,7 +316,7 @@ ul {
 
 #kerdes {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 55px;
   font-size: 28pt;
   height: 48px;
 }
