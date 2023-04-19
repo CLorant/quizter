@@ -23,6 +23,7 @@ export default {
   },
 
   methods: {
+    // az automatikus bejelentkezés süti alapján
     async tokenLogin() {
       await axios.get(`${import.meta.env.VITE_API_URL}/tokenlogin`, {
         withCredentials: true,

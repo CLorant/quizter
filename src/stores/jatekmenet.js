@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 // A játékmenet adatai.
 // Körönként változik: kerdes, valaszok, maradtIdo, folytatasGombKikapcsol, leNyomottValaszGomb
-// Körönként növekedik: kor, pont, helyesValasz, helytelenValasz, atlagosValaszIdo
+// Körönként növekeszik: kor, pont, helyesValasz, helytelenValasz, atlagosValaszIdo
 export const useJatekmenetStore = defineStore('jatekmenet', {
   state: () => ({
     kor: 0,

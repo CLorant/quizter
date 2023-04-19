@@ -9,9 +9,11 @@
         <span></span>
         <span></span>
       </button>
+
       <RouterLink to="/">
         <img src="/img/ikon/quizterlogo_kicsi.webp" alt="Quizter Logó" decoding="async" class="navbar-brand" width="119" height="40">
       </RouterLink>
+
       <div v-if="felhasznalo.bejelentkezett">
         <div class="collapse navbar-collapse jobb-nav" style="top:6px;">
           <div id="felhasznalo-tarolo">
@@ -30,6 +32,7 @@
           </div>
         </div>
       </div>
+
       <div v-else>
         <div class="dropdown jobb-nav">
           <div class="dropdown-toggle text-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -41,6 +44,7 @@
           </div>
         </div>
       </div>
+
       <div class="collapse navbar-collapse">
         <div class="navbar-nav">
           <RouterLink to="/" class="nav-item nav-link" :class="aktiv('fooldal')">Főoldal</RouterLink>
@@ -59,11 +63,13 @@
           </div>
         </div>
       </div>
+
       <div class="kereso-tarolo collapse navbar-collapse">
         <div class="input-group">
           <input class="form-control" id="nav-kereses-szoveg" v-model="keresett" type="search" placeholder="Felhasználó"
             aria-label="Kereső Mező">
           <button class="btn btn-warning" id="nav-kereses-gomb" @click="keresoGomb" aria-label="Keresés Gomb">
+            <!-- Kereső ikon -->
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
             </svg>
@@ -77,6 +83,7 @@
     <div class="bg-dark rounded" :class="keres ? '' : 'd-none'" id="kereses-eredmeny">
       <div v-if="hiba" class="d-flex justify-content-center pt-5 mt-5">
         <button class="btn btn-dark" @click="getUsersByName()">
+          <!-- Újra ikon -->
           <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
             <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
@@ -84,6 +91,7 @@
         </button>
       </div>
       <Toltes v-else-if="toltes" />
+
       <div v-else>
         <div v-if="Object.keys(keresesEredmeny).length > 0">
           <RouterLink v-for="felh in keresesEredmeny" :to="{ name: 'profil', params: { felhasznaloId: felh.felhasznalonev } }"
@@ -96,6 +104,7 @@
           </div>
         </RouterLink>
         </div>
+
         <div v-else class="d-flex justify-content-center text-light pt-5 mt-5">
           Nem talált
         </div>
@@ -152,13 +161,14 @@ export default {
   
   watch: {
     $route() {
-      // visszaállítja a navbart egy kattintással ha ki van nyitva
+      // visszaállítja a navbart egy kattintással ha ki van nyitva, asztali módban pedig törli a keresett szöveget
       if(this.navIkonKattint) {
         this.$refs.hamburger.dispatchEvent(new Event('click'));
       }
       this.keresett = "";
     },
 
+    // ha nem üres a keresőmező akkor rákeres, ha üres és folyamatban van egy keresés akkor megszakítja 
     keresett(ujKeresett) {
       if (ujKeresett !== "") {
         this.getUsersByName();
@@ -179,6 +189,7 @@ export default {
       }
     },
 
+    // kitörli a sütit és a felhasználói adatokat, majd visszanavigál a főoldalra
     kijelentkezes() {
       this.felhasznalo.bejelentkezett = false;
       Cookies.remove('auth_token');
@@ -187,19 +198,22 @@ export default {
     },
 
     async getUsersByName() {
+      // megszakítja az előző keresést
       if (this.keresesMegszakit) {
         this.keresesMegszakit.cancel();
       }
 
+      // törli a fél másodperces időeltolást
       if (this.debounce) {
         clearTimeout(this.debounce);
       }
-
+      
       this.keres = true;
       this.keresesMegszakit = axios.CancelToken.source();
       this.hiba = false;
       this.toltes = true;
 
+      // beállít egy fél másodperces időzítőt, rákeres a kifejezésre majd és kiírja a találatokat
       this.debounce = setTimeout(async() => {
         await axios.get(`${import.meta.env.VITE_API_URL}/getUsers/${this.keresett}`, {cancelToken: this.keresesMegszakit.token})
           .then(response => {
@@ -215,6 +229,7 @@ export default {
       }, 500)
     },
 
+    // az első találatra rákeres
     keresoGomb() {
       if(this.keresett !== "" && this.keresesEredmeny.length != 0) {
         this.$router.push({ name: 'profil', params: { felhasznaloId: this.keresesEredmeny[`felhasznalo1`].felhasznalonev } });

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-// A Jatekmenet előtti beállítási adatok.
+// A játékmenet előtti beállítási adatok
 export const useQuizBeallitoStore = defineStore('quizBeallito', {
   state: () => ({
     nehezseg: "",

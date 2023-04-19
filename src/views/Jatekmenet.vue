@@ -124,6 +124,7 @@ export default {
       await axios.get(`${import.meta.env.VITE_API_URL}/getGameQuestions/${this.tema}/${this.nehezseg}/${this.kerdesSzam}/${this.valaszSzam}`)
         .then(response => {
           let igazE;
+          // beállítja az 1. választ igaznak
           for (let i = 0; i < this.kerdesSzam; i++) {
             let kerdesvalasz = Object.values(response.data)[i];
             for (let j = 0; j < this.valaszSzam; j++) {
@@ -169,7 +170,7 @@ export default {
       })
         .then(response => {
           this.felhasznalo.statisztika.exp = response.data.exp;
-          this.szemrekord = response.data.szemrekord;
+          this.szemrekord = response.data.szemrekord; // ha személyes rekord akkor true, ha nem akkor false
         })
         .catch(error =>{
           console.log('Hiba:', error.message);
@@ -186,7 +187,7 @@ export default {
     },
 
     valaszVizsgalat(helyes) {
-      //pont számolás 'ido' nehezítés alapján
+      //pontszámolás 'ido' nehezítés alapján
       if (helyes) {
         this.helyesValasz++;
         if (this.ido == 10) {
@@ -208,15 +209,20 @@ export default {
     },
 
     valaszFigyelo() {
+      // másodpercenként csökken a maradt idő és növekszik az átlagos válaszidő
       this.interval = setInterval(() => {
         this.maradtIdo--;
         this.atlagosValaszIdo++;
       }, 1000)
+
+      // az időn belül megadott válasz esetén leállítja az időzítést
       this.$watch(() => this.leNyomottValaszGomb, (kikapcsol) => {
         if (kikapcsol === true) {
           clearInterval(this.interval);
         }
       })
+
+      // ha lejár az idő akkor törli a visszaszámolást és helytelen választ állít be
       this.$watch(() => this.maradtIdo, (ujIdo) => {
         if (ujIdo < 1) {
           clearInterval(this.interval);
@@ -228,7 +234,7 @@ export default {
     folytat() {
       this.folytatasGombKikapcsol = true;
       this.kor++;
-      const obj = Object.values(this.kerdesvalaszok)[this.kor];
+      const obj = Object.values(this.kerdesvalaszok)[this.kor]; // egy környi adat
       this.kerdes = obj.kerdes;
       this.valaszok = this.valaszKevero(Object.values(obj.valaszok));
       this.maradtIdo = this.ido;
@@ -237,8 +243,6 @@ export default {
     },
 
     vege() {
-      this.jatekVege = true
-
       if (this.nehezseg == "kozepes") {
         this.pont *= 1.25;
       }
@@ -252,10 +256,14 @@ export default {
       else if (this.valaszSzam == 6) {
         this.pont *= 1.5;
       }
-
+      // kerekítés hogy ne legyen törtszám
+      this.pont = Math.round(this.pont);
+      
+      // ha bejelentkezett a felhasználó akkor a játszma adatai rögzítésre kerülnek
       if(this.felhasznalo.bejelentkezett && Cookies.get('auth_token')) {
         this.updateUserRecord();
       }
+      this.jatekVege = true
     },
 
     nehezsegSzoveg

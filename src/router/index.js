@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Fooldal from '../views/Fooldal.vue';
 import { useFelhasznaloStore } from '../stores/felhasznalo';
 
+// ha admin akkor tövábbmehet az adott oldalra, ha nem akkor átnavigál a nem talált oldalra
 const adminGuard = (to, from, next) => {
   if (useFelhasznaloStore().felhasznalo.jogosultsag === "admin") {
     next();

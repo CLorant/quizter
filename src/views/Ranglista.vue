@@ -135,6 +135,7 @@ export default {
 
   methods: {
     async getLeaderboard() {
+      // megszakítja ha az előzőt még nem adta vissza
       if (this.lekerdezesMegszakit) {
         this.lekerdezesMegszakit.cancel();
       }
@@ -155,6 +156,7 @@ export default {
 
     indexAllit(index) {
       this.valasztottIndex = index;
+      // legörget mobilos nézetben
       if(window.matchMedia('(max-width: 991px)').matches) {
         this.$refs.seged_ranglista.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }

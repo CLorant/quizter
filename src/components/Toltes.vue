@@ -13,6 +13,8 @@
   height: 3rem;
   color: rgb(255, 200, 0);
 }
+
+/* a bootstrap spinner-border végére rakott vonal */
 .spinner-border::after {
   content: '';
   position: absolute;

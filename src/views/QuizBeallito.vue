@@ -98,6 +98,7 @@ export default {
       this.valaszSzam = param;
     },
 
+    // a 3 gomb refjét paraméterként kapja, az adott paramétert és a megszabott 3 nehezítést ami szerint színez
     gombSzinezo(konnyuGomb, kozepesGomb, nehezGomb, param, konnyu, kozepes, nehez) {
       konnyuGomb.style = "";
       kozepesGomb.style = "";

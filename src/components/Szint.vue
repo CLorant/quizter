@@ -38,9 +38,12 @@ export default {
 
   methods: {
     szintKezelo() {
+      // 30-at ad vissza ha az exp nagyobb mint a tömb utolsó eleme
       if (this.exp >= this.szuksegesXp[this.szuksegesXp.length - 1]) {
         return 30;
       }
+
+      // másik esetben bejárja a tömböt, és visszaadja a szintet ha az exp kisebb mint a tömb adott indexén lévő elem
       for (let i = 0; i < this.szuksegesXp.length; i++) {
         if (this.exp < this.szuksegesXp[i]) {
           return i + 1;
@@ -49,6 +52,8 @@ export default {
     },
 
     szintHaladasKezelo() {
+      // szXpMin: a jelenlegi szinthez szükséges tapasztalatpont
+      // szXpMax: a következő szinthez szükséges tapasztalatpont
       let szXpMax = this.szuksegesXp[this.szint - 1], szXpMin;
       if (this.szint === 30) {
         return 100;
@@ -61,7 +66,7 @@ export default {
       }
       const slope = 100 / (szXpMax - szXpMin);
       const yIntercept = -1 * slope * szXpMin;
-      return Math.max(slope * this.exp + yIntercept, 0); //minimum 0 a szélesség
+      return Math.max(slope * this.exp + yIntercept, 0); // minimum 0 a szélesség
     }
   }
 }
