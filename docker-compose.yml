@@ -12,8 +12,8 @@ services:
     image: mongo
     restart: unless-stopped
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=tesztuser
-      - MONGO_INITDB_ROOT_PASSWORD=tesztuser
+      - MONGO_INITDB_ROOT_USERNAME=quizterproject
+      - MONGO_INITDB_ROOT_PASSWORD=quizterproject
     ports:
       - 27017:27017
     volumes:
@@ -30,11 +30,10 @@ services:
     ports:
       - 2000:2000
     environment:
-      - DATABASE_URI=mongodb://tesztuser:tesztuser@mongodb:27017/
-      - GM_USER=quizterhelp@gmail.com
-      - GM_PW=mziypptbgchcjqot
-      - HOST_URL=https://192.168.10.8
-      - NODE_ENV=production
+      - DATABASE_URI=mongodb://quizterproject:quizterproject@mongodb:27017/
+      - GM_USER=
+      - GM_PW=
+      - HOST_URL=https://<IP/DOMAIN_CIM_PLACEHOLDER>
     command: "npm run dev"
     stdin_open: true
     tty: true
@@ -50,7 +49,7 @@ services:
     ports:
       - 5173:5173
     environment:
-      - VITE_API_URL=https://192.168.10.8:2000
+      - VITE_API_URL=https://<IP/DOMAIN_CIM_PLACEHOLDER:2000
     command: "npm run dev"
     stdin_open: true
     tty: true
