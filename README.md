@@ -9,7 +9,7 @@ git clone https://github.com/CLorant/quizter
 ```
 Utána lépjünk be a mappába: 
 ```
-cd ./quizterproject
+cd ./quizter
 ```
 Szerkesszük meg a ‘docker-compose.yml’ fájlt az alábbiakkal:
 ```
@@ -29,6 +29,9 @@ Sikeres inicializáláskor a böngészőnkben az alábbi képen tudjuk elérni:
 ```
 Backend: https://<IP/Domain>:2000
 Frontend: https://<IP/Domain>:5173
-MongoDB: mongodb://quizterproject:quizterproject@<IP/Domain>:27017/
+```
+Adatbázis MongoDB Compass & Shell elérés:
+```
+mongodb://quizterproject:quizterproject@<IP/Domain>:27017/
 ```
 ⚠️ MÉG MIELŐTT A FRONTEND OLDALON BÁRMIT CSINÁLNÁNK, ELŐTTE NYISSUK MEG A BACKENDET, ÉS FOGADJUK EL AZ ERR_CERT_AUTHORITY_INVALID PROBLÉMA MIATT! (Hiteles tanusítvány mellet ez nem szükséges!)
