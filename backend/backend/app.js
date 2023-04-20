@@ -89,7 +89,7 @@ app.get('/getUser/:nev',getUserByName);
 //Regex alapú név keresés (Sajnos nem lehet teljes a MongoDB syntax/implementáció hiányossága miatt)
 app.get('/getUsers/:nev', getUsers);
 //Kérdés listához kell
-app.get('/getQuestions/:tema/:nehezseg', getQuestions);
+app.get('/getQuestions/:tema/:nehezseg', checkAuthentication, isAdmin, getQuestions);
 //MongoDB-ben a kerdes_id-t megkeresi és visszaadja frontend
 app.get('/getQuestion/:k_id',checkAuthentication, isAdmin, getQuestion);
 //Kérdés Válasz (never open kerdesvalasz.js, ever)
