@@ -2,7 +2,7 @@ const Rekordok = require('../../../middleware/rekordok');
 const User = require('../../../middleware/mongodb');
 //Lehet kurva komplex, de kurva egyszerű valójában
 //Ez a eljárás egy Inner Join SQL-nek felel meg, két dokumentumot egybe hoz és utána Frontend íze-szájára konvertálom majd kiküldöm
-//Dióhéjban: Rekords documentből megkeresi ahol egyezik a küldött adat, és 
+//Dióhéjban: Rekords documentből megkeresi ahol egyezik a küldött adat, és két collectionből összehozza a documentet ahol egyezik a 'username', majd formázás után megy FrontEnd-nek
   exports.getLeaderboard = ((req, res) => {
           Rekordok.aggregate([{$match: { "rekord.tema": `${req.params.tema}`, "rekord.nehezseg":`${req.params.nehezseg}` } },{$sort: { "rekord.pontszam":-1}},
           { $lookup: { from: "users", localField: "username", foreignField: "username", as: "felhasznalo" } }, 
