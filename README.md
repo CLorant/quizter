@@ -35,3 +35,5 @@ Adatbázis MongoDB Compass & Shell elérés:
 mongodb://quizterproject:quizterproject@<IP/Domain>:27017/
 ```
 ⚠️ MÉG MIELŐTT A FRONTEND OLDALON BÁRMIT CSINÁLNÁNK, ELŐTTE NYISSUK MEG A BACKENDET, ÉS FOGADJUK EL AZ ERR_CERT_AUTHORITY_INVALID PROBLÉMA MIATT! (Hiteles tanusítvány mellet ez nem szükséges!)
+
+Végezetül lépjünk be közvetlen a MongoDB adatbázisba, és a ‘test.kerdeseks’ kollekcióba importáljuk be a resources.rar-ból lévő ‘foldrajzkonnyu.json’-t, majd a backend mappájába (views/kerdeskep) helyezzük el a hozzátartozó képeket 
