@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div style="
+    font-size: 15pt;
+    font-family:Arial;
+    color: white;
+    background: rgb(16,16,16);
+    background: linear-gradient(0deg, rgba(16,16,16,1) 0%, rgba(48,48,48,1) 50%, rgba(16,16,16,1) 100%);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    width: 700px;
+    max-width: 100%;">
+        <a href="https://quizter.neocities.org/" target="_blank"><img src="https://quizter.neocities.org/img/quizterlogo.png" alt="Logo" style="
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 20px;
+            height: 80px;"></a>
+        <div style="border: 1px solid white;">
+            <div style="padding: 30px;">
+                <h1 style="text-align: center;">Regisztráció hitelesítés</h1>
+                <hr>
+                <br>
+                <p>Szia {{felhasznalo}}!</p>
+                <br>
+                <p>Köszönjük hogy regisztráltál az oldalunkra!</p>
+                <p>Az alábbi gombbal hitelesítsd az email címed:</p>
+                <form action="{{token}}" method="GET" style="
+                text-align: center;
+                padding: 50px;">
+                    <button type="submit" style="
+                    font-size: 18pt;
+                    color: white;
+                    height: 70px;
+                    width: 200px;
+                    border: none;
+                    border-radius: 10px;
+                    background-color: #c7940a;">Hitelesítés</button>
+                </form>
+                <a href="{{token}}" style="color: white">Ha a gomb nem működik, kattints ide!</a>
+                <br>
+                <hr>
+                <br>
+                <p>Üdvözlettel,</p>
+                <p>a Quizter fejlesztői</p>
+            </div>
+        </div>
+    </div>
+    <script>
+
+    </script>
+</body>
+</html>

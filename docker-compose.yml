@@ -1,0 +1,61 @@
+version: "3"
+
+networks:
+  my_network:
+    driver: bridge
+    ipam:
+     config:
+     - subnet: 172.240.0.0/16
+
+services:
+  mongodb:
+    image: mongo
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=tesztuser
+      - MONGO_INITDB_ROOT_PASSWORD=tesztuser
+    ports:
+      - 27017:27017
+    volumes:
+      - db:/data/db
+    networks:
+      - my_network
+  backend:
+    depends_on:
+      - mongodb
+    build: ./backend
+    volumes:
+      - ./backend:/data
+    restart: unless-stopped
+    ports:
+      - 2000:2000
+    environment:
+      - DATABASE_URI=mongodb://tesztuser:tesztuser@mongodb:27017/
+      - GM_USER=quizterhelp@gmail.com
+      - GM_PW=mziypptbgchcjqot
+      - HOST_URL=https://192.168.10.8
+      - NODE_ENV=production
+    command: "npm run dev"
+    stdin_open: true
+    tty: true
+    networks:
+      - my_network
+  frontend:
+    depends_on:
+      - backend
+    build: ./frontend
+    volumes:
+      - ./frontend:/data
+    restart: unless-stopped
+    ports:
+      - 5173:5173
+    environment:
+      - VITE_API_URL=https://192.168.10.8:2000
+    command: "npm run dev"
+    stdin_open: true
+    tty: true
+    networks:
+      - my_network
+
+volumes:
+  db:

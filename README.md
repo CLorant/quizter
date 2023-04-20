@@ -1,54 +1,23 @@
-# vue-project
+# Quizter Project (Vizsga-Remek)
 
-This template should help get you started developing with Vue 3 in Vite.
+A legjobb project munka :]]]]]]]]]]]]]]]]]]
 
-## Recommended IDE Setup
+## Előkészület
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Használat előtt installáld a [Docker](https://www.docker.com)-t
 
-## Customize configuration
+## Használat
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+```bash
+#1. Lépés (Project leklónozása...)
+git clone <project>
 
-## Project Setup
+#2. Lépés (Core mappába lépés)
+cd ./quizterproject
 
-```sh
-npm install
+#3. Lépés (Docker image fájl megépítése + inicializálása)
+docker-compose build 
+
+docker-compose up -d # Csendes elindítás
+
 ```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
-
-eslintrc.cjs:
-/* eslint-env node */
-module.exports = {
-  root: true,
-  'extends': [
-    'plugin:vue/vue3-essential',
-    'eslint:recommended'
-  ],
-  parserOptions: {
-    ecmaVersion: 'latest'
-  }
-}
