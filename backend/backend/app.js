@@ -131,12 +131,6 @@ app.get('/token/:token', async function(req, res){
     }).catch();
 });
 
-//Ez a kód részlet gyönyörűen működik, kisortolja az utoljára felvitt adatot, "Friss hírek"-hez tökéletes volna...
-/*
-app.get('/tesztelunk/:tema/:nehezseg', async function (req,res){
-await Kerdesek.find({tema: req.params.tema, nehezseg: req.params.nehezseg}).limit(1).sort({$natural:-1}).then(hirek=>{res.send(hirek);})
-})*/
-
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 module.exports = app;
