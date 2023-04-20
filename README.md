@@ -5,7 +5,7 @@ Docker:
 
 Docker feltelepítése után klónozzuk le a github repository-ban lévő fájlokat a konzol segítségével:
 ```
-git clone <repo_url>
+git clone https://github.com/CLorant/quizter
 ```
 Utána lépjünk be a mappába: 
 ```
