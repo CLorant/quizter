@@ -2,10 +2,6 @@ version: "3"
 
 networks:
   my_network:
-    driver: bridge
-    ipam:
-     config:
-     - subnet: 172.240.0.0/16
 
 services:
   mongodb:
