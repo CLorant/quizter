@@ -1,3 +1,11 @@
+<template>
+  <Nav />
+  <div id="tarolo">
+    <RouterView />
+  </div>
+  <Footer />
+</template>
+
 <script>
 import Nav from './components/Nav.vue';
 import Footer from './components/Footer.vue';
@@ -51,14 +59,6 @@ export default {
   }
 }
 </script>
-
-<template>
-  <Nav />
-  <div id="tarolo">
-    <RouterView />
-  </div>
-  <Footer />
-</template>
 
 <style scoped>
 #tarolo {
