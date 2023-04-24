@@ -22,7 +22,7 @@
       <div class="mb-1">
         <label for="jelszoInput" class="form-label">Jelszó</label>
         <div class="input-group">
-          <input :type="jelszoMegjelenit ? 'text' : 'password'" minlength="8" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$" v-model="jelszo" @click="helytelen = false" id="jelszoInput" class="form-control form-control-md text-light rounded" :class="helytelen ? 'border-danger' : 'border-dark'" placeholder="Jelszó" required>
+          <input :type="jelszoMegjelenit ? 'text' : 'password'" minlength="8" pattern="^(?=.*[a-zA-Z])(?=.*\d).+$" v-model="jelszo" @click="helytelen = false" id="jelszoInput" class="form-control form-control-md text-light rounded" :class="helytelen ? 'border-danger' : 'border-dark'" placeholder="Jelszó" required>
           <div class="btn text-light border-0 jelszoMegjelenit" @click="jelszoMegjelenit = !jelszoMegjelenit">
             <!-- Szem áthúzva ikon -->
             <svg v-if="jelszoMegjelenit" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
