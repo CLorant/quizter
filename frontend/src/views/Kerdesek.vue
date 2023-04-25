@@ -67,9 +67,9 @@ export default {
       hiba: false,
       kerdesvalaszok: {},
       temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes'],
-      valasztottTema: 'autok',
+      valasztottTema: useKerdesStore().tema,
       nehezsegek: ['konnyu', 'kozepes', 'nehez'],
-      valasztottNehezseg: 'konnyu'
+      valasztottNehezseg: useKerdesStore().nehezseg
     }
   },
 

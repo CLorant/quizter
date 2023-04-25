@@ -3,8 +3,8 @@ import { defineStore } from 'pinia';
 // A kérdés adatai, csakis a Kerdes oldalon használt
 export const useKerdesStore = defineStore('kerdes', {
   state: () => ({
-    tema: "default",
-    nehezseg: "",
+    tema: "autok",
+    nehezseg: "konnyu",
     kerdes: { szoveg: "Nem meghatározott kérdés", kep: "/img/ikon/quizterlogo.webp" },
     valaszok: {
       valasz1: { szoveg: "Válasz 1" },
