@@ -23,6 +23,7 @@ exports.createQuestion = (async (req, res, next) => {
 exports.updateQuestion = (async (req, res, next) => {
     const filter = { kerdes_id: `${req.body.kerdes_id}`};
     let update = {
+        kerdes: req.body.kerdes,
         kep: "placeholder",
         valasz1: req.body.valasz1,
         valasz2: req.body.valasz2,
