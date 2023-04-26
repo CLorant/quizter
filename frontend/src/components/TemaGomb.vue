@@ -1,6 +1,6 @@
 <template>
   <RouterLink :to="{ name: 'quizbeallito', params: { temaId: tema } }" class="temaGomb">
-    <img :src="`/img/tema/kicsi/${tema}.webp`" :alt=":alt="`${tema} képe`"" decoding="async" class="temaImg" width="360" height="120">
+    <img :src="`/img/tema/kicsi/${tema}.webp`" :alt="`${tema} képe`" decoding="async" class="temaImg" width="360" height="120">
     <span class="temaNev">{{ temaNev }}</span>
   </RouterLink>
 </template>
