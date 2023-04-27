@@ -121,7 +121,7 @@ export default {
       hiba: false,
       lekerdezesMegszakit: false,
       temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes'],
-      valasztottTema: 'foldrajz',
+      valasztottTema: 'autok',
       nehezsegek: ['konnyu', 'kozepes', 'nehez'],
       valasztottNehezseg: 'konnyu',
       valasztottIndex: 'felhasznalo1',
