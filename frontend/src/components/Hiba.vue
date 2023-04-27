@@ -1,12 +1,22 @@
 <template>
   <div class="text-center">
     <div id="cim">
-      <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo" width="600" height="150">
+      <img src="/img/ikon/quizterlogo.svg" alt="Quizter Logó" decoding="async" id="cim-logo" width="600" height="150">
       <h2>Hiba történt az oldal betöltésekor</h2>
     </div>
-    <button id="visszaGomb" @click="$router.push('/')">Vissza</button>
+    <button id="visszaGomb" @click="vissza">Vissza</button>
   </div>
 </template>
+
+<script>
+export default{
+  methods: {
+    vissza() {
+      this.$router.push('/');
+    }
+  }
+}
+</script>
 
 <style scoped>
 #cim {

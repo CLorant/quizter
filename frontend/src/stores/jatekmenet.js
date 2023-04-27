@@ -6,7 +6,7 @@ import { defineStore } from 'pinia';
 export const useJatekmenetStore = defineStore('jatekmenet', {
   state: () => ({
     kor: 0,
-    kerdes: { szoveg: "Nem meghatározott kérdés", kep: "/img/ikon/quizterlogo.webp" },
+    kerdes: { szoveg: "Nem meghatározott kérdés", kep: "/img/ikon/quizterlogo.svg" },
     valaszok: {
       valasz1: { szoveg: "Válasz 1", helyes: false },
       valasz2: { szoveg: "Válasz 2", helyes: false },

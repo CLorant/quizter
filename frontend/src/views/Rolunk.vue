@@ -2,7 +2,7 @@
   <div id="tartalom">
     <div class="bemutatkozas-tarolo">
       <div id="cim">
-        <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo" width="600" height="150">
+        <img src="/img/ikon/quizterlogo.svg" alt="Quizter Logó" decoding="async" id="cim-logo" width="600" height="150">
         <h2>Rólunk</h2>
       </div>
       <div id="bemutatkozas-szoveg-tarolo">
@@ -207,11 +207,11 @@ b, a {
     font-size: 16pt;
   }
 
-  h3 {
+  h3, .rolunk-oszlop h2 {
     font-size: 7vw;
   }
 
-  p {
+  p, a {
     font-size: 4.5vw;
     line-height: 8vw;
   }

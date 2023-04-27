@@ -1,7 +1,7 @@
 <template>
   <div id="tartalom">
     <div id="cim">
-      <img src="/img/ikon/quizterlogo.webp" alt="Quizter Logó" decoding="async" id="cim-logo" width="600" height="150">
+      <img src="/img/ikon/quizterlogo.svg" alt="Quizter Logó" decoding="async" id="cim-logo" width="600" height="150">
       <h2>Adatvédelmi Nyilatkozat</h2>
     </div>
     <div class="p-2">

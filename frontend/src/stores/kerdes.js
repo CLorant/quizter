@@ -5,7 +5,7 @@ export const useKerdesStore = defineStore('kerdes', {
   state: () => ({
     tema: "autok",
     nehezseg: "konnyu",
-    kerdes: { szoveg: "Nem meghatározott kérdés", kep: "/img/ikon/quizterlogo.webp" },
+    kerdes: { szoveg: "Nem meghatározott kérdés", kep: "/img/ikon/quizterlogo.svg" },
     valaszok: {
       valasz1: { szoveg: "Válasz 1" },
       valasz2: { szoveg: "Válasz 2" },
