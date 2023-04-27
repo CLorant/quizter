@@ -282,6 +282,7 @@ td {
 
 .szemelyes-rekord-sor {
   text-align: left;
+  overflow-x: hidden;
 }
 
 .szemelyes-rekord-sor td {
@@ -290,7 +291,13 @@ td {
 }
 
 .szemelyes-rekord-sor td:nth-child(1) {
+  width: 53%;
   padding-left: 5%;
+}
+
+.szemelyes-rekord-sor td:nth-child(2) {
+  width: 47%;
+  padding-left: 10%;
 }
 
 #seged-ranglista-felhasznalo-tarolo {
