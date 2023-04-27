@@ -115,7 +115,7 @@ export default {
     return {
       toltes: true,
       hiba: false,
-      temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes'],
+      temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene'],
       valasztottTema: 'autok',
       nehezsegek: ['konnyu', 'kozepes', 'nehez'],
       valasztottNehezseg: 'konnyu',

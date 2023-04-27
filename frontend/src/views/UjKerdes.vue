@@ -60,7 +60,7 @@ import { temaSzoveg, nehezsegSzoveg } from '../tema-nehezseg-szoveg'
 export default {
   data() {
     return {
-      temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes'],
+      temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene'],
       valasztottTema: '',
       nehezsegek: ['konnyu', 'kozepes', 'nehez'],
       valasztottNehezseg: '',

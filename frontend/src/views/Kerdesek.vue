@@ -66,7 +66,7 @@ export default {
       toltes: true,
       hiba: false,
       kerdesvalaszok: {},
-      temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene', 'vegyes'],
+      temak: ['autok', 'biologia', 'fizika', 'foldrajz', 'irodalom', 'kemia', 'sport', 'szorakoztatas', 'technologia', 'tortenelem', 'zene'],
       valasztottTema: useKerdesStore().tema,
       nehezsegek: ['konnyu', 'kozepes', 'nehez'],
       valasztottNehezseg: useKerdesStore().nehezseg
