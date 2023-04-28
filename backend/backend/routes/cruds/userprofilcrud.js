@@ -19,7 +19,7 @@ exports.getUserByName = (async(req, res) => {
                 statisztika: {
                   exp: user.xp,
                   jatszmaSzam: user.jatszmaSzam,
-                  valaszIdo: user.valaszIdo,
+                  valaszIdo: (user.valaszIdo / user.jatszmaSzam).toFixed(2),
                 },
                 rekord: {
                     pontszam: user.rekord.pontszam,
