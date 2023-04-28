@@ -69,21 +69,27 @@
       </button>
     </div>
 
-    <div v-else-if="torles" class="d-flex flex-column">
-      <div class="mb-4">
-        <b class="fs-2">Biztos törli?</b>
-      </div>
-      <div>
-        <button class="btn btn-lg btn-secondary muveletGomb" @click="torles = false">Mégse</button>
-        <button class="btn btn-lg btn-danger muveletGomb" @click="deleteQuestion">Törlés</button>
-      </div>
-    </div>
-    
     <div v-else>
       <RouterLink to="/kerdesek" class="btn btn-lg btn-secondary muveletGomb">Vissza</RouterLink>
       <button class="btn btn-lg btn-success muveletGomb" @click="modositasKezelo">Módosítás</button>
       <button class="btn btn-lg btn-danger muveletGomb" @click="torles = true">Törlés</button>
     </div>
+
+    <form v-if="torles" @submit.prevent="deleteQuestion" class="popup">
+      <div class="popup-content">
+        <h2 class="mb-5">Biztos törli a kérdést?</h2>
+        <div class="d-flex justify-content-center">
+          <button type="button" class="btn btn-secondary m-3" @click="torles = false">
+            Mégse
+            <img src="/img/ikon/vissza.svg" alt="vissza ikon" decoding="async" width="16" height="16">
+          </button>
+          <button type="submit" class="btn btn-danger m-3">
+            Törlés
+            <img src="/img/ikon/kuka.svg" alt="kuka ikon" decoding="async" width="16" height="16">
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
@@ -376,6 +382,29 @@ ul {
 .muveletGomb {
   width: 140px;
   margin: 10px;
+}
+
+form {
+  height: 191px;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 4;
+}
+
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-top: 100px;
 }
 
 input,

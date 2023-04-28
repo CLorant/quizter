@@ -9,7 +9,7 @@
           <label for="felhasznalonevInput" class="form-label">Felhasználónév</label>
           <label for="felhasznalonevInput" class="sarga mt-1">Betű vagy szám</label>
         </div>
-        <input type="text" minlength="3" maxlength="12" pattern="[a-zA-Z0-9]+$" v-model="felhasznalonev" @click="helytelenFelhasznalonev = false" id="felhasznalonevInput" class="form-control form-control-md text-light" :class="helytelenFelhasznalonev ? 'border-danger' : 'border-dark'" placeholder="Felhasználónév" required>
+        <input type="text" minlength="3" maxlength="12" pattern="[a-zA-Z0-9]+$" v-model="felhasznalonev" @click="helytelenFelhasznalonev = false; regisztracioHiba = false" id="felhasznalonevInput" class="form-control form-control-md text-light" :class="helytelenFelhasznalonev ? 'border-danger' : 'border-dark'" placeholder="Felhasználónév" required>
         <div class="mt-1">
           <div class="text-danger" :class="helytelenFelhasznalonev ? 'd-block' : 'd-none'">
             <img src="/img/ikon/figyelmeztetes.svg" alt="figyelmeztetés ikon" class="mb-1" decoding="async" height="14" width="14">
@@ -20,7 +20,7 @@
 
       <div class="mb-1">
         <label for="emailInput" class="form-label">Email</label>
-        <input type="email" v-model="email" @click="helytelenEmail = false" id="emailInput" class="form-control form-control-md text-light" :class="helytelenEmail ? 'border-danger' : 'border-dark'" placeholder="Email" required>
+        <input type="email" v-model="email" @click="helytelenEmail = false; regisztracioHiba = false" id="emailInput" class="form-control form-control-md text-light" :class="helytelenEmail ? 'border-danger' : 'border-dark'" placeholder="Email" required>
         <div class="mt-1">
           <div class="text-danger" :class="helytelenEmail ? 'd-block' : 'd-none'">
             <img src="/img/ikon/figyelmeztetes.svg" alt="figyelmeztetés ikon" class="mb-1" decoding="async" height="14" width="14">
@@ -35,7 +35,7 @@
           <label for="jelszoInput" class="sarga mt-1">Betű és szám</label>
         </div>
         <div class="input-group">
-          <input :type="jelszoMegjelenit ? 'text' : 'password'" minlength="8" pattern="^(?=.*[a-zA-Z])(?=.*\d).+$" v-model="jelszo" id="jelszoInput" class="form-control form-control-md text-light rounded border-dark" placeholder="Jelszó" required>
+          <input :type="jelszoMegjelenit ? 'text' : 'password'" minlength="8" pattern="^(?=.*[a-zA-Z])(?=.*\d).+$" v-model="jelszo" @click="helytelenIsmeteltJelszo = false; regisztracioHiba = false" id="jelszoInput" class="form-control form-control-md text-light rounded" :class="helytelenIsmeteltJelszo ? 'border-danger' : 'border-dark'" placeholder="Jelszó" required>
           <div class="btn text-light border-0 jelszoMegjelenit" @click="jelszoMegjelenit = !jelszoMegjelenit">
             <img v-if="jelszoMegjelenit" src="/img/ikon/szem-athuzva.svg" alt="szem áthúzva ikon" class="mb-1" decoding="async" height="20" width="20">
             <img v-else src="/img/ikon/szem.svg" alt="szem ikon" class="mb-1" decoding="async" height="20" width="20">
@@ -47,7 +47,7 @@
       <div class="mb-1">
         <label for="ismeteltJelszoInput" class="form-label">Jelszó újra</label>
         <div class="input-group">
-          <input :type="jelszoMegjelenit ? 'text' : 'password'" minlength="8" pattern="^(?=.*[a-zA-Z])(?=.*\d).+$" v-model="ismeteltJelszo" @click="helytelenIsmeteltJelszo = false" id="ismeteltJelszoInput" class="form-control form-control-md text-light rounded" :class="helytelenIsmeteltJelszo ? 'border-danger' : 'border-dark'" placeholder="Jelszó újra" required>
+          <input :type="jelszoMegjelenit ? 'text' : 'password'" minlength="8" pattern="^(?=.*[a-zA-Z])(?=.*\d).+$" v-model="ismeteltJelszo" @click="helytelenIsmeteltJelszo = false; regisztracioHiba = false" id="ismeteltJelszoInput" class="form-control form-control-md text-light rounded" :class="helytelenIsmeteltJelszo ? 'border-danger' : 'border-dark'" placeholder="Jelszó újra" required>
           <div class="btn text-light border-0 jelszoMegjelenit" @click="jelszoMegjelenit = !jelszoMegjelenit">
             <img v-if="jelszoMegjelenit" src="/img/ikon/szem-athuzva.svg" alt="szem áthúzva ikon" class="mb-1" decoding="async" height="20" width="20">
             <img v-else src="/img/ikon/szem.svg" alt="szem ikon" class="mb-1" decoding="async" height="20" width="20">
@@ -105,6 +105,11 @@ export default {
   
   methods: {
     async regisztralas() {
+      if (this.ismeteltJelszo !== this.jelszo) {
+        this.helytelenIsmeteltJelszo = true;
+        return;
+      }
+
       await axios.post(`${import.meta.env.VITE_API_URL}/register`, {
         username: this.felhasznalonev,
         email: this.email,
@@ -120,10 +125,6 @@ export default {
           if(response.data.hasOwnProperty("email")){
             this.helytelenEmail = true;
             this.uzenet.email = response.data.email;
-          }
-
-          if (this.ismeteltJelszo !== this.jelszo) {
-            this.helytelenIsmeteltJelszo = true;
           }
 
           // ha sikeres a regisztráció akkor tájékoztatja a felhasználót hogy hitelesítse az emailjét, és visszanavigál a főoldalra

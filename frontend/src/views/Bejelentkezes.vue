@@ -16,7 +16,10 @@
       </div>
       
       <div class="mb-1">
-        <label for="jelszoInput" class="form-label">Jelszó</label>
+        <div class="d-flex justify-content-between">
+          <label for="jelszoInput" class="form-label">Jelszó</label>
+          <label for="jelszoInput" class="kicsi link mt-1" @click="elfelejtettJelszoEmail">Elfelejtett jelszó?</label>
+        </div>
         <div class="input-group">
           <input :type="jelszoMegjelenit ? 'text' : 'password'" minlength="8" pattern="^(?=.*[a-zA-Z])(?=.*\d).+$" v-model="jelszo" @click="helytelen = false" id="jelszoInput" class="form-control form-control-md text-light rounded" :class="helytelen ? 'border-danger' : 'border-dark'" placeholder="Jelszó" required>
           <div class="btn text-light border-0 jelszoMegjelenit" @click="jelszoMegjelenit = !jelszoMegjelenit">
@@ -90,6 +93,20 @@ export default {
           this.helytelen = true;
           console.log('Hiba:', error.message);
         });
+    },
+
+    async elfelejtettJelszoEmail() {
+      const email = prompt("Írja be az email címét");
+      if(email !== null) {
+        if (email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)) {
+          await axios.post(`${import.meta.env.VITE_API_URL}/resetPassword`, {
+            email: email
+          })
+        }
+        else {
+          alert("Helytelen formátumú email!");
+        }
+      }
     }
   }
 }
@@ -116,6 +133,11 @@ label, p {
 
 input, input:focus {
   background-color: #0D1117;
+}
+
+.kicsi {
+  cursor: pointer;
+  font-size: 9pt;
 }
 
 .mt-1 {

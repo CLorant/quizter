@@ -43,6 +43,11 @@ const routes = [
     component: () => import('../views/Bejelentkezes.vue')
   },
   {
+    path: '/jelszo-visszaallit/:token',
+    name: 'jelszo-visszaallit',
+    component: () => import('../views/JelszoVisszaAllit.vue')
+  },
+  {
     path: '/regisztracio',
     name: 'regisztracio',
     component: () => import('../views/Regisztracio.vue')
