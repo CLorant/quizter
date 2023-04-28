@@ -72,7 +72,7 @@
         <div class="rekord-tablazat">
           <h3>Statisztika</h3><br>
           <p>Játszmák: <b>{{ profil.statisztika.jatszmaSzam }}</b></p>
-          <p>Átlagos válaszidő: <b>{{ profil.statisztika.jatszmaSzam > 0 ? (profil.statisztika.valaszIdo / profil.statisztika.jatszmaSzam).toFixed(2) : 0}}</b> mp
+          <p>Átlagos válaszidő: <b>{{ profil.statisztika.jatszmaSzam > 0 ? profil.statisztika.jatszmaSzam : 0 }}</b> mp
           </p>
         </div>
         <div class="rekord-tablazat">
