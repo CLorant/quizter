@@ -54,7 +54,7 @@ async function UserStatUpd (req) {
                     const updt = {
                       xp: req.user.xp + Math.round(req.body.rekord.pontszam / 100),
                       jatszmaSzam : req.user.jatszmaSzam+1,
-                      valaszIdo : (req.body.valaszIdo / req.body.rekord.kerdesSzam).toFixed(2),
+                      valaszIdo : (req.user.valaszIdo + req.body.valaszIdo / req.body.rekord.kerdesSzam).toFixed(2),
                     }
                     await User.updateOne(filter, updt);
 }
