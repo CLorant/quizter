@@ -1,4 +1,5 @@
 <template>
+<div>
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container-fluid">
       <button class="navbar-toggler" :id="navIkonKattint ? 'open' : 'closed'" ref="hamburger" type="button" data-bs-toggle="collapse"
@@ -15,7 +16,7 @@
       </RouterLink>
 
       <div v-if="felhasznalo.bejelentkezett">
-        <div class="collapse navbar-collapse jobb-nav">
+        <div class="collapse navbar-collapse jobb-nav" style="top: 6px">
           <div id="felhasznalo-tarolo">
             <span id="felhasznalo-nev">{{ felhasznalo.felhasznalonev }}</span>
             <Szint :exp="felhasznalo.statisztika.exp" magassag="16px" szelesseg="100px" betumeret="10pt" />
@@ -104,6 +105,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -349,10 +351,6 @@ export default {
   font-size: 10pt;
   font-weight: bold;
   color: whitesmoke;
-}
-
-.jobb-nav:nth-child(1) {
-  top: 6px;
 }
 
 .jobb-nav {
