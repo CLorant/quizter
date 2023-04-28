@@ -35,7 +35,7 @@
     <button class="btn btn-lg btn-success muveletGomb" @click="createQuestion">
         Mentés
       </button>
-      <button v-if="kep !== null" class="btn btn-lg btn-light muveletGomb"
+      <button v-if="kep !== null" class="btn btn-lg btn-primary muveletGomb"
         @click="kepMegjelenit = !kepMegjelenit">Kép 
         <img v-if="kepMegjelenit" src="/img/ikon/szem-athuzva.svg" alt="szem áthúzva ikon" decoding="async" height="16" width="16">
         <img v-else src="/img/ikon/szem.svg" alt="szem ikon" decoding="async" height="16" width="16">
