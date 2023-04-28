@@ -61,7 +61,7 @@ export default {
 
   data() {
     return {
-      toltes: false,
+      toltes: true,
       hiba: false,
       jelszo: '',
       ismeteltJelszo: '',
