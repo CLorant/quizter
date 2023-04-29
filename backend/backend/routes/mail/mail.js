@@ -17,7 +17,14 @@ exports.mailSend = (async(req, res) => {
             from: `${process.env.GM_USER}`,
               to: `${req.user.email}`, 
               subject: 'Quizter regisztráció hitelesítés',
-              html: htmlToSend
+              html: htmlToSend,
+              attachments: [
+                {
+                    filename:'quizterlogo.png',
+                    path:`${__dirname}/quizterlogo.png`,
+                    cid:'logo'
+                }
+              ]
          };
         client.sendMail(mailOptions, function (error, response) {
             if (error) {
