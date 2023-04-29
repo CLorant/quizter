@@ -2,8 +2,7 @@ const { client } = require('../../../middleware/nodemailer');
 const User = require('../../../middleware/mongodb');
 const crypto = require('crypto');
 const { validationResult } = require('express-validator');
-//Szimpla Email hitelesítő kiküldése, a Handlebar-al kiforgatjuk a HTML tagokba lévő paramétereket a replacements-ből
-//Note: Csakis Google SMTP-vel teszteltem, azzal gyönyörűen működött, ha SMTP-t váltasz nodemailer.js-be turkálj
+
 exports.ResetPasswordMail = (async(req, res) => {
         let pw_id = crypto.randomBytes(32).toString("hex")
         User.findOne({email: req.body.email}).then(async(user) => {if (!user){ return res.send("Nem létező felhasználó!")} 
