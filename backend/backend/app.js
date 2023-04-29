@@ -25,6 +25,7 @@ const { KerdesValasz, RunningGameSessionQuestions } = require('./routes/cruds/ke
 const { getUserByName, updateUserPage, deleteUser, getUsers, SendUser } = require('./routes/cruds/userprofilcrud');
 const { createQuestion, getQuestionImage, updateQuestion, deleteQuestion, getQuestion, getQuestions } = require('./routes/cruds/questioncrud');
 const { getLeaderboard, UpdateRecord } = require('./routes/cruds/leaderboard');
+const { ResetPasswordMail, UpdatePW, CheckPWToken } = require('./routes/mail/resetpw');
 
 const app = express(); // The core of the whole program
 app.use(morgan('dev')); // Külső elérést kezelő logger
@@ -83,7 +84,10 @@ db.connect(process.env.DATABASE_URI, {
 
 //Ranglista Top 10
 app.get('/getLeaderboard/:tema/:nehezseg', getLeaderboard);
-
+//Konkrétan a reset PW három eljárása, mail küldés -> Check -> Update
+app.post('/resetPassword', ResetPasswordMail);
+app.post('/rpUpdate', urlencodedParser, ChangePWValidation, UpdatePW);
+app.post('/rpCheck/:token', CheckPWToken);
 //Név alapján kereső
 app.get('/getUser/:nev',getUserByName);
 //Regex alapú név keresés (Sajnos nem lehet teljes a MongoDB syntax/implementáció hiányossága miatt)
