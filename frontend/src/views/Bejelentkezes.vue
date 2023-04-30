@@ -82,7 +82,7 @@ export default {
               }
             }
             if(Cookies.get('auth_token')) {
-              Cookies.remover('auth_token');
+              Cookies.remove('auth_token');
             }
             Cookies.set('auth_token', `${response.data.auth_token}`, { path: '/', sameSite: 'Lax', secure: true })
             this.felhasznalo.bejelentkezett = true;
