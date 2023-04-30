@@ -36,7 +36,7 @@
         <p>Dizájner</p>
       </div>
     </div>
-    <h2 class="text-center my-5">Galéria a fejlesztésről</h2>
+    <h2 class="text-center my-5 fw-bold">Galéria a fejlesztésről</h2>
     <div class="d-block mx-auto" id="carousel-container">
       <div id="slider" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -79,12 +79,20 @@
         </button>
       </div>
     </div>
-
-    <h2 class="text-center my-5">Elérhetőség</h2>
-    <div class="text-center mb-5">
-      <a class="rolunk-email" href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com" target="_blank">
-        quizterhelp@gmail.com
-      </a>
+    
+    <div class="d-flex flew-row justify-content-around flex-wrap my-5">
+      <div class="mx-3 text-center">
+        <h2 class="my-5 fw-bold">Elérhetőség</h2>
+        <a class="rolunk-email" href="https://mail.google.com/mail/?view=cm&fs=1&to=quizterhelp@gmail.com" target="_blank">
+          quizterhelp@gmail.com
+        </a>
+      </div>
+      <div class="mx-3 text-center">
+        <h2 class="my-5 fw-bold">Dokumentáció</h2>
+        <a class="rolunk-email" href="/docs/Dokumentáció.pdf" target="_blank">
+          Az oldal dokumentációja
+        </a>
+      </div>
     </div>
   </div>
 </template>
