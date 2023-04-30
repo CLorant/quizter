@@ -38,6 +38,7 @@ const User = Schema({
     auth_token: { type: String, default: crypto.randomBytes(1024).toString("hex")},
     roles: { type: String, default: 'felhasznalo'},
     token: {type: String, default: crypto.randomBytes(64).toString("hex")},
+    pwchange_token: {type: String, default: ''}
   });
 
   var options = {
