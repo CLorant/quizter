@@ -84,7 +84,7 @@ export default {
             if(Cookies.get('auth_token')) {
               Cookies.remove('auth_token');
             }
-            Cookies.set('auth_token', `${response.data.auth_token}`, { path: '/', sameSite: 'Lax', secure: true })
+            Cookies.set('auth_token', `${response.data.auth_token}`, { path: '/', sameSite: 'Lax', secure: true, expires: 7});
             this.felhasznalo.bejelentkezett = true;
             this.$router.push("/");
           }
